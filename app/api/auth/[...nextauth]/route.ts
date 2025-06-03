@@ -1,15 +1,11 @@
 export const dynamic = 'force-dynamic';
 
 import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-
-const prisma = new PrismaClient();
+import { createRoute } from "@/lib/supabase/server";
 
 const handler = NextAuth({
-  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -22,13 +18,16 @@ const handler = NextAuth({
           throw new Error("Missing credentials");
         }
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
+        const supabase = createRoute();
+        
+        // Get user from Supabase
+        const { data: user, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('email', credentials.email)
+          .single();
 
-        if (!user || !user.password) {
+        if (error || !user || !user.password) {
           throw new Error("Invalid credentials");
         }
 
@@ -55,6 +54,12 @@ const handler = NextAuth({
   pages: {
     signIn: "/auth/signin",
   },
+  // Optional: Add Supabase adapter if you want to use it for sessions
+  // You'll need to install @next-auth/supabase-adapter
+  // adapter: SupabaseAdapter({
+  //   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  //   supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  // }),
 });
 
 export { handler as GET, handler as POST };
