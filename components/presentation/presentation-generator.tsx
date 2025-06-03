@@ -117,62 +117,81 @@ export function PresentationGenerator() {
   };
 
   const exportToPPTX = async () => {
-    if (!slides.length) return;
-    setIsExporting(true);
+  if (!slides.length) return;
+  setIsExporting(true);
 
-    try {
-      const pptx = new pptxgen();
+  try {
+    const pptx = new pptxgen();
+    
+    // Define slide master layouts if needed
+    pptx.defineSlideMaster({
+      title: 'MASTER_SLIDE',
+      background: { color: 'FFFFFF' },
+      slideNumber: { x: 0.5, y: '95%' },
+    });
+
+    slides.forEach((slide, index) => {
+      // Use proper layout name from pptxgenjs constants
+      const pptxSlide = pptx.addSlide({
+        masterName: 'MASTER_SLIDE',
+        layout: selectedTemplate === "minimal" ? 'titleOnly' : 'titleAndContent'
+      });
       
-      for (const slide of slides) {
-        const pptxSlide = pptx.addSlide();
-        
-        // Add title
-        pptxSlide.addText(slide.title, {
+      // Add title
+      pptxSlide.addText(slide.title || `Slide ${index + 1}`, {
+        x: 0.5,
+        y: 0.5,
+        w: 9,
+        h: 0.5,
+        fontSize: 24,
+        bold: true,
+        align: 'center',
+      });
+      
+      // Add content if exists
+      if (slide.content) {
+        pptxSlide.addText(slide.content, {
           x: 0.5,
-          y: 0.5,
-          w: '90%',
-          fontSize: 24,
-          bold: true,
+          y: 1.5,
+          w: 9,
+          h: 5,
+          fontSize: 14,
+          bullet: true,
         });
-        
-        // Add content based on layout type
-        if (slide.content) {
-          pptxSlide.addText(slide.content, {
-            x: 0.5,
-            y: 1.5,
-            w: '90%',
-            fontSize: 14,
-          });
-        }
-        
-        // Add image if present
-        if (slide.image) {
-          pptxSlide.addImage({
-            path: slide.image,
-            x: 0,
-            y: 0,
-            w: '100%',
-            h: '100%',
-          });
-        }
       }
       
-      await pptx.writeFile('presentation.pptx');
-      toast({
-        title: "PPTX exported!",
-        description: "Your presentation has been downloaded as a PowerPoint file",
-      });
-    } catch (error) {
-      toast({
-        title: "Export failed",
-        description: "Failed to export presentation to PPTX. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsExporting(false);
-    }
-  };
-
+      // Add image if exists (placeholder implementation)
+      if (slide.image) {
+        pptxSlide.addImage({
+          data: slide.image, // This should be base64 data or URL
+          x: 3,
+          y: 2,
+          w: 4,
+          h: 3,
+        });
+      }
+    });
+    
+    await pptx.writeFile({
+      fileName: 'presentation.pptx',
+      compression: true,
+    });
+    
+    toast({
+      title: "PPTX exported!",
+      description: "Your presentation has been downloaded as a PowerPoint file",
+    });
+  } catch (error) {
+    console.error("PPTX export error:", error);
+    toast({
+      title: "Export failed",
+      description: "Failed to export presentation to PPTX. Please try again.",
+      variant: "destructive",
+    });
+  } finally {
+    setIsExporting(false);
+  }
+};
   return (
     <div className="space-y-6">
       <Tabs defaultValue="create" className="w-full">
