@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { getServerSession } from "next-auth";
-import { prisma } from "@/lib/prisma";
+import { createRoute } from "@/lib/supabase/server";
 
 const DOMAIN = process.env.NEXT_PUBLIC_APP_URL;
 
@@ -13,16 +13,20 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      include: { subscription: true },
-    });
+    const supabase = createRoute();
+    
+    // Get user data
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('*, subscription(*)')
+      .eq('email', session.user.email)
+      .single();
 
-    if (!user) {
+    if (userError || !userData) {
       return new NextResponse("User not found", { status: 404 });
     }
 
-    if (user.subscription) {
+    if (userData.subscription) {
       return new NextResponse("Already subscribed", { status: 400 });
     }
 
@@ -32,7 +36,7 @@ export async function POST(req: Request) {
       payment_method_types: ["card"],
       mode: "subscription",
       billing_address_collection: "auto",
-      customer_email: user.email,
+      customer_email: userData.email,
       line_items: [
         {
           price: process.env.STRIPE_PRICE_ID,
@@ -40,7 +44,7 @@ export async function POST(req: Request) {
         },
       ],
       metadata: {
-        userId: user.id,
+        userId: userData.id,
       },
     });
 

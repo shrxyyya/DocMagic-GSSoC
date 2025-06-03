@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { getServerSession } from "next-auth";
-import { prisma } from "@/lib/prisma";
+import { createRoute } from "@/lib/supabase/server";
 
 const DOMAIN = process.env.NEXT_PUBLIC_APP_URL;
 
@@ -13,21 +13,27 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      include: { subscription: true },
-    });
+    const supabase = createRoute();
+    
+    // Get user data with subscription
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('*, subscription:subscriptions(stripe_subscription_id)')
+      .eq('email', session.user.email)
+      .single();
 
-    if (!user) {
+    if (userError || !userData) {
       return new NextResponse("User not found", { status: 404 });
     }
 
-    if (!user.subscription?.stripeSubscriptionId) {
+    // Check if user has a subscription
+    if (!userData.subscription || !userData.subscription[0]?.stripe_subscription_id) {
       return new NextResponse("No subscription found", { status: 400 });
     }
 
+    // Create Stripe billing portal session
     const stripeSession = await stripe.billingPortal.sessions.create({
-      customer: user.stripeCustomerId!,
+      customer: userData.stripe_customer_id!,
       return_url: `${DOMAIN}/settings`,
     });
 
