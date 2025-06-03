@@ -23,11 +23,11 @@ export function PresentationGenerator() {
   const [pageCount, setPageCount] = useState(8);
   const [isExporting, setIsExporting] = useState(false);
   const { toast } = useToast();
-  
+
   const MAX_FREE_PAGES = 8;
   const MAX_PRO_PAGES = 100;
   const isPro = false; // This would be connected to your auth/subscription system
-  
+
   const generateSlides = async () => {
     if (!prompt.trim()) {
       toast({
@@ -41,8 +41,8 @@ export function PresentationGenerator() {
     if (pageCount > (isPro ? MAX_PRO_PAGES : MAX_FREE_PAGES)) {
       toast({
         title: "Page limit exceeded",
-        description: isPro 
-          ? `Maximum ${MAX_PRO_PAGES} pages allowed` 
+        description: isPro
+          ? `Maximum ${MAX_PRO_PAGES} pages allowed`
           : `Upgrade to Pro to create presentations with up to ${MAX_PRO_PAGES} pages`,
         variant: "destructive",
       });
@@ -50,7 +50,7 @@ export function PresentationGenerator() {
     }
 
     setIsGenerating(true);
-    
+
     try {
       const response = await fetch('/api/generate/presentation', {
         method: 'POST',
@@ -66,7 +66,7 @@ export function PresentationGenerator() {
 
       const data = await response.json();
       setSlides(data);
-      
+
       toast({
         title: "Presentation generated!",
         description: `${data.length} slides have been created based on your prompt`,
@@ -89,17 +89,17 @@ export function PresentationGenerator() {
     try {
       const pdf = new jsPDF('landscape', 'pt', 'a4');
       const previewElement = document.getElementById('presentation-preview');
-      
+
       for (let i = 0; i < slides.length; i++) {
         const canvas = await html2canvas(previewElement as HTMLElement);
         const imgData = canvas.toDataURL('image/png');
-        
+
         if (i > 0) pdf.addPage();
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       }
-      
+
       pdf.save('presentation.pdf');
       toast({
         title: "PDF exported!",
@@ -117,81 +117,77 @@ export function PresentationGenerator() {
   };
 
   const exportToPPTX = async () => {
-  if (!slides.length) return;
-  setIsExporting(true);
+    if (!slides.length) return;
+    setIsExporting(true);
 
-  try {
-    const pptx = new pptxgen();
-    
-    // Define slide master layouts if needed
-    pptx.defineSlideMaster({
-      title: 'MASTER_SLIDE',
-      background: { color: 'FFFFFF' },
-      slideNumber: { x: 0.5, y: '95%' },
-    });
+    try {
+      const pptx = new pptxgen();
 
-    slides.forEach((slide, index) => {
-      // Use proper layout name from pptxgenjs constants
-      const pptxSlide = pptx.addSlide({
-        masterName: 'MASTER_SLIDE',
-        layout: selectedTemplate === "minimal" ? 'titleOnly' : 'titleAndContent'
+      // Define slide master for consistent styling
+      pptx.defineSlideMaster({
+        title: 'MASTER_SLIDE',
+        background: { color: 'FFFFFF' },
+        slideNumber: { x: 0.5, y: '95%' },
       });
-      
-      // Add title
-      pptxSlide.addText(slide.title || `Slide ${index + 1}`, {
-        x: 0.5,
-        y: 0.5,
-        w: 9,
-        h: 0.5,
-        fontSize: 24,
-        bold: true,
-        align: 'center',
-      });
-      
-      // Add content if exists
-      if (slide.content) {
-        pptxSlide.addText(slide.content, {
+
+      slides.forEach((slide, index) => {
+        const pptxSlide = pptx.addSlide('MASTER_SLIDE');
+
+        // Add title
+        pptxSlide.addText(slide.title || `Slide ${index + 1}`, {
           x: 0.5,
-          y: 1.5,
+          y: 0.5,
           w: 9,
-          h: 5,
-          fontSize: 14,
-          bullet: true,
+          h: 0.5,
+          fontSize: 24,
+          bold: true,
+          align: 'center',
         });
-      }
-      
-      // Add image if exists (placeholder implementation)
-      if (slide.image) {
-        pptxSlide.addImage({
-          data: slide.image, // This should be base64 data or URL
-          x: 3,
-          y: 2,
-          w: 4,
-          h: 3,
-        });
-      }
-    });
-    
-    await pptx.writeFile({
-      fileName: 'presentation.pptx',
-      compression: true,
-    });
-    
-    toast({
-      title: "PPTX exported!",
-      description: "Your presentation has been downloaded as a PowerPoint file",
-    });
-  } catch (error) {
-    console.error("PPTX export error:", error);
-    toast({
-      title: "Export failed",
-      description: "Failed to export presentation to PPTX. Please try again.",
-      variant: "destructive",
-    });
-  } finally {
-    setIsExporting(false);
-  }
-};
+
+        // For minimal template, skip content
+        if (selectedTemplate !== "minimal" && slide.content) {
+          pptxSlide.addText(slide.content, {
+            x: 0.5,
+            y: 1.5,
+            w: 9,
+            h: 5,
+            fontSize: 14,
+            bullet: true,
+          });
+        }
+
+        // Add image if exists
+        if (slide.image) {
+          pptxSlide.addImage({
+            data: slide.image,
+            x: 3,
+            y: 2,
+            w: 4,
+            h: 3,
+          });
+        }
+      });
+
+      await pptx.writeFile({
+        fileName: 'presentation.pptx',
+        compression: true,
+      });
+
+      toast({
+        title: "PPTX exported!",
+        description: "Your presentation has been downloaded as a PowerPoint file",
+      });
+    } catch (error) {
+      console.error("PPTX export error:", error);
+      toast({
+        title: "Export failed",
+        description: "Failed to export presentation to PPTX. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
   return (
     <div className="space-y-6">
       <Tabs defaultValue="create" className="w-full">
@@ -224,16 +220,16 @@ export function PresentationGenerator() {
                     )}
                   </div>
                 </div>
-                
+
                 <Textarea
                   placeholder="E.g., Startup pitch deck for AI SaaS platform targeting enterprise customers"
                   className="min-h-[200px] text-base"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                 />
-                <Button 
-                  onClick={generateSlides} 
-                  disabled={isGenerating || !prompt.trim()} 
+                <Button
+                  onClick={generateSlides}
+                  disabled={isGenerating || !prompt.trim()}
                   className="w-full"
                 >
                   {isGenerating ? (
@@ -249,12 +245,12 @@ export function PresentationGenerator() {
                   )}
                 </Button>
               </div>
-              
+
               {slides.length > 0 && (
                 <div className="mt-8">
                   <h3 className="text-lg font-medium mb-2">Download Options</h3>
                   <div className="flex flex-wrap gap-2">
-                    <Button 
+                    <Button
                       variant="outline"
                       onClick={exportToPDF}
                       disabled={isExporting}
@@ -266,7 +262,7 @@ export function PresentationGenerator() {
                       )}
                       Download PDF
                     </Button>
-                    <Button 
+                    <Button
                       variant="outline"
                       onClick={exportToPPTX}
                       disabled={isExporting}
@@ -295,7 +291,7 @@ export function PresentationGenerator() {
                     <div className="text-center space-y-3">
                       <LayoutPresentation className="h-12 w-12 mx-auto text-muted-foreground" />
                       <p className="text-muted-foreground">
-                        {isGenerating 
+                        {isGenerating
                           ? "Creating your presentation..."
                           : "Your presentation preview will appear here"}
                       </p>
@@ -307,7 +303,7 @@ export function PresentationGenerator() {
           </div>
         </TabsContent>
         <TabsContent value="templates" className="pt-4">
-          <PresentationTemplates 
+          <PresentationTemplates
             selectedTemplate={selectedTemplate}
             onSelectTemplate={setSelectedTemplate}
           />
