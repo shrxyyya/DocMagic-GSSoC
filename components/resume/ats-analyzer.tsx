@@ -14,6 +14,7 @@ import {
   Loader2,
   Upload,
   XCircle,
+  Sparkles,
 } from "lucide-react";
 
 export function ATSAnalyzer() {
@@ -25,10 +26,10 @@ export function ATSAnalyzer() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
-      'text/plain': ['.txt'],
-      'application/pdf': ['.pdf'],
-      'application/msword': ['.doc'],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx']
+      "application/pdf": [".pdf"],
+      "application/msword": [".doc"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+      "text/plain": [".txt"],
     },
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
@@ -54,32 +55,34 @@ export function ATSAnalyzer() {
     }
 
     setIsAnalyzing(true);
+    setAnalysis(null);
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('jobDescription', jobDescription);
+      formData.append("file", file);
+      formData.append("jobDescription", jobDescription);
 
-      const response = await fetch('/api/analyze/resume', {
-        method: 'POST',
+      const res = await fetch("/api/analyze/resume", {
+        method: "POST",
         body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to analyze resume');
+      if (!res.ok) {
+        throw new Error(`Status: ${res.status}`);
       }
 
-      const data = await response.json();
+      const data = await res.json();
       setAnalysis(data);
-      
+
       toast({
-        title: "Analysis complete!",
+        title: "Analysis Complete",
         description: `Your resume scored ${data.score}% ATS compatibility`,
       });
-    } catch (error) {
+    } catch (err) {
+      console.error("Error analyzing resume:", err);
       toast({
         title: "Error",
-        description: "Failed to analyze resume. Please try again.",
+        description: "Something went wrong. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -87,9 +90,12 @@ export function ATSAnalyzer() {
     }
   };
 
+  const displayAnalysis = analysis;
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* LEFT SIDE - Upload & Description */}
         <div className="space-y-4">
           <Card>
             <CardContent className="pt-6">
@@ -103,9 +109,7 @@ export function ATSAnalyzer() {
                 <div className="flex flex-col items-center gap-2">
                   <Upload className="h-8 w-8 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground">
-                    {file
-                      ? file.name
-                      : "Drag & drop your resume, or click to select"}
+                    {file ? file.name : "Drag & drop your resume, or click to select"}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     Supports PDF, DOC, DOCX, and TXT
@@ -124,7 +128,7 @@ export function ATSAnalyzer() {
 
           <Button
             onClick={analyzeResume}
-            disabled={isAnalyzing || !file || !jobDescription.trim()}
+            disabled={isAnalyzing}
             className="w-full"
           >
             {isAnalyzing ? (
@@ -134,66 +138,74 @@ export function ATSAnalyzer() {
               </>
             ) : (
               <>
-                <FileText className="mr-2 h-4 w-4" />
-                Analyze Resume
+                <Sparkles className="mr-2 h-4 w-4" />
+                AI Resume Analysis
               </>
             )}
           </Button>
         </div>
 
+        {/* RIGHT SIDE - Analysis Output */}
         <div>
-          {analysis ? (
+          {displayAnalysis ? (
             <div className="space-y-6">
+              {/* Score */}
               <div className="text-center">
-                <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-background border-4 border-primary mb-4">
-                  <span className="text-2xl font-bold">{analysis.score}%</span>
+                <div
+                  className={`inline-flex items-center justify-center h-20 w-20 rounded-full bg-background border-4 mb-4 ${
+                    displayAnalysis.score >= 80
+                      ? "border-green-500"
+                      : displayAnalysis.score >= 60
+                      ? "border-yellow-500"
+                      : "border-red-500"
+                  }`}
+                >
+                  <span className="text-2xl font-bold">{displayAnalysis.score}%</span>
                 </div>
                 <h3 className="text-xl font-semibold">ATS Compatibility Score</h3>
+                <p className="text-muted-foreground text-sm mt-1">
+                  {displayAnalysis.score >= 80
+                    ? "Excellent match!"
+                    : displayAnalysis.score >= 60
+                    ? "Good match, but could improve"
+                    : "Needs significant improvements"}
+                </p>
               </div>
 
-              <div className="space-y-4">
+              {/* Section Scores */}
+              {displayAnalysis.analysis?.sectionScores && (
                 <div>
                   <h4 className="font-medium mb-2">Section Scores</h4>
                   <div className="space-y-2">
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>Skills</span>
-                        <span>{analysis.analysis.sectionScores.skills}%</span>
-                      </div>
-                      <Progress value={analysis.analysis.sectionScores.skills} />
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>Experience</span>
-                        <span>{analysis.analysis.sectionScores.experience}%</span>
-                      </div>
-                      <Progress value={analysis.analysis.sectionScores.experience} />
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>Education</span>
-                        <span>{analysis.analysis.sectionScores.education}%</span>
-                      </div>
-                      <Progress value={analysis.analysis.sectionScores.education} />
-                    </div>
+                    {Object.entries(displayAnalysis.analysis.sectionScores).map(
+                      ([section, score]) => (
+                        <div key={section}>
+                          <div className="flex justify-between text-sm mb-1">
+                            <span className="capitalize">{section}</span>
+                            <span>{score}%</span>
+                          </div>
+                          <Progress value={score as number} />
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
+              )}
 
+              {/* Keywords */}
+              {displayAnalysis.analysis?.keywordMatch && (
                 <div>
                   <h4 className="font-medium mb-2">Keyword Analysis</h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <h5 className="text-sm font-medium flex items-center gap-1 mb-2">
                         <CheckCircle2 className="h-4 w-4 text-green-500" />
-                        Found Keywords
+                        Found ({displayAnalysis.analysis.keywordMatch.found?.length || 0})
                       </h5>
                       <div className="flex flex-wrap gap-1">
-                        {analysis.analysis.keywordMatch.found.map((keyword: string, i: number) => (
-                          <span
-                            key={i}
-                            className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700"
-                          >
-                            {keyword}
+                        {displayAnalysis.analysis.keywordMatch.found?.map((k: string, i: number) => (
+                          <span key={i} className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700">
+                            {k}
                           </span>
                         ))}
                       </div>
@@ -201,64 +213,72 @@ export function ATSAnalyzer() {
                     <div>
                       <h5 className="text-sm font-medium flex items-center gap-1 mb-2">
                         <XCircle className="h-4 w-4 text-red-500" />
-                        Missing Keywords
+                        Missing ({displayAnalysis.analysis.keywordMatch.missing?.length || 0})
                       </h5>
                       <div className="flex flex-wrap gap-1">
-                        {analysis.analysis.keywordMatch.missing.map((keyword: string, i: number) => (
-                          <span
-                            key={i}
-                            className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-700"
-                          >
-                            {keyword}
+                        {displayAnalysis.analysis.keywordMatch.missing?.map((k: string, i: number) => (
+                          <span key={i} className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-700">
+                            {k}
                           </span>
                         ))}
                       </div>
                     </div>
                   </div>
                 </div>
+              )}
 
+              {/* Improvements */}
+              {displayAnalysis.improvements?.critical && (
                 <div>
                   <h4 className="font-medium mb-2">Critical Improvements</h4>
-                  <div className="space-y-2">
-                    {analysis.improvements.critical.map((improvement: string, i: number) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-red-600"
-                      >
+                  <ul className="space-y-2 text-sm text-red-600">
+                    {displayAnalysis.improvements.critical.map((tip: string, i: number) => (
+                      <li key={i} className="flex items-start gap-2">
                         <AlertCircle className="h-4 w-4 mt-1 flex-shrink-0" />
-                        <span>{improvement}</span>
-                      </div>
+                        {tip}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
+              )}
 
+              {displayAnalysis.improvements?.recommended && (
                 <div>
-                  <h4 className="font-medium mb-2">Suggested Improvements</h4>
-                  <div className="space-y-2">
-                    {analysis.improvements.recommended.map((improvement: string, i: number) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-yellow-600"
-                      >
+                  <h4 className="font-medium mb-2">Recommended Enhancements</h4>
+                  <ul className="space-y-2 text-sm text-yellow-600">
+                    {displayAnalysis.improvements.recommended.map((tip: string, i: number) => (
+                      <li key={i} className="flex items-start gap-2">
                         <AlertCircle className="h-4 w-4 mt-1 flex-shrink-0" />
-                        <span>{improvement}</span>
+                        {tip}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {displayAnalysis.improvements?.aiSuggestions && (
+                <div>
+                  <h4 className="font-medium mb-2">AI Suggestions</h4>
+                  <div className="space-y-2">
+                    {displayAnalysis.improvements.aiSuggestions.map((suggestion: string, i: number) => (
+                      <div key={i} className="flex gap-2 p-3 bg-blue-50 rounded-lg text-sm">
+                        <Sparkles className="h-4 w-4 mt-1 flex-shrink-0 text-blue-500" />
+                        {suggestion}
                       </div>
                     ))}
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           ) : (
-            <Card className="flex items-center justify-center" style={{ minHeight: "500px" }}>
-              <CardContent className="py-10">
-                <div className="text-center space-y-3">
-                  <FileText className="h-12 w-12 mx-auto text-muted-foreground" />
-                  <p className="text-muted-foreground">
-                    {isAnalyzing
-                      ? "Analyzing your resume..."
-                      : "Upload your resume and job description to get started"}
-                  </p>
-                </div>
+            <Card className="flex items-center justify-center min-h-[500px]">
+              <CardContent className="py-10 text-center">
+                <FileText className="h-12 w-12 mx-auto text-muted-foreground" />
+                <p className="text-muted-foreground mt-3">
+                  {isAnalyzing
+                    ? "Analyzing your resume with AI..."
+                    : "Upload your resume and job description to get started"}
+                </p>
               </CardContent>
             </Card>
           )}
