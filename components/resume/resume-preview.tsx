@@ -1,393 +1,449 @@
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 
-interface ResumePreviewProps {
-  resume: any;
-  template: string;
+interface ResumeData {
+  name?: string;
+  email?: string;
+  phone?: string | number;
+  location?: string;
+  summary?: string;
+  experience?: Array<{
+    title?: string;
+    company?: string;
+    date?: string;
+    description?: string[];
+  }>;
+  education?: Array<{
+    degree?: string;
+    institution?: string;
+    date?: string;
+  }>;
+  skills?: string[];
+  projects?: Array<{
+    name?: string;
+    description?: string;
+  }>;
 }
 
-export function ResumePreview({ resume, template }: ResumePreviewProps) {
-  if (!resume) return null;
+interface ResumePreviewProps {
+  resume: ResumeData;
+  template: string;
+  onChange?: (newResume: ResumeData) => void;
+}
+
+export function ResumePreview({ resume, template, onChange }: ResumePreviewProps) {
+  // Convert all numeric fields to strings in initial state
+  const [isEditing, setIsEditing] = useState(false);
+  const [editableResume, setEditableResume] = useState<ResumeData>({
+    ...resume,
+    phone: resume.phone?.toString() || "",
+    experience: resume.experience?.map(exp => ({
+      ...exp,
+      description: exp.description?.map(d => d || "") || []
+    })),
+    education: resume.education?.map(edu => ({
+      ...edu,
+      date: edu.date || ""
+    })),
+    skills: resume.skills?.map(s => s || "") || [],
+    projects: resume.projects?.map(proj => ({
+      ...proj,
+      name: proj.name || "",
+      description: proj.description || ""
+    }))
+  });
+
+  function updateField(path: string[], value: any) {
+    setEditableResume((prev: ResumeData) => {
+      const newResume = { ...prev };
+      let current: any = newResume;
+      
+      for (let i = 0; i < path.length - 1; i++) {
+        if (!current[path[i]]) {
+          current[path[i]] = {};
+        }
+        current[path[i]] = { ...current[path[i]] };
+        current = current[path[i]];
+      }
+      
+      current[path[path.length - 1]] = value;
+      if (onChange) onChange(newResume);
+      return newResume;
+    });
+  }
+
+  const EditableText = ({
+    value,
+    onChange,
+    className,
+    multiline,
+  }: {
+    value: string;
+    onChange: (val: string) => void;
+    className?: string;
+    multiline?: boolean;
+  }) => {
+    if (multiline) {
+      return (
+        <textarea
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className={cn(
+            "w-full resize-none bg-transparent border-none p-0 m-0 font-sans text-gray-700",
+            className
+          )}
+          rows={3}
+        />
+      );
+    }
+    return (
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={cn(
+          "bg-transparent border-none p-0 m-0 font-sans text-gray-700",
+          className
+        )}
+      />
+    );
+  };
+
+  const EditableList = ({
+    items,
+    onChange,
+    className,
+  }: {
+    items: string[];
+    onChange: (newItems: string[]) => void;
+    className?: string;
+  }) => {
+    function updateItem(idx: number, val: string) {
+      const newItems = [...items];
+      newItems[idx] = val;
+      onChange(newItems);
+    }
+    function addItem() {
+      onChange([...items, ""]);
+    }
+    function removeItem(idx: number) {
+      const newItems = items.filter((_, i) => i !== idx);
+      onChange(newItems);
+    }
+    return (
+      <div className={className}>
+        {items.map((item, i) => (
+          <div key={i} className="flex gap-2 items-center mb-1">
+            <EditableText
+              value={item}
+              onChange={(val) => updateItem(i, val)}
+              className="flex-grow"
+            />
+            <button
+              type="button"
+              onClick={() => removeItem(i)}
+              className="text-red-500 font-bold"
+            >
+              &times;
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={addItem}
+          className="text-blue-600 underline text-sm mt-1"
+        >
+          + Add
+        </button>
+      </div>
+    );
+  };
 
   const renderProfessionalTemplate = () => (
     <div className="p-8 max-w-[800px] mx-auto font-sans">
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">{resume.name}</h1>
-        <div className="flex justify-center gap-4 text-sm text-gray-600 mt-2 flex-wrap">
-          {resume.email && <span>{resume.email}</span>}
-          {resume.phone && <span>{resume.phone}</span>}
-          {resume.location && <span>{resume.location}</span>}
-        </div>
+        {isEditing ? (
+          <>
+            <EditableText
+              value={editableResume.name || ""}
+              onChange={(val) => updateField(["name"], val)}
+              className="text-2xl font-bold text-gray-800"
+            />
+            <div className="flex justify-center gap-4 text-sm text-gray-600 mt-2 flex-wrap">
+              <EditableText
+                value={editableResume.email || ""}
+                onChange={(val) => updateField(["email"], val)}
+              />
+              <EditableText
+                value={editableResume.phone?.toString() || ""}
+                onChange={(val) => updateField(["phone"], val)}
+              />
+              <EditableText
+                value={editableResume.location || ""}
+                onChange={(val) => updateField(["location"], val)}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <h1 className="text-2xl font-bold text-gray-800">{resume.name}</h1>
+            <div className="flex justify-center gap-4 text-sm text-gray-600 mt-2 flex-wrap">
+              {resume.email && <span>{resume.email}</span>}
+              {resume.phone && <span>{resume.phone.toString()}</span>}
+              {resume.location && <span>{resume.location}</span>}
+            </div>
+          </>
+        )}
       </div>
-      
-      {resume.summary && (
+
+      {editableResume.summary && (
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1 mb-2">Summary</h2>
-          <p className="text-sm text-gray-700">{resume.summary}</p>
+          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1 mb-2">
+            Summary
+          </h2>
+          {isEditing ? (
+            <EditableText
+              value={editableResume.summary}
+              onChange={(val) => updateField(["summary"], val)}
+              multiline
+            />
+          ) : (
+            <p className="text-sm text-gray-700">{resume.summary}</p>
+          )}
         </div>
       )}
-      
-      {resume.experience && resume.experience.length > 0 && (
+
+      {editableResume.experience && editableResume.experience.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1 mb-2">Experience</h2>
+          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1 mb-2">
+            Experience
+          </h2>
           <div className="space-y-4">
-            {resume.experience.map((exp: any, i: number) => (
+            {editableResume.experience.map((exp, i) => (
               <div key={i}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="font-medium text-gray-800">{exp.title}</h3>
-                    <p className="text-sm text-gray-700">{exp.company}</p>
+                    {isEditing ? (
+                      <>
+                        <EditableText
+                          value={exp.title || ""}
+                          onChange={(val) =>
+                            updateField(["experience", i.toString(), "title"], val)
+                          }
+                          className="font-medium text-gray-800"
+                        />
+                        <EditableText
+                          value={exp.company || ""}
+                          onChange={(val) =>
+                            updateField(["experience", i.toString(), "company"], val)
+                          }
+                          className="text-sm text-gray-700"
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <h3 className="font-medium text-gray-800">{exp.title}</h3>
+                        <p className="text-sm text-gray-700">{exp.company}</p>
+                      </>
+                    )}
                   </div>
-                  <span className="text-sm text-gray-600">{exp.date}</span>
+                  {isEditing ? (
+                    <EditableText
+                      value={exp.date || ""}
+                      onChange={(val) =>
+                        updateField(["experience", i.toString(), "date"], val)
+                      }
+                      className="text-sm text-gray-600"
+                    />
+                  ) : (
+                    <span className="text-sm text-gray-600">{exp.date}</span>
+                  )}
                 </div>
                 {exp.description && (
-                  <ul className="list-disc text-sm text-gray-700 pl-5 mt-2 space-y-1">
-                    {exp.description.map((item: string, j: number) => (
-                      <li key={j}>{item}</li>
-                    ))}
-                  </ul>
+                  <div className="mt-2">
+                    {isEditing ? (
+                      <EditableList
+                        items={exp.description}
+                        onChange={(newDesc) =>
+                          updateField(["experience", i.toString(), "description"], newDesc)
+                        }
+                      />
+                    ) : (
+                      <ul className="list-disc text-sm text-gray-700 pl-5 mt-2 space-y-1">
+                        {exp.description.map((item, j) => (
+                          <li key={j}>{item}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 )}
               </div>
             ))}
           </div>
         </div>
       )}
-      
-      {resume.education && resume.education.length > 0 && (
+
+      {editableResume.education && editableResume.education.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1 mb-2">Education</h2>
+          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1 mb-2">
+            Education
+          </h2>
           <div className="space-y-2">
-            {resume.education.map((edu: any, i: number) => (
+            {editableResume.education.map((edu, i) => (
               <div key={i} className="flex justify-between">
                 <div>
-                  <h3 className="font-medium text-gray-800">{edu.degree}</h3>
-                  <p className="text-sm text-gray-700">{edu.institution}</p>
-                </div>
-                <span className="text-sm text-gray-600">{edu.date}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      
-      {resume.skills && resume.skills.length > 0 && (
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1 mb-2">Skills</h2>
-          <div className="flex flex-wrap gap-2">
-            {resume.skills.map((skill: string, i: number) => (
-              <span key={i} className="text-sm bg-gray-100 px-2 py-1 rounded text-gray-800">
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-      
-      {resume.projects && resume.projects.length > 0 && (
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1 mb-2">Projects</h2>
-          <div className="space-y-3">
-            {resume.projects.map((project: any, i: number) => (
-              <div key={i}>
-                <h3 className="font-medium text-gray-800">{project.name}</h3>
-                <p className="text-sm text-gray-700">{project.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-
-  const renderModernTemplate = () => (
-    <div className="p-8 max-w-[800px] mx-auto font-sans bg-gray-50">
-      <div className="bg-blue-600 text-white p-6 rounded-t-lg">
-        <h1 className="text-2xl font-bold">{resume.name}</h1>
-        <div className="flex gap-4 text-sm mt-2 flex-wrap text-blue-100">
-          {resume.email && <span>{resume.email}</span>}
-          {resume.phone && <span>{resume.phone}</span>}
-          {resume.location && <span>{resume.location}</span>}
-        </div>
-      </div>
-      
-      <div className="bg-white p-6 rounded-b-lg shadow-sm space-y-6">
-        {resume.summary && (
-          <div>
-            <h2 className="text-lg font-semibold text-blue-600 mb-2">Professional Summary</h2>
-            <p className="text-sm text-gray-700">{resume.summary}</p>
-          </div>
-        )}
-        
-        {resume.experience && resume.experience.length > 0 && (
-          <div>
-            <h2 className="text-lg font-semibold text-blue-600 mb-3">Work Experience</h2>
-            <div className="space-y-4">
-              {resume.experience.map((exp: any, i: number) => (
-                <div key={i} className="pl-3 border-l-2 border-blue-200">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-medium text-gray-800">{exp.title}</h3>
-                      <p className="text-sm font-medium text-blue-500">{exp.company}</p>
-                    </div>
-                    <span className="text-sm bg-blue-50 px-2 py-1 rounded text-blue-600">{exp.date}</span>
-                  </div>
-                  {exp.description && (
-                    <ul className="list-disc text-sm text-gray-700 pl-5 mt-2 space-y-1">
-                      {exp.description.map((item: string, j: number) => (
-                        <li key={j}>{item}</li>
-                      ))}
-                    </ul>
+                  {isEditing ? (
+                    <>
+                      <EditableText
+                        value={edu.degree || ""}
+                        onChange={(val) =>
+                          updateField(["education", i.toString(), "degree"], val)
+                        }
+                        className="font-medium text-gray-800"
+                      />
+                      <EditableText
+                        value={edu.institution || ""}
+                        onChange={(val) =>
+                          updateField(["education", i.toString(), "institution"], val)
+                        }
+                        className="text-sm text-gray-700"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <h3 className="font-medium text-gray-800">{edu.degree}</h3>
+                      <p className="text-sm text-gray-700">{edu.institution}</p>
+                    </>
                   )}
                 </div>
-              ))}
-            </div>
+                {isEditing ? (
+                  <EditableText
+                    value={edu.date || ""}
+                    onChange={(val) => updateField(["education", i.toString(), "date"], val)}
+                    className="text-sm text-gray-600"
+                  />
+                ) : (
+                  <span className="text-sm text-gray-600">{edu.date}</span>
+                )}
+              </div>
+            ))}
           </div>
-        )}
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {resume.education && resume.education.length > 0 && (
-            <div>
-              <h2 className="text-lg font-semibold text-blue-600 mb-3">Education</h2>
-              <div className="space-y-2">
-                {resume.education.map((edu: any, i: number) => (
-                  <div key={i} className="pl-3 border-l-2 border-blue-200">
-                    <h3 className="font-medium text-gray-800">{edu.degree}</h3>
-                    <p className="text-sm text-gray-700">{edu.institution}</p>
-                    <span className="text-sm text-gray-600">{edu.date}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {resume.skills && resume.skills.length > 0 && (
-            <div>
-              <h2 className="text-lg font-semibold text-blue-600 mb-3">Skills</h2>
-              <div className="flex flex-wrap gap-2">
-                {resume.skills.map((skill: string, i: number) => (
-                  <span key={i} className="text-xs bg-blue-50 px-2 py-1 rounded-full text-blue-600">
-                    {skill}
-                  </span>
-                ))}
-              </div>
+        </div>
+      )}
+
+      {editableResume.skills && editableResume.skills.length > 0 && (
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1 mb-2">
+            Skills
+          </h2>
+          {isEditing ? (
+            <EditableList
+              items={editableResume.skills}
+              onChange={(newSkills) => updateField(["skills"], newSkills)}
+              className="flex flex-wrap gap-2"
+            />
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {resume.skills?.map((skill, i) => (
+                <span
+                  key={i}
+                  className="text-sm bg-gray-100 px-2 py-1 rounded text-gray-800"
+                >
+                  {skill}
+                </span>
+              ))}
             </div>
           )}
         </div>
-        
-        {resume.projects && resume.projects.length > 0 && (
-          <div>
-            <h2 className="text-lg font-semibold text-blue-600 mb-3">Notable Projects</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {resume.projects.map((project: any, i: number) => (
-                <div key={i} className="bg-blue-50 p-3 rounded">
+      )}
+
+      {editableResume.projects && editableResume.projects.length > 0 && (
+        <div>
+          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1 mb-2">
+            Projects
+          </h2>
+          {isEditing ? (
+            editableResume.projects.map((project, i) => (
+              <div key={i} className="mb-3">
+                <EditableText
+                  value={project.name || ""}
+                  onChange={(val) =>
+                    updateField(["projects", i.toString(), "name"], val)
+                  }
+                  className="font-medium text-gray-800"
+                />
+                <EditableText
+                  value={project.description || ""}
+                  onChange={(val) =>
+                    updateField(["projects", i.toString(), "description"], val)
+                  }
+                  multiline
+                  className="text-sm text-gray-700"
+                />
+              </div>
+            ))
+          ) : (
+            <div className="space-y-3">
+              {resume.projects?.map((project, i) => (
+                <div key={i}>
                   <h3 className="font-medium text-gray-800">{project.name}</h3>
                   <p className="text-sm text-gray-700">{project.description}</p>
                 </div>
               ))}
             </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  const renderCreativeTemplate = () => (
-    <div className="p-8 max-w-[800px] mx-auto font-sans">
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-1 bg-purple-900 text-white p-6 rounded-lg">
-          <div className="mb-8">
-            <h1 className="text-xl font-bold mb-1">{resume.name}</h1>
-            <p className="text-sm text-purple-200">{resume.experience?.[0]?.title || "Professional"}</p>
-          </div>
-          
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-sm font-bold uppercase tracking-wider text-purple-300 mb-3">Contact</h2>
-              <div className="space-y-2 text-sm">
-                {resume.email && <p>{resume.email}</p>}
-                {resume.phone && <p>{resume.phone}</p>}
-                {resume.location && <p>{resume.location}</p>}
-              </div>
-            </div>
-            
-            {resume.skills && resume.skills.length > 0 && (
-              <div>
-                <h2 className="text-sm font-bold uppercase tracking-wider text-purple-300 mb-3">Skills</h2>
-                <div className="space-y-1">
-                  {resume.skills.map((skill: string, i: number) => (
-                    <p key={i} className="text-sm">
-                      {skill}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {resume.education && resume.education.length > 0 && (
-              <div>
-                <h2 className="text-sm font-bold uppercase tracking-wider text-purple-300 mb-3">Education</h2>
-                <div className="space-y-3">
-                  {resume.education.map((edu: any, i: number) => (
-                    <div key={i}>
-                      <h3 className="font-medium text-sm">{edu.degree}</h3>
-                      <p className="text-xs text-purple-200">{edu.institution}</p>
-                      <p className="text-xs text-purple-300">{edu.date}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-        
-        <div className="col-span-2 p-6">
-          {resume.summary && (
-            <div className="mb-6">
-              <h2 className="text-lg font-bold text-purple-900 border-b-2 border-purple-200 pb-1 mb-3">Summary</h2>
-              <p className="text-sm text-gray-700">{resume.summary}</p>
-            </div>
           )}
-          
-          {resume.experience && resume.experience.length > 0 && (
-            <div className="mb-6">
-              <h2 className="text-lg font-bold text-purple-900 border-b-2 border-purple-200 pb-1 mb-3">Experience</h2>
-              <div className="space-y-6">
-                {resume.experience.map((exp: any, i: number) => (
-                  <div key={i}>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-bold text-gray-800">{exp.title}</h3>
-                        <p className="text-sm font-medium text-purple-600">{exp.company}</p>
-                      </div>
-                      <span className="text-xs bg-purple-100 px-2 py-1 rounded text-purple-800">{exp.date}</span>
-                    </div>
-                    {exp.description && (
-                      <ul className="list-disc text-sm text-gray-700 pl-5 mt-2 space-y-1">
-                        {exp.description.map((item: string, j: number) => (
-                          <li key={j}>{item}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {resume.projects && resume.projects.length > 0 && (
-            <div>
-              <h2 className="text-lg font-bold text-purple-900 border-b-2 border-purple-200 pb-1 mb-3">Projects</h2>
-              <div className="space-y-4">
-                {resume.projects.map((project: any, i: number) => (
-                  <div key={i}>
-                    <h3 className="font-bold text-gray-800">{project.name}</h3>
-                    <p className="text-sm text-gray-700">{project.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderMinimalistTemplate = () => (
-    <div className="p-8 max-w-[800px] mx-auto font-sans">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-light tracking-wide text-gray-800 mb-2">{resume.name}</h1>
-        <div className="flex justify-center gap-6 text-sm text-gray-500 mt-2">
-          {resume.email && <span>{resume.email}</span>}
-          {resume.phone && <span>{resume.phone}</span>}
-          {resume.location && <span>{resume.location}</span>}
-        </div>
-      </div>
-      
-      {resume.summary && (
-        <div className="mb-8 max-w-2xl mx-auto text-center">
-          <p className="text-sm text-gray-700 font-light leading-relaxed">{resume.summary}</p>
         </div>
       )}
-      
-      <div className="max-w-2xl mx-auto">
-        {resume.experience && resume.experience.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-sm uppercase tracking-widest text-gray-400 mb-4 text-center">Experience</h2>
-            <div className="space-y-6">
-              {resume.experience.map((exp: any, i: number) => (
-                <div key={i}>
-                  <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-medium text-gray-800">{exp.title}</h3>
-                    <span className="text-xs text-gray-500">{exp.date}</span>
-                  </div>
-                  <p className="text-xs text-gray-600 mb-2">{exp.company}</p>
-                  {exp.description && (
-                    <ul className="list-disc text-xs text-gray-700 pl-5 space-y-1">
-                      {exp.description.map((item: string, j: number) => (
-                        <li key={j}>{item}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        
-        <div className="grid grid-cols-2 gap-8">
-          {resume.education && resume.education.length > 0 && (
-            <div>
-              <h2 className="text-sm uppercase tracking-widest text-gray-400 mb-4">Education</h2>
-              <div className="space-y-3">
-                {resume.education.map((edu: any, i: number) => (
-                  <div key={i}>
-                    <h3 className="font-medium text-gray-800 text-sm">{edu.degree}</h3>
-                    <p className="text-xs text-gray-600">{edu.institution}</p>
-                    <p className="text-xs text-gray-500">{edu.date}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {resume.skills && resume.skills.length > 0 && (
-            <div>
-              <h2 className="text-sm uppercase tracking-widest text-gray-400 mb-4">Skills</h2>
-              <div className="flex flex-wrap gap-1">
-                {resume.skills.map((skill: string, i: number) => (
-                  <span key={i} className="text-xs px-2 py-1 border border-gray-200 rounded text-gray-700">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-        
-        {resume.projects && resume.projects.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-sm uppercase tracking-widest text-gray-400 mb-4">Projects</h2>
-            <div className="space-y-3">
-              {resume.projects.map((project: any, i: number) => (
-                <div key={i}>
-                  <h3 className="font-medium text-gray-800 text-sm">{project.name}</h3>
-                  <p className="text-xs text-gray-700">{project.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+
+      <div className="mt-6 flex justify-center gap-4">
+        {isEditing ? (
+          <>
+            <button
+              className="px-4 py-2 bg-green-600 text-white rounded"
+              onClick={() => setIsEditing(false)}
+            >
+              Save
+            </button>
+            <button
+              className="px-4 py-2 bg-gray-300 rounded"
+              onClick={() => {
+                setEditableResume({
+                  ...resume,
+                  phone: resume.phone?.toString() || "",
+                  experience: resume.experience?.map(exp => ({
+                    ...exp,
+                    description: exp.description?.map(d => d || "") || []
+                  })),
+                  education: resume.education?.map(edu => ({
+                    ...edu,
+                    date: edu.date || ""
+                  })),
+                  skills: resume.skills?.map(s => s || "") || [],
+                  projects: resume.projects?.map(proj => ({
+                    ...proj,
+                    name: proj.name || "",
+                    description: proj.description || ""
+                  }))
+                });
+                setIsEditing(false);
+              }}
+            >
+              Cancel
+            </button>
+          </>
+        ) : (
+          <button
+            className="px-4 py-2 bg-blue-600 text-white rounded"
+            onClick={() => setIsEditing(true)}
+          >
+            Edit
+          </button>
         )}
       </div>
     </div>
   );
 
-  // Render the selected template
   switch (template) {
-    case "modern":
-      return renderModernTemplate();
-    case "creative":
-      return renderCreativeTemplate();
-    case "minimalist":
-      return renderMinimalistTemplate();
     case "professional":
     default:
       return renderProfessionalTemplate();

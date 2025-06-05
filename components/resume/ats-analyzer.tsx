@@ -182,7 +182,7 @@ export function ATSAnalyzer() {
                         <div key={section}>
                           <div className="flex justify-between text-sm mb-1">
                             <span className="capitalize">{section}</span>
-                            <span>{score}%</span>
+                            <span>{String(score)}%</span>
                           </div>
                           <Progress value={score as number} />
                         </div>

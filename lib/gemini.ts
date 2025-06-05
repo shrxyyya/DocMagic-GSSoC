@@ -24,7 +24,7 @@ function extractJsonFromMarkdown(text: string): string {
 
 async function validateApiConnection() {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); // Changed to gemini-pro from gemini-2.0-flash
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); 
     // Simple test generation to validate API connection
     await model.generateContent("test");
     return true;
