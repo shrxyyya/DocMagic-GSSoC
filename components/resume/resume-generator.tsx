@@ -213,10 +213,13 @@ export function ResumeGenerator() {
           </div>
         </TabsContent>
         <TabsContent value="templates" className={`pt-4 ${isFullView ? 'hidden' : ''}`}>
-          <ResumeTemplates 
-            selectedTemplate={selectedTemplate}
-            onSelectTemplate={setSelectedTemplate}
-          />
+          <ResumeTemplates
+  selectedTemplate={selectedTemplate}
+  onSelectTemplate={setSelectedTemplate}
+  onEditTemplate={() => {}}
+  onDownloadTemplate={() => {}}
+/>
+
         </TabsContent>
       </Tabs>
     </div>
