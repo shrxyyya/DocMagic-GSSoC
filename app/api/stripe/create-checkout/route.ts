@@ -1,28 +1,42 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-import { getServerSession } from "next-auth";
 import { createRoute } from "@/lib/supabase/server";
 
 const DOMAIN = process.env.NEXT_PUBLIC_APP_URL;
 
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession();
+    // Get Supabase token from request cookies (adjust if you send it differently)
+    const cookie = req.headers.get("cookie") || "";
+    const accessToken = cookie
+      .split("; ")
+      .find((row) => row.startsWith("sb-access-token="))
+      ?.split("=")[1];
 
-    if (!session?.user?.email) {
+    if (!accessToken) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const supabase = createRoute();
-    
-    // Get user data
-    const { data: userData, error: userError } = await supabase
-      .from('users')
-      .select('*, subscription(*)')
-      .eq('email', session.user.email)
+
+    // Get user using Supabase auth token
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser(accessToken);
+
+    if (userError || !user?.email) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    // Your existing logic with user.email
+    const { data: userData, error: userDbError } = await supabase
+      .from("users")
+      .select("*, subscription(*)")
+      .eq("email", user.email)
       .single();
 
-    if (userError || !userData) {
+    if (userDbError || !userData) {
       return new NextResponse("User not found", { status: 404 });
     }
 

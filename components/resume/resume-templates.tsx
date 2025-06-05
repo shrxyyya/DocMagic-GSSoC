@@ -1,19 +1,26 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { CheckCircle2, X } from "lucide-react";
+import { CheckCircle2, X, Download, Edit } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface ResumeTemplatesProps {
   selectedTemplate: string;
   onSelectTemplate: (template: string) => void;
+  onEditTemplate: (template: string) => void;
+  onDownloadTemplate: (template: string) => void;
 }
 
 export function ResumeTemplates({
   selectedTemplate,
   onSelectTemplate,
+  onEditTemplate,
+  onDownloadTemplate,
 }: ResumeTemplatesProps) {
   const [previewTemplate, setPreviewTemplate] = useState<string | null>(null);
+  const router = useRouter();
 
   const templates = [
     {
@@ -58,571 +65,524 @@ export function ResumeTemplates({
     }
   ];
 
-  const renderFullPreview = (templateId: string) => {
-    const template = templates.find(t => t.id === templateId);
-    if (!template) return null;
-
-    const sampleData = {
-      name: "Alexandra Chen",
-      title: "Senior UX Designer",
-      contact: {
-        email: "alex.chen@example.com",
-        phone: "(415) 555-0192",
-        location: "San Francisco, CA",
-        portfolio: "alexchen.design"
+  const sampleResumeData = {
+    name: "Alexandra Chen",
+    title: "Senior UX Designer",
+    contact: {
+      email: "alex.chen@example.com",
+      phone: "(415) 555-0192",
+      location: "San Francisco, CA",
+      portfolio: "alexchen.design"
+    },
+    summary: "Innovative designer with 8+ years of experience creating user-centered digital products. Specialized in SaaS platforms and mobile applications with a focus on accessibility and inclusive design.",
+    experience: [
+      {
+        role: "Lead UX Designer",
+        company: "TechSolutions Inc.",
+        period: "2020 - Present",
+        details: [
+          "Led redesign of flagship product that increased user retention by 32%",
+          "Managed team of 5 designers across 3 product verticals",
+          "Implemented design system used by 50+ product teams"
+        ]
       },
-      summary: "Innovative designer with 8+ years of experience creating user-centered digital products. Specialized in SaaS platforms and mobile applications with a focus on accessibility and inclusive design.",
-      experience: [
-        {
-          role: "Lead UX Designer",
-          company: "TechSolutions Inc.",
-          period: "2020 - Present",
-          details: [
-            "Led redesign of flagship product that increased user retention by 32%",
-            "Managed team of 5 designers across 3 product verticals",
-            "Implemented design system used by 50+ product teams"
-          ]
-        },
-        {
-          role: "UI/UX Designer",
-          company: "DigitalAgency LLC",
-          period: "2017 - 2020",
-          details: [
-            "Designed 15+ client websites with average 4.8/5 satisfaction score",
-            "Created wireframes and prototypes for enterprise applications",
-            "Conducted user research and usability testing sessions"
-          ]
-        }
-      ],
-      education: [
-        {
-          degree: "M.Sc. Human-Computer Interaction",
-          institution: "Stanford University",
-          year: "2016"
-        },
-        {
-          degree: "B.A. Graphic Design",
-          institution: "California College of Arts",
-          year: "2014"
-        }
-      ],
-      skills: [
-        "User Research", "Figma", "Prototyping", 
-        "Design Systems", "Accessibility", "UX Writing",
-        "HTML/CSS", "User Testing", "Information Architecture"
-      ],
-      projects: [
-        {
-          name: "Healthcare Portal Redesign",
-          description: "Redesigned patient portal for major hospital system, improving completion rates by 45%"
-        },
-        {
-          name: "Mobile Banking App",
-          description: "Led design for award-winning financial app with 1M+ downloads"
-        }
-      ]
-    };
+      {
+        role: "UI/UX Designer",
+        company: "DigitalAgency LLC",
+        period: "2017 - 2020",
+        details: [
+          "Designed 15+ client websites with average 4.8/5 satisfaction score",
+          "Created wireframes and prototypes for enterprise applications",
+          "Conducted user research and usability testing sessions"
+        ]
+      }
+    ],
+    education: [
+      {
+        degree: "M.Sc. Human-Computer Interaction",
+        institution: "Stanford University",
+        year: "2016"
+      },
+      {
+        degree: "B.A. Graphic Design",
+        institution: "California College of Arts",
+        year: "2014"
+      }
+    ],
+    skills: [
+      "User Research", "Figma", "Prototyping", 
+      "Design Systems", "Accessibility", "UX Writing",
+      "HTML/CSS", "User Testing", "Information Architecture"
+    ],
+    projects: [
+      {
+        name: "Healthcare Portal Redesign",
+        description: "Redesigned patient portal for major hospital system, improving completion rates by 45%"
+      },
+      {
+        name: "Mobile Banking App",
+        description: "Led design for award-winning financial app with 1M+ downloads"
+      }
+    ]
+  };
 
-    const TemplateComponents = {
-      professional: (
-        <div className={cn("p-8 h-full", template.bgColor)}>
-          <div className="max-w-4xl mx-auto">
-            {/* Header */}
-            <div className="flex justify-between items-start mb-8">
-              <div>
-                <h1 className={cn("text-3xl font-bold tracking-tight", template.textColor)}>
-                  {sampleData.name}
-                </h1>
-                <p className="text-lg text-gray-600 mt-1">{sampleData.title}</p>
+  const renderProfessionalTemplate = () => (
+    <div className={cn("p-8 h-full", "bg-white")} id="resume-preview">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex justify-between items-start mb-8">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-800">
+              {sampleResumeData.name}
+            </h1>
+            <p className="text-lg text-gray-600 mt-1">{sampleResumeData.title}</p>
+          </div>
+          <div className="text-right space-y-1">
+            <p className="text-sm">{sampleResumeData.contact.email}</p>
+            <p className="text-sm">{sampleResumeData.contact.phone}</p>
+            <p className="text-sm">{sampleResumeData.contact.location}</p>
+          </div>
+        </div>
+
+        <div className="h-px w-full my-6 bg-gradient-to-r from-gray-700 to-gray-900" />
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="md:col-span-3 space-y-8">
+            <div>
+              <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 text-gray-800">
+                Professional Summary
+              </h2>
+              <p className="text-gray-700">{sampleResumeData.summary}</p>
+            </div>
+
+            <div>
+              <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 text-gray-800">
+                Work Experience
+              </h2>
+              <div className="space-y-6">
+                {sampleResumeData.experience.map((exp, i) => (
+                  <div key={i}>
+                    <div className="flex justify-between">
+                      <h3 className="font-semibold text-gray-900">{exp.role}</h3>
+                      <p className="text-sm text-gray-500">{exp.period}</p>
+                    </div>
+                    <p className="text-gray-600 italic mb-2">{exp.company}</p>
+                    <ul className="list-disc pl-5 space-y-1 text-gray-700">
+                      {exp.details.map((detail, j) => (
+                        <li key={j}>{detail}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
-              <div className="text-right space-y-1">
-                <p className="text-sm">{sampleData.contact.email}</p>
-                <p className="text-sm">{sampleData.contact.phone}</p>
-                <p className="text-sm">{sampleData.contact.location}</p>
+            </div>
+          </div>
+
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 text-gray-800">
+                Skills
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {sampleResumeData.skills.map((skill, i) => (
+                  <span 
+                    key={i}
+                    className={
+                      i % 3 === 0 
+                        ? "px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-800" 
+                        : i % 3 === 1
+                          ? "px-3 py-1 rounded-full text-sm bg-gradient-to-r from-gray-700 to-gray-900 text-white"
+                          : "px-3 py-1 rounded-full text-sm bg-white border text-gray-700"
+                    }
+                  >
+                    {skill}
+                  </span>
+                ))}
               </div>
             </div>
 
-            <div className={cn("h-px w-full my-6 bg-gradient-to-r", template.accentColor)} />
-
-            {/* Two column layout */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              {/* Main content */}
-              <div className="md:col-span-3 space-y-8">
-                {/* Summary */}
-                <div>
-                  <h2 className={cn("text-xl font-bold mb-4 pb-2 border-b", template.borderColor, template.textColor)}>
-                    Professional Summary
-                  </h2>
-                  <p className="text-gray-700">{sampleData.summary}</p>
-                </div>
-
-                {/* Experience */}
-                <div>
-                  <h2 className={cn("text-xl font-bold mb-4 pb-2 border-b", template.borderColor, template.textColor)}>
-                    Work Experience
-                  </h2>
-                  <div className="space-y-6">
-                    {sampleData.experience.map((exp, i) => (
-                      <div key={i}>
-                        <div className="flex justify-between">
-                          <h3 className="font-semibold text-gray-900">{exp.role}</h3>
-                          <p className="text-sm text-gray-500">{exp.period}</p>
-                        </div>
-                        <p className="text-gray-600 italic mb-2">{exp.company}</p>
-                        <ul className="list-disc pl-5 space-y-1 text-gray-700">
-                          {exp.details.map((detail, j) => (
-                            <li key={j}>{detail}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
+            <div>
+              <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 text-gray-800">
+                Education
+              </h2>
+              <div className="space-y-4">
+                {sampleResumeData.education.map((edu, i) => (
+                  <div key={i}>
+                    <h3 className="font-medium text-gray-900">{edu.degree}</h3>
+                    <p className="text-gray-600">{edu.institution}</p>
+                    <p className="text-sm text-gray-500">{edu.year}</p>
                   </div>
-                </div>
+                ))}
               </div>
+            </div>
 
-              {/* Sidebar */}
-              <div className="space-y-8">
-                {/* Skills */}
-                <div>
-                  <h2 className={cn("text-xl font-bold mb-4 pb-2 border-b", template.borderColor, template.textColor)}>
-                    Skills
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {sampleData.skills.map((skill, i) => (
-                      <span 
-                        key={i}
-                        className={cn(
-                          "px-3 py-1 rounded-full text-sm",
-                          i % 3 === 0 
-                            ? "bg-gray-100 text-gray-800" 
-                            : i % 3 === 1
-                              ? `bg-gradient-to-r ${template.accentColor} text-white`
-                              : "bg-white border text-gray-700"
-                        )}
-                      >
-                        {skill}
-                      </span>
-                    ))}
+            <div>
+              <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 text-gray-800">
+                Key Projects
+              </h2>
+              <div className="space-y-3">
+                {sampleResumeData.projects.map((project, i) => (
+                  <div key={i}>
+                    <h3 className="font-medium text-gray-900">{project.name}</h3>
+                    <p className="text-sm text-gray-600">{project.description}</p>
                   </div>
-                </div>
-
-                {/* Education */}
-                <div>
-                  <h2 className={cn("text-xl font-bold mb-4 pb-2 border-b", template.borderColor, template.textColor)}>
-                    Education
-                  </h2>
-                  <div className="space-y-4">
-                    {sampleData.education.map((edu, i) => (
-                      <div key={i}>
-                        <h3 className="font-medium text-gray-900">{edu.degree}</h3>
-                        <p className="text-gray-600">{edu.institution}</p>
-                        <p className="text-sm text-gray-500">{edu.year}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Projects */}
-                <div>
-                  <h2 className={cn("text-xl font-bold mb-4 pb-2 border-b", template.borderColor, template.textColor)}>
-                    Key Projects
-                  </h2>
-                  <div className="space-y-3">
-                    {sampleData.projects.map((project, i) => (
-                      <div key={i}>
-                        <h3 className="font-medium text-gray-900">{project.name}</h3>
-                        <p className="text-sm text-gray-600">{project.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
-      ),
+      </div>
+    </div>
+  );
 
-      modern: (
-        <div className={cn("p-8 h-full", template.bgColor)}>
-          <div className="max-w-4xl mx-auto">
-            {/* Header with accent */}
-            <div className={cn("p-6 rounded-lg mb-8 bg-gradient-to-r", template.accentColor)}>
-              <h1 className="text-3xl font-bold text-white tracking-tight">
-                {sampleData.name}
-              </h1>
-              <p className="text-white/90 mt-1">{sampleData.title}</p>
+  const renderModernTemplate = () => (
+    <div className="p-8 h-full bg-white" id="resume-preview">
+      <div className="max-w-4xl mx-auto">
+        <div className="p-6 rounded-lg mb-8 bg-gradient-to-r from-blue-500 to-blue-700">
+          <h1 className="text-3xl font-bold text-white tracking-tight">
+            {sampleResumeData.name}
+          </h1>
+          <p className="text-white/90 mt-1">{sampleResumeData.title}</p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-4 mb-8 text-sm">
+          <div className="flex items-center">
+            <span className="mr-2">📧</span>
+            <span>{sampleResumeData.contact.email}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="mr-2">📱</span>
+            <span>{sampleResumeData.contact.phone}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="mr-2">📍</span>
+            <span>{sampleResumeData.contact.location}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="mr-2">🌐</span>
+            <span>{sampleResumeData.contact.portfolio}</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 space-y-8">
+            <div>
+              <h2 className="text-xl font-bold mb-4 flex items-center text-blue-800">
+                <span className="w-8 h-1 mr-3 inline-block bg-gradient-to-r from-blue-500 to-blue-700"></span>
+                About Me
+              </h2>
+              <p className="text-gray-700">{sampleResumeData.summary}</p>
             </div>
 
-            {/* Contact bar */}
-            <div className="flex flex-wrap justify-center gap-4 mb-8 text-sm">
-              <div className="flex items-center">
-                <span className="mr-2">📧</span>
-                <span>{sampleData.contact.email}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-2">📱</span>
-                <span>{sampleData.contact.phone}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-2">📍</span>
-                <span>{sampleData.contact.location}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-2">🌐</span>
-                <span>{sampleData.contact.portfolio}</span>
-              </div>
-            </div>
-
-            {/* Grid layout */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Left column */}
-              <div className="md:col-span-2 space-y-8">
-                {/* Summary */}
-                <div>
-                  <h2 className={cn("text-xl font-bold mb-4 flex items-center", template.textColor)}>
-                    <span className={cn("w-8 h-1 mr-3 inline-block", `bg-gradient-to-r ${template.accentColor}`)}></span>
-                    About Me
-                  </h2>
-                  <p className="text-gray-700">{sampleData.summary}</p>
-                </div>
-
-                {/* Experience */}
-                <div>
-                  <h2 className={cn("text-xl font-bold mb-4 flex items-center", template.textColor)}>
-                    <span className={cn("w-8 h-1 mr-3 inline-block", `bg-gradient-to-r ${template.accentColor}`)}></span>
-                    Experience
-                  </h2>
-                  <div className="space-y-6">
-                    {sampleData.experience.map((exp, i) => (
-                      <div key={i} className="border-l-4 pl-4" style={{ borderColor: template.textColor.replace('text-', 'border-') }}>
-                        <div className="flex justify-between">
-                          <h3 className="font-semibold text-gray-900">{exp.role}</h3>
-                          <p className="text-sm text-gray-500">{exp.period}</p>
-                        </div>
-                        <p className="text-gray-600 font-medium mb-2">{exp.company}</p>
-                        <ul className="list-[square] pl-5 space-y-1.5 text-gray-700">
-                          {exp.details.map((detail, j) => (
-                            <li key={j}>{detail}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
+            <div>
+              <h2 className="text-xl font-bold mb-4 flex items-center text-blue-800">
+                <span className="w-8 h-1 mr-3 inline-block bg-gradient-to-r from-blue-500 to-blue-700"></span>
+                Experience
+              </h2>
+              <div className="space-y-6">
+                {sampleResumeData.experience.map((exp, i) => (
+                  <div key={i} className="border-l-4 pl-4 border-blue-500">
+                    <div className="flex justify-between">
+                      <h3 className="font-semibold text-gray-900">{exp.role}</h3>
+                      <p className="text-sm text-gray-500">{exp.period}</p>
+                    </div>
+                    <p className="text-gray-600 font-medium mb-2">{exp.company}</p>
+                    <ul className="list-[square] pl-5 space-y-1.5 text-gray-700">
+                      {exp.details.map((detail, j) => (
+                        <li key={j}>{detail}</li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-              </div>
-
-              {/* Right column */}
-              <div className="space-y-8">
-                {/* Skills */}
-                <div>
-                  <h2 className={cn("text-xl font-bold mb-4 flex items-center", template.textColor)}>
-                    <span className={cn("w-8 h-1 mr-3 inline-block", `bg-gradient-to-r ${template.accentColor}`)}></span>
-                    Skills
-                  </h2>
-                  <div className="space-y-2">
-                    {sampleData.skills.map((skill, i) => (
-                      <div key={i} className="flex items-center">
-                        <div className={cn("w-3 h-3 rounded-full mr-2", `bg-gradient-to-r ${template.accentColor}`)}></div>
-                        <span className="text-gray-700">{skill}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Education */}
-                <div>
-                  <h2 className={cn("text-xl font-bold mb-4 flex items-center", template.textColor)}>
-                    <span className={cn("w-8 h-1 mr-3 inline-block", `bg-gradient-to-r ${template.accentColor}`)}></span>
-                    Education
-                  </h2>
-                  <div className="space-y-4">
-                    {sampleData.education.map((edu, i) => (
-                      <div key={i} className="border-l-4 pl-4" style={{ borderColor: template.textColor.replace('text-', 'border-') }}>
-                        <h3 className="font-medium text-gray-900">{edu.degree}</h3>
-                        <p className="text-gray-600">{edu.institution}</p>
-                        <p className="text-sm text-gray-500">{edu.year}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Projects */}
-                <div>
-                  <h2 className={cn("text-xl font-bold mb-4 flex items-center", template.textColor)}>
-                    <span className={cn("w-8 h-1 mr-3 inline-block", `bg-gradient-to-r ${template.accentColor}`)}></span>
-                    Projects
-                  </h2>
-                  <div className="space-y-3">
-                    {sampleData.projects.map((project, i) => (
-                      <div key={i}>
-                        <h3 className="font-medium text-gray-900">{project.name}</h3>
-                        <p className="text-sm text-gray-600">{project.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
-        </div>
-      ),
 
-      creative: (
-        <div className={cn("p-8 h-full", template.bgColor)}>
-          <div className="max-w-4xl mx-auto">
-            {/* Creative header */}
-            <div className="flex flex-col md:flex-row gap-8 mb-10">
-              <div className="flex-1">
-                <h1 className={cn("text-4xl font-bold tracking-tight mb-2", template.textColor)}>
-                  {sampleData.name}
-                </h1>
-                <div className={cn("text-2xl font-medium mb-4", template.textColor)}>
-                  {sampleData.title}
-                </div>
-                <p className="text-gray-700">{sampleData.summary}</p>
-              </div>
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-xl font-bold mb-4 flex items-center text-blue-800">
+                <span className="w-8 h-1 mr-3 inline-block bg-gradient-to-r from-blue-500 to-blue-700"></span>
+                Skills
+              </h2>
               <div className="space-y-2">
-                <div className="flex items-center">
-                  <span className="w-5 mr-2">✉️</span>
-                  <span>{sampleData.contact.email}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-5 mr-2">📱</span>
-                  <span>{sampleData.contact.phone}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-5 mr-2">📍</span>
-                  <span>{sampleData.contact.location}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-5 mr-2">🌐</span>
-                  <span>{sampleData.contact.portfolio}</span>
-                </div>
+                {sampleResumeData.skills.map((skill, i) => (
+                  <div key={i} className="flex items-center">
+                    <div className="w-3 h-3 rounded-full mr-2 bg-gradient-to-r from-blue-500 to-blue-700"></div>
+                    <span className="text-gray-700">{skill}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Decorative divider */}
-            <div className="relative my-8">
-              <div className="absolute inset-0 flex items-center">
-                <div className={cn("w-full border-t-2 border-dashed", template.borderColor)}></div>
-              </div>
-              <div className="relative flex justify-center">
-                <span className={cn("px-4 bg-white text-lg font-medium", template.textColor)}>
-                  Professional Journey
-                </span>
+            <div>
+              <h2 className="text-xl font-bold mb-4 flex items-center text-blue-800">
+                <span className="w-8 h-1 mr-3 inline-block bg-gradient-to-r from-blue-500 to-blue-700"></span>
+                Education
+              </h2>
+              <div className="space-y-4">
+                {sampleResumeData.education.map((edu, i) => (
+                  <div key={i} className="border-l-4 pl-4 border-blue-500">
+                    <h3 className="font-medium text-gray-900">{edu.degree}</h3>
+                    <p className="text-gray-600">{edu.institution}</p>
+                    <p className="text-sm text-gray-500">{edu.year}</p>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Creative layout */}
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-              {/* Left sidebar */}
-              <div className="md:col-span-2 space-y-8">
-                {/* Skills */}
-                <div>
-                  <h2 className={cn("text-2xl font-bold mb-4", template.textColor)}>
-                    Expertise
-                  </h2>
-                  <div className="space-y-3">
-                    {sampleData.skills.map((skill, i) => (
-                      <div key={i}>
-                        <div className="flex items-center mb-1">
-                          <div className={cn("w-3 h-3 rounded-full mr-2", `bg-gradient-to-r ${template.accentColor}`)}></div>
-                          <span className="font-medium text-gray-900">{skill}</span>
-                        </div>
-                        <div className="w-full bg-gray-100 rounded-full h-1.5">
-                          <div 
-                            className={cn("h-1.5 rounded-full", `bg-gradient-to-r ${template.accentColor}`)} 
-                            style={{ width: `${70 + (i * 5)}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    ))}
+            <div>
+              <h2 className="text-xl font-bold mb-4 flex items-center text-blue-800">
+                <span className="w-8 h-1 mr-3 inline-block bg-gradient-to-r from-blue-500 to-blue-700"></span>
+                Projects
+              </h2>
+              <div className="space-y-3">
+                {sampleResumeData.projects.map((project, i) => (
+                  <div key={i}>
+                    <h3 className="font-medium text-gray-900">{project.name}</h3>
+                    <p className="text-sm text-gray-600">{project.description}</p>
                   </div>
-                </div>
-
-                {/* Education */}
-                <div>
-                  <h2 className={cn("text-2xl font-bold mb-4", template.textColor)}>
-                    Education
-                  </h2>
-                  <div className="space-y-4">
-                    {sampleData.education.map((edu, i) => (
-                      <div key={i} className="pl-4 border-l-4" style={{ borderColor: template.textColor.replace('text-', 'border-') }}>
-                        <h3 className="font-medium text-gray-900">{edu.degree}</h3>
-                        <p className="text-gray-600">{edu.institution}</p>
-                        <p className="text-sm text-gray-500">{edu.year}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Main content */}
-              <div className="md:col-span-3 space-y-8">
-                {/* Experience */}
-                <div>
-                  <h2 className={cn("text-2xl font-bold mb-6", template.textColor)}>
-                    Work Experience
-                  </h2>
-                  <div className="space-y-8">
-                    {sampleData.experience.map((exp, i) => (
-                      <div key={i} className="relative pl-8">
-                        <div className={cn(
-                          "absolute left-0 top-1 w-4 h-4 rounded-full border-4",
-                          `border-${template.textColor.split('-')[1]}-500`,
-                          `bg-${template.bgColor.split('-')[1]}`
-                        )}></div>
-                        <div className={cn(
-                          "absolute left-[15px] h-full w-0.5",
-                          i === sampleData.experience.length - 1 ? "hidden" : "",
-                          `bg-${template.textColor.split('-')[1]}-300`
-                        )}></div>
-                        <div>
-                          <div className="flex justify-between">
-                            <h3 className="text-xl font-semibold text-gray-900">{exp.role}</h3>
-                            <p className="text-sm text-gray-500">{exp.period}</p>
-                          </div>
-                          <p className={cn("text-lg font-medium mb-3", template.textColor)}>
-                            {exp.company}
-                          </p>
-                          <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                            {exp.details.map((detail, j) => (
-                              <li key={j}>{detail}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Projects */}
-                <div>
-                  <h2 className={cn("text-2xl font-bold mb-6", template.textColor)}>
-                    Notable Projects
-                  </h2>
-                  <div className="grid grid-cols-1 gap-4">
-                    {sampleData.projects.map((project, i) => (
-                      <div 
-                        key={i} 
-                        className={cn(
-                          "p-4 rounded-lg border",
-                          template.borderColor,
-                          i % 2 === 0 ? template.bgColor : "bg-gray-50"
-                        )}
-                      >
-                        <h3 className="font-semibold text-gray-900">{project.name}</h3>
-                        <p className="text-gray-600">{project.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
-      ),
+      </div>
+    </div>
+  );
 
-      minimalist: (
-        <div className={cn("p-8 h-full", template.bgColor)}>
-          <div className="max-w-3xl mx-auto">
-            {/* Minimal header */}
-            <div className="mb-10">
-              <h1 className="text-3xl font-light tracking-wide text-gray-900">
-                {sampleData.name}
-              </h1>
-              <p className="text-gray-500 mt-1">{sampleData.title}</p>
+  const renderCreativeTemplate = () => (
+    <div className="p-8 h-full bg-white" id="resume-preview">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex flex-col md:flex-row gap-8 mb-10">
+          <div className="flex-1">
+            <h1 className="text-4xl font-bold tracking-tight mb-2 text-purple-800">
+              {sampleResumeData.name}
+            </h1>
+            <div className="text-2xl font-medium mb-4 text-purple-800">
+              {sampleResumeData.title}
+            </div>
+            <p className="text-gray-700">{sampleResumeData.summary}</p>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center">
+              <span className="w-5 mr-2">✉️</span>
+              <span>{sampleResumeData.contact.email}</span>
+            </div>
+            <div className="flex items-center">
+              <span className="w-5 mr-2">📱</span>
+              <span>{sampleResumeData.contact.phone}</span>
+            </div>
+            <div className="flex items-center">
+              <span className="w-5 mr-2">📍</span>
+              <span>{sampleResumeData.contact.location}</span>
+            </div>
+            <div className="flex items-center">
+              <span className="w-5 mr-2">🌐</span>
+              <span>{sampleResumeData.contact.portfolio}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative my-8">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t-2 border-dashed border-purple-100"></div>
+          </div>
+          <div className="relative flex justify-center">
+            <span className="px-4 bg-white text-lg font-medium text-purple-800">
+              Professional Journey
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+          <div className="md:col-span-2 space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-4 text-purple-800">
+                Expertise
+              </h2>
+              <div className="space-y-3">
+                {sampleResumeData.skills.map((skill, i) => (
+                  <div key={i}>
+                    <div className="flex items-center mb-1">
+                      <div className="w-3 h-3 rounded-full mr-2 bg-gradient-to-r from-purple-500 to-purple-700"></div>
+                      <span className="font-medium text-gray-900">{skill}</span>
+                    </div>
+                    <div className="w-full bg-gray-100 rounded-full h-1.5">
+                      <div 
+                        className="h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-purple-700" 
+                        style={{ width: `${70 + (i * 5)}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Minimal divider */}
-            <div className={cn("h-px w-full my-8 bg-gradient-to-r", template.accentColor)} />
-
-            {/* Single column layout */}
-            <div className="space-y-10">
-              {/* Contact */}
-              <div className="flex flex-wrap gap-4 text-sm">
-                <span>{sampleData.contact.email}</span>
-                <span>•</span>
-                <span>{sampleData.contact.phone}</span>
-                <span>•</span>
-                <span>{sampleData.contact.location}</span>
-                <span>•</span>
-                <span>{sampleData.contact.portfolio}</span>
+            <div>
+              <h2 className="text-2xl font-bold mb-4 text-purple-800">
+                Education
+              </h2>
+              <div className="space-y-4">
+                {sampleResumeData.education.map((edu, i) => (
+                  <div key={i} className="pl-4 border-l-4 border-purple-500">
+                    <h3 className="font-medium text-gray-900">{edu.degree}</h3>
+                    <p className="text-gray-600">{edu.institution}</p>
+                    <p className="text-sm text-gray-500">{edu.year}</p>
+                  </div>
+                ))}
               </div>
+            </div>
+          </div>
 
-              {/* Summary */}
-              <div>
-                <h2 className={cn("text-lg font-normal mb-3 tracking-wider", template.textColor)}>
-                  PROFILE
-                </h2>
-                <p className="text-gray-700 leading-relaxed">{sampleData.summary}</p>
-              </div>
-
-              {/* Experience */}
-              <div>
-                <h2 className={cn("text-lg font-normal mb-3 tracking-wider", template.textColor)}>
-                  EXPERIENCE
-                </h2>
-                <div className="space-y-6">
-                  {sampleData.experience.map((exp, i) => (
-                    <div key={i}>
+          <div className="md:col-span-3 space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-6 text-purple-800">
+                Work Experience
+              </h2>
+              <div className="space-y-8">
+                {sampleResumeData.experience.map((exp, i) => (
+                  <div key={i} className="relative pl-8">
+                    <div className="absolute left-0 top-1 w-4 h-4 rounded-full border-4 border-purple-500 bg-white"></div>
+                    <div className="absolute left-[15px] h-full w-0.5 bg-purple-300"></div>
+                    <div>
                       <div className="flex justify-between">
-                        <h3 className="font-normal text-gray-900">{exp.role}</h3>
+                        <h3 className="text-xl font-semibold text-gray-900">{exp.role}</h3>
                         <p className="text-sm text-gray-500">{exp.period}</p>
                       </div>
-                      <p className="text-gray-600 mb-2">{exp.company}</p>
-                      <div className="space-y-1 text-gray-700">
+                      <p className="text-lg font-medium mb-3 text-purple-800">
+                        {exp.company}
+                      </p>
+                      <ul className="list-disc pl-5 space-y-2 text-gray-700">
                         {exp.details.map((detail, j) => (
-                          <p key={j}>• {detail}</p>
+                          <li key={j}>{detail}</li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
+            </div>
 
-              {/* Education & Skills */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <h2 className={cn("text-lg font-normal mb-3 tracking-wider", template.textColor)}>
-                    EDUCATION
-                  </h2>
-                  <div className="space-y-4">
-                    {sampleData.education.map((edu, i) => (
-                      <div key={i}>
-                        <h3 className="text-gray-900">{edu.degree}</h3>
-                        <p className="text-gray-600">{edu.institution}</p>
-                        <p className="text-sm text-gray-500">{edu.year}</p>
-                      </div>
-                    ))}
+            <div>
+              <h2 className="text-2xl font-bold mb-6 text-purple-800">
+                Notable Projects
+              </h2>
+              <div className="grid grid-cols-1 gap-4">
+                {sampleResumeData.projects.map((project, i) => (
+                  <div 
+                    key={i} 
+                    className="p-4 rounded-lg border border-purple-100 bg-white"
+                  >
+                    <h3 className="font-semibold text-gray-900">{project.name}</h3>
+                    <p className="text-gray-600">{project.description}</p>
                   </div>
-                </div>
-
-                <div>
-                  <h2 className={cn("text-lg font-normal mb-3 tracking-wider", template.textColor)}>
-                    SKILLS
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {sampleData.skills.map((skill, i) => (
-                      <span 
-                        key={i}
-                        className={cn(
-                          "px-2 py-1 text-sm",
-                          i % 2 === 0 
-                            ? "text-gray-700" 
-                            : template.textColor
-                        )}
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
-      )
+      </div>
+    </div>
+  );
+
+  const renderMinimalistTemplate = () => (
+    <div className="p-8 h-full bg-white" id="resume-preview">
+      <div className="max-w-3xl mx-auto">
+        <div className="mb-10">
+          <h1 className="text-3xl font-light tracking-wide text-gray-900">
+            {sampleResumeData.name}
+          </h1>
+          <p className="text-gray-500 mt-1">{sampleResumeData.title}</p>
+        </div>
+
+        <div className="h-px w-full my-8 bg-gradient-to-r from-gray-400 to-gray-600" />
+
+        <div className="space-y-10">
+          <div className="flex flex-wrap gap-4 text-sm">
+            <span>{sampleResumeData.contact.email}</span>
+            <span>•</span>
+            <span>{sampleResumeData.contact.phone}</span>
+            <span>•</span>
+            <span>{sampleResumeData.contact.location}</span>
+            <span>•</span>
+            <span>{sampleResumeData.contact.portfolio}</span>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-normal mb-3 tracking-wider text-gray-700">
+              PROFILE
+            </h2>
+            <p className="text-gray-700 leading-relaxed">{sampleResumeData.summary}</p>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-normal mb-3 tracking-wider text-gray-700">
+              EXPERIENCE
+            </h2>
+            <div className="space-y-6">
+              {sampleResumeData.experience.map((exp, i) => (
+                <div key={i}>
+                  <div className="flex justify-between">
+                    <h3 className="font-normal text-gray-900">{exp.role}</h3>
+                    <p className="text-sm text-gray-500">{exp.period}</p>
+                  </div>
+                  <p className="text-gray-600 mb-2">{exp.company}</p>
+                  <div className="space-y-1 text-gray-700">
+                    {exp.details.map((detail, j) => (
+                      <p key={j}>• {detail}</p>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h2 className="text-lg font-normal mb-3 tracking-wider text-gray-700">
+                EDUCATION
+              </h2>
+              <div className="space-y-4">
+                {sampleResumeData.education.map((edu, i) => (
+                  <div key={i}>
+                    <h3 className="text-gray-900">{edu.degree}</h3>
+                    <p className="text-gray-600">{edu.institution}</p>
+                    <p className="text-sm text-gray-500">{edu.year}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-lg font-normal mb-3 tracking-wider text-gray-700">
+                SKILLS
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {sampleResumeData.skills.map((skill, i) => (
+                  <span 
+                    key={i}
+                    className={
+                      i % 2 === 0 
+                        ? "px-2 py-1 text-sm text-gray-700" 
+                        : "px-2 py-1 text-sm text-gray-700"
+                    }
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderFullPreview = (templateId: string) => {
+    const TemplateComponents = {
+      professional: renderProfessionalTemplate(),
+      modern: renderModernTemplate(),
+      creative: renderCreativeTemplate(),
+      minimalist: renderMinimalistTemplate()
     };
 
     return (
@@ -633,13 +593,21 @@ export function ResumeTemplates({
     );
   };
 
+  const handleUseTemplate = () => {
+    if (previewTemplate) {
+      onSelectTemplate(previewTemplate);
+      setPreviewTemplate(null);
+      router.push('/resume/edit'); // Navigate to edit page
+    }
+  };
+
   return (
     <div className="space-y-8">
       <div className="text-center">
         <h2 className="text-3xl font-bold tracking-tight">Resume Templates</h2>
         <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
           Select a template that best represents your professional style. 
-          Click any template to preview the complete design.
+          Click any template to preview and edit your resume.
         </p>
       </div>
       
@@ -653,10 +621,7 @@ export function ResumeTemplates({
                 ? "scale-[1.02] ring-2 ring-primary ring-offset-2 rounded-lg z-10" 
                 : "hover:scale-[1.01]"
             )}
-            onClick={() => {
-              onSelectTemplate(template.id);
-              setPreviewTemplate(template.id);
-            }}
+            onClick={() => setPreviewTemplate(template.id)}
           >
             {selectedTemplate === template.id && (
               <div className="absolute -top-2 -right-2 z-10 bg-background rounded-full p-1 shadow-lg">
@@ -669,7 +634,6 @@ export function ResumeTemplates({
                 "h-48 relative overflow-hidden transition-all",
                 template.preview
               )}>
-                {/* Mini preview */}
                 <div className="absolute inset-0 flex flex-col p-4">
                   <div className={cn(
                     "h-7 w-32 rounded-sm mb-3 bg-gradient-to-r",
@@ -727,7 +691,6 @@ export function ResumeTemplates({
         ))}
       </div>
 
-      {/* Preview Modal */}
       <Dialog 
         open={!!previewTemplate} 
         onOpenChange={(open) => !open && setPreviewTemplate(null)}
@@ -738,19 +701,27 @@ export function ResumeTemplates({
               <h2 className="text-2xl font-bold">
                 {templates.find(t => t.id === previewTemplate)?.name} Template
               </h2>
-              <div className="flex items-center gap-4">
-                <button 
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="outline"
                   onClick={() => {
-                    if (previewTemplate) onSelectTemplate(previewTemplate);
-                    setPreviewTemplate(null);
+                    if (previewTemplate) onDownloadTemplate(previewTemplate);
                   }}
-                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors text-sm"
+                  className="gap-2"
                 >
-                  Use This Template
-                </button>
+                  <Download className="h-4 w-4" />
+                  Download
+                </Button>
+                <Button 
+                  onClick={handleUseTemplate}
+                  className="gap-2"
+                >
+                  <Edit className="h-4 w-4" />
+                  Edit Resume
+                </Button>
                 <button 
                   onClick={() => setPreviewTemplate(null)}
-                  className="rounded-full p-2 hover:bg-gray-100"
+                  className="rounded-full p-2 hover:bg-gray-100 ml-2"
                 >
                   <X className="h-5 w-5" />
                 </button>
