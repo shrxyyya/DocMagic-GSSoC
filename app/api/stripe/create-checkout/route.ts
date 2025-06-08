@@ -23,8 +23,9 @@ export async function POST(req: NextRequest) {
     }
 
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: "2022-11-15",
-    });
+  apiVersion: "2023-10-16",
+});
+
 
  const session = await stripe.checkout.sessions.create({
   payment_method_types: ['card'],
