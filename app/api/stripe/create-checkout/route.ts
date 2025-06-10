@@ -1,54 +1,70 @@
-import Stripe from "stripe";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { stripe } from "@/lib/stripe";
+import { createRoute } from "@/lib/supabase/server";
 
-export async function POST(req: NextRequest) {
-  console.log("👉 Request received at /api/stripe/create-checkout");
+const DOMAIN = process.env.NEXT_PUBLIC_APP_URL;
 
+export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { priceId , email,userId} = body;
+    // Get Supabase token from request cookies (adjust if you send it differently)
+    const cookie = req.headers.get("cookie") || "";
+    const accessToken = cookie
+      .split("; ")
+      .find((row) => row.startsWith("sb-access-token="))
+      ?.split("=")[1];
 
-    console.log("👉 Request body:", body);
-
-    if (!priceId) {
-      return NextResponse.json({ error: "Missing priceId in request body" }, { status: 400 });
+    if (!accessToken) {
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const stripeSecretKey = process.env.SECRET_KEY;
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    const supabase = createRoute();
 
-    if (!stripeSecretKey || !appUrl) {
-      console.error("❌ Missing environment variables", { stripeSecretKey, appUrl });
-      return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
+    // Get user using Supabase auth token
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser(accessToken);
+
+    if (userError || !user?.email) {
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2023-10-16",
-});
+    // Your existing logic with user.email
+    const { data: userData, error: userDbError } = await supabase
+      .from("users")
+      .select("*, subscription(*)")
+      .eq("email", user.email)
+      .single();
 
+    if (userDbError || !userData) {
+      return new NextResponse("User not found", { status: 404 });
+    }
 
- const session = await stripe.checkout.sessions.create({
-  payment_method_types: ['card'],
-  mode: 'subscription',
-  line_items: [{ price: priceId, quantity: 1 }],
-  success_url: `${appUrl}?status=success`,
-  cancel_url: `${appUrl}`,
-  customer_email: email,
-  billing_address_collection: 'required',
-  metadata: {
-    userId: userId, // ✅ Ye tumhe frontend se pass karna hoga
-  },
-});
+    if (userData.subscription) {
+      return new NextResponse("Already subscribed", { status: 400 });
+    }
 
+    const stripeSession = await stripe.checkout.sessions.create({
+      success_url: `${DOMAIN}/settings?success=true`,
+      cancel_url: `${DOMAIN}/settings?canceled=true`,
+      payment_method_types: ["card"],
+      mode: "subscription",
+      billing_address_collection: "auto",
+      customer_email: userData.email,
+      line_items: [
+        {
+          price: process.env.STRIPE_PRICE_ID,
+          quantity: 1,
+        },
+      ],
+      metadata: {
+        userId: userData.id,
+      },
+    });
 
-
-    console.log("✅ Stripe session created:", session.url);
-
-    return NextResponse.json({ url: session.url });
+    return NextResponse.json({ url: stripeSession.url });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
-    console.error("❌ Stripe error:", message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("Error creating checkout session:", error);
+    return new NextResponse("Internal error", { status: 500 });
   }
 }
