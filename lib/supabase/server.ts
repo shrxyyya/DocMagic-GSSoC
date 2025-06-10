@@ -1,35 +1,13 @@
-// lib/supabase/server.ts
+import { createServerComponentClient, createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import { type Database } from '@/types/supabase';
 
-import { createClient } from "@supabase/supabase-js";
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
+export const createServer = () => {
+  const cookieStore = cookies();
+  return createServerComponentClient<Database>({ cookies: () => cookieStore });
+};
 
-// For general server use without user-specific tokens
-export function createRoute() {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error("supabaseUrl and supabaseKey are required.");
-  }
-
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-  );
-}
-
-// For server-side authenticated requests (with user token)
-export function createClientWithToken(accessToken: string) {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error("supabaseUrl and supabaseKey are required.");
-  }
-
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
-    {
-      global: {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    }
-  );
-}
+export const createRoute = () => {
+  const cookieStore = cookies();
+  return createRouteHandlerClient<Database>({ cookies: () => cookieStore });
+};
