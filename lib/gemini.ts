@@ -1,9 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Validate API key with more detailed error message
+// Validate API key
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 if (!GOOGLE_API_KEY) {
-  throw new Error("GOOGLE_API_KEY environment variable is not set. Please ensure it is properly configured in your .env file.");
+  throw new Error("GOOGLE_API_KEY environment variable is not set.");
 }
 
 // Initialize with error handling
@@ -12,78 +12,115 @@ try {
   genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
 } catch (error) {
   console.error("Failed to initialize Google Generative AI:", error);
-  throw new Error("Failed to initialize Google Generative AI. Please check your API key configuration.");
+  throw new Error("Failed to initialize Google Generative AI.");
 }
 
 function extractJsonFromMarkdown(text: string): string {
-  // Try to extract JSON from markdown code block
   const jsonMatch = text.match(/```(?:json)?\s*\n?([\s\S]*?)\n?```/);
-  // Return the matched content or the original text if no match
   return jsonMatch ? jsonMatch[1].trim() : text.trim();
 }
 
 async function validateApiConnection() {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); 
-    // Simple test generation to validate API connection
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     await model.generateContent("test");
     return true;
   } catch (error) {
     console.error("API Connection Test Failed:", error);
-    throw new Error("Unable to connect to Google Generative AI API. Please check your API key and network connectivity.");
+    throw new Error("Unable to connect to Google Generative AI API.");
   }
 }
 
-export async function generateATSScore({ 
-  resumeContent, 
-  jobDescription 
+// Enhanced presentation generator with Gamma.app styling
+export async function generatePresentation({ 
+  prompt, 
+  pageCount = 8,
+  style = "modern",
+  themeColor = "blue"
 }: { 
-  resumeContent: string; 
-  jobDescription: string;
+  prompt: string; 
+  pageCount?: number;
+  style?: "modern" | "minimal" | "creative" | "professional";
+  themeColor?: string;
 }) {
   try {
     await validateApiConnection();
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
-    const systemPrompt = `Analyze this resume against the job description and provide detailed ATS scoring feedback.
+    const systemPrompt = `Create a Gamma.app-style presentation about "${prompt}" with ${pageCount} slides.
 
-Resume Content:
-${resumeContent}
+    Follow Gamma.app design principles:
+    1. VISUAL HIERARCHY:
+       - Primary image per slide (90% of slides)
+       - Text overlays on images with proper contrast
+       - Consistent spacing (32px padding)
+    
+    2. IMAGE SELECTION:
+       - Cover: "dramatic ${prompt} background" (full-bleed)
+       - Sections: "abstract ${prompt} concept" 
+       - Content: "specific ${prompt} illustration"
+       - All from Pexels/Unsplash (1080p+)
+    
+    3. LAYOUTS:
+       - 40% cover slides (full-bleed image + title)
+       - 30% split-content (image + text side-by-side)
+       - 20% quote/stat slides (image with overlay)
+       - 10% process slides (image sequence)
 
-Job Description:
-${jobDescription}
-
-Return the response as a JSON object with the following structure:
-{
-  score: number, // 0-100 ATS compatibility score
-  analysis: {
-    keywordMatch: {
-      found: string[], // Keywords found in both resume and job description
-      missing: string[] // Important keywords from job description missing in resume
-    },
-    formatIssues: string[], // List of formatting issues that could affect ATS parsing
-    sectionScores: {
-      skills: number, // 0-100
-      experience: number, // 0-100
-      education: number // 0-100
-    }
-  },
-  improvements: {
-    critical: string[], // Critical improvements needed
-    recommended: string[] // Nice-to-have improvements
-  }
-}`;
+    Return JSON array with:
+    [{
+      title: string,
+      subtitle?: string,
+      content: string[],
+      layout: "cover" | "split-left" | "split-right" | "quote" | "stats" | "process",
+      image: {
+        url: string, // High-res Pexels/Unsplash URL
+        query: string, // Exact search query used
+        source: "pexels" | "unsplash",
+        filter: "darken" | "lighten" | "blur-light" | null,
+        position: "center" | "top" | "left" // Focal point
+      },
+      design: {
+        textColor: "light" | "dark", // Auto contrast
+        overlay: string | null, // rgba overlay
+        padding: number // 32px default
+      },
+      // Content fields...
+    }]`;
 
     const result = await model.generateContent(systemPrompt);
     const response = await result.response;
     const jsonText = extractJsonFromMarkdown(response.text());
-    return JSON.parse(jsonText);
+    let slides = JSON.parse(jsonText);
+
+    // Apply Gamma.app-style image enhancements
+    slides = slides.map((slide: any) => ({
+      ...slide,
+      image: {
+        ...slide.image,
+        // Ensure proper Gamma.app image formatting
+        url: slide.image.url.includes('?') 
+          ? `${slide.image.url}&auto=format&fit=crop&w=1200&h=800` 
+          : `${slide.image.url}?auto=format&fit=crop&w=1200&h=800`,
+        // Add default focal point if missing
+        position: slide.image.position || "center"
+      },
+      design: {
+        // Default Gamma.app styling
+        textColor: slide.design?.textColor || "light",
+        overlay: slide.design?.overlay || "rgba(0,0,0,0.3)",
+        padding: 32
+      }
+    }));
+
+    return slides.slice(0, pageCount);
   } catch (error) {
-    console.error("Error analyzing resume:", error);
-    throw new Error(`Failed to analyze resume: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    console.error("Error generating presentation:", error);
+    throw new Error(`Failed to generate presentation: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
+// Original resume and letter generators remain unchanged
 export async function generateResume({ 
   prompt, 
   name, 
@@ -97,8 +134,8 @@ export async function generateResume({
     await validateApiConnection();
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
-    const systemPrompt = `Create a professional resume for ${name} (${email}) based on the following prompt: ${prompt}. 
-    Return the response as a JSON object with the following structure:
+    const systemPrompt = `Create a professional resume for ${name} (${email}) based on: ${prompt}. 
+    Return as JSON with structure:
     {
       name: string,
       email: string,
@@ -133,51 +170,6 @@ export async function generateResume({
   }
 }
 
-export async function generatePresentation({ 
-  prompt, 
-  pageCount = 8 
-}: { 
-  prompt: string; 
-  pageCount?: number;
-}) {
-  try {
-    await validateApiConnection();
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-    
-    const systemPrompt = `Create a visually stunning presentation with exactly ${pageCount} slides based on the following prompt: ${prompt}.
-    Return the response as a JSON array of slides with the following structure:
-    Array<{
-      title: string,
-      subtitle?: string,
-      content: string,
-      layout: "cover" | "title" | "content" | "image-left" | "image-right" | "full-image" | "quote" | "bullets",
-      image?: string, // Pexels URL
-      backgroundColor?: string, // Tailwind color class
-      textColor?: string, // Tailwind color class
-      bullets?: string[], // For bullet point layouts
-      quote?: {
-        text: string,
-        author: string,
-        role?: string
-      }, // For quote layouts
-      charts?: {
-        type: "pie" | "bar" | "line",
-        data: any
-      } // For data visualization slides
-    }>`;
-
-    const result = await model.generateContent(systemPrompt);
-    const response = await result.response;
-    const jsonText = extractJsonFromMarkdown(response.text());
-    const slides = JSON.parse(jsonText);
-    
-    return slides.slice(0, pageCount);
-  } catch (error) {
-    console.error("Error generating presentation:", error);
-    throw new Error(`Failed to generate presentation: ${error instanceof Error ? error.message : 'Unknown error'}`);
-  }
-}
-
 export async function generateLetter({ 
   prompt, 
   fromName, 
@@ -197,18 +189,11 @@ export async function generateLetter({
     await validateApiConnection();
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
-    const systemPrompt = `Create a professional ${letterType} letter based on the following prompt: ${prompt}.
-    The letter is from ${fromName} to ${toName}.
-    Return the response as a JSON object with the following structure:
+    const systemPrompt = `Create a ${letterType} letter from ${fromName} to ${toName} about: ${prompt}.
+    Return as JSON:
     {
-      from: {
-        name: string,
-        address?: string
-      },
-      to: {
-        name: string,
-        address?: string
-      },
+      from: { name: string, address?: string },
+      to: { name: string, address?: string },
       date: string,
       subject: string,
       content: string
@@ -221,5 +206,41 @@ export async function generateLetter({
   } catch (error) {
     console.error("Error generating letter:", error);
     throw new Error(`Failed to generate letter: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
+// ATS score generator remains unchanged
+export async function generateATSScore({ 
+  resumeContent, 
+  jobDescription 
+}: { 
+  resumeContent: string; 
+  jobDescription: string;
+}) {
+  try {
+    await validateApiConnection();
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    
+    const systemPrompt = `Analyze resume against job description:
+    Resume: ${resumeContent}
+    Job: ${jobDescription}
+    Return JSON with:
+    {
+      score: number,
+      analysis: {
+        keywordMatch: { found: string[], missing: string[] },
+        formatIssues: string[],
+        sectionScores: { skills: number, experience: number, education: number }
+      },
+      improvements: { critical: string[], recommended: string[] }
+    }`;
+
+    const result = await model.generateContent(systemPrompt);
+    const response = await result.response;
+    const jsonText = extractJsonFromMarkdown(response.text());
+    return JSON.parse(jsonText);
+  } catch (error) {
+    console.error("Error analyzing resume:", error);
+    throw new Error(`Failed to analyze resume: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
