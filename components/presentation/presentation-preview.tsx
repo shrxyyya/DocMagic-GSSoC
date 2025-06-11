@@ -239,7 +239,7 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
             <div className="max-w-3xl text-center">
               <Quote className="h-12 w-12 mx-auto mb-6 text-primary/20" />
               <blockquote className="text-2xl md:text-3xl font-serif italic mb-8">
-                "{slide.quote.text}"
+                &quot;{slide.quote.text}&quot;
               </blockquote>
               <cite className="not-italic">
                 <div className="font-bold text-lg">{slide.quote.author}</div>

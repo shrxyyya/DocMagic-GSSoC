@@ -123,7 +123,6 @@ export function PresentationGenerator() {
     try {
       const pptx = new pptxgen();
 
-      // Define slide master for consistent styling
       pptx.defineSlideMaster({
         title: 'MASTER_SLIDE',
         background: { color: 'FFFFFF' },
@@ -133,7 +132,6 @@ export function PresentationGenerator() {
       slides.forEach((slide, index) => {
         const pptxSlide = pptx.addSlide('MASTER_SLIDE');
 
-        // Add title
         pptxSlide.addText(slide.title || `Slide ${index + 1}`, {
           x: 0.5,
           y: 0.5,
@@ -144,7 +142,6 @@ export function PresentationGenerator() {
           align: 'center',
         });
 
-        // For minimal template, skip content
         if (selectedTemplate !== "minimal" && slide.content) {
           pptxSlide.addText(slide.content, {
             x: 0.5,
@@ -156,7 +153,6 @@ export function PresentationGenerator() {
           });
         }
 
-        // Add image if exists
         if (slide.image) {
           pptxSlide.addImage({
             data: slide.image,
@@ -188,6 +184,7 @@ export function PresentationGenerator() {
       setIsExporting(false);
     }
   };
+
   return (
     <div className="space-y-6">
       <Tabs defaultValue="create" className="w-full">
