@@ -21,11 +21,40 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <SiteHeader />
       <main className="flex-1">
-        {/* Your existing main content */}
         <HeroSection />
+        
         <section id="document-types" className="py-24">
-          {/* ... existing document types section ... */}
+          <div className="container">
+            <h2 className="text-3xl font-bold text-center mb-12">Choose Your Document Type</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <DocumentCard
+                title="Resume"
+                description="Create a professional resume tailored to your target role and company"
+                icon={<FileIcon className="h-6 w-6" />}
+                href="/resume"
+              />
+              <DocumentCard
+                title="Presentation"
+                description="Generate beautiful slide decks from simple text prompts"
+                icon={<LayoutPresentation className="h-6 w-6" />}
+                href="/presentation"
+              />
+              <DocumentCard
+                title="CV"
+                description="Build a comprehensive curriculum vitae highlighting your achievements"
+                icon={<FileText className="h-6 w-6" />}
+                href="/cv"
+              />
+              <DocumentCard
+                title="Letter"
+                description="Draft professional letters for any purpose in seconds"
+                icon={<Mail className="h-6 w-6" />}
+                href="/letter"
+              />
+            </div>
+          </div>
         </section>
+        
         <FeaturesSection />
         <TestimonialsSection />
       </main>
@@ -40,13 +69,13 @@ export default function Home() {
                 Create professional documents in minutes with our AI-powered tools.
               </p>
               <div className="flex space-x-4">
-                <a href="https://www.x.com/Munerali199" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   <Twitter className="h-4 w-4" />
                 </a>
-                <a href="https://www.linkedin.com/in/muneer-ali" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   <Linkedin className="h-4 w-4" />
                 </a>
-                <a href="https://www.github.com/Muneerali199/DocMagic" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   <Github className="h-4 w-4" />
                 </a>
               </div>
