@@ -14,7 +14,11 @@ import {
   CheckCircle,
   Brain,
   Target,
-  TrendingUp
+  TrendingUp,
+  Eye,
+  PieChart,
+  LineChart,
+  Activity
 } from "lucide-react";
 
 interface SlideOutline {
@@ -25,6 +29,7 @@ interface SlideOutline {
   bullets?: string[];
   chartData?: any;
   imageQuery?: string;
+  imageUrl?: string;
 }
 
 interface SlideOutlinePreviewProps {
@@ -46,6 +51,19 @@ export function SlideOutlinePreview({ outlines }: SlideOutlinePreviewProps) {
         return <ArrowRight className="h-4 w-4" />;
       default:
         return <FileText className="h-4 w-4" />;
+    }
+  };
+
+  const getChartIcon = (chartType: string) => {
+    switch (chartType) {
+      case 'pie':
+        return <PieChart className="h-3 w-3" />;
+      case 'line':
+        return <LineChart className="h-3 w-3" />;
+      case 'area':
+        return <Activity className="h-3 w-3" />;
+      default:
+        return <BarChart3 className="h-3 w-3" />;
     }
   };
 
@@ -89,6 +107,7 @@ export function SlideOutlinePreview({ outlines }: SlideOutlinePreviewProps) {
     const chartSlides = outlines.filter(o => o.type === 'chart').length;
     const listSlides = outlines.filter(o => o.type === 'list').length;
     const splitSlides = outlines.filter(o => o.type === 'split').length;
+    const imageSlides = outlines.filter(o => o.imageUrl || o.imageQuery).length;
     
     const insights = [];
     
@@ -100,6 +119,9 @@ export function SlideOutlinePreview({ outlines }: SlideOutlinePreviewProps) {
     }
     if (splitSlides > 0) {
       insights.push(`${splitSlides} visual layout${splitSlides > 1 ? 's' : ''} for engagement`);
+    }
+    if (imageSlides > 0) {
+      insights.push(`${imageSlides} professional image${imageSlides > 1 ? 's' : ''} included`);
     }
     
     return insights;
@@ -116,7 +138,7 @@ export function SlideOutlinePreview({ outlines }: SlideOutlinePreviewProps) {
             <h3 className="font-semibold bolt-gradient-text">AI Analysis Results</h3>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-4">
             <div className="text-center p-3 glass-effect rounded-lg">
               <div className="bolt-gradient-text text-2xl font-bold">{outlines.length}</div>
               <div className="text-sm text-muted-foreground">Smart Slides</div>
@@ -128,8 +150,16 @@ export function SlideOutlinePreview({ outlines }: SlideOutlinePreviewProps) {
               <div className="text-sm text-muted-foreground">Layout Types</div>
             </div>
             <div className="text-center p-3 glass-effect rounded-lg">
-              <div className="bolt-gradient-text text-2xl font-bold">~{Math.ceil(outlines.length * 1.5)}</div>
-              <div className="text-sm text-muted-foreground">Est. Minutes</div>
+              <div className="bolt-gradient-text text-2xl font-bold">
+                {outlines.filter(o => o.imageUrl || o.imageQuery).length}
+              </div>
+              <div className="text-sm text-muted-foreground">Images</div>
+            </div>
+            <div className="text-center p-3 glass-effect rounded-lg">
+              <div className="bolt-gradient-text text-2xl font-bold">
+                {outlines.filter(o => o.chartData).length}
+              </div>
+              <div className="text-sm text-muted-foreground">Charts</div>
             </div>
           </div>
 
@@ -211,15 +241,33 @@ export function SlideOutlinePreview({ outlines }: SlideOutlinePreviewProps) {
 
                 {/* Chart preview */}
                 {outline.chartData && (
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-muted-foreground flex items-center gap-1">
+                    {getChartIcon(outline.chartData.type)}
                     <span className="font-medium">Chart: </span>
                     <span>{outline.chartData.type} chart with {outline.chartData.data?.length || 0} data points</span>
                   </div>
                 )}
 
+                {/* Image preview */}
+                {(outline.imageUrl || outline.imageQuery) && (
+                  <div className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Eye className="h-3 w-3" />
+                    <span className="font-medium">Image: </span>
+                    <span>{outline.imageQuery || 'Professional visual'}</span>
+                  </div>
+                )}
+
                 {/* Visual preview mockup */}
-                <div className="mt-4 h-20 rounded-md bg-gradient-to-br from-muted/50 to-muted/80 border border-border/50 flex items-center justify-center group-hover:from-yellow-50 group-hover:to-blue-50 transition-all">
-                  <div className="flex items-center gap-2 text-muted-foreground group-hover:text-foreground transition-colors">
+                <div className="mt-4 h-20 rounded-md bg-gradient-to-br from-muted/50 to-muted/80 border border-border/50 flex items-center justify-center group-hover:from-yellow-50 group-hover:to-blue-50 transition-all relative overflow-hidden">
+                  {/* Show actual image preview if available */}
+                  {outline.imageUrl && (
+                    <img 
+                      src={outline.imageUrl} 
+                      alt={outline.title}
+                      className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity"
+                    />
+                  )}
+                  <div className="flex items-center gap-2 text-muted-foreground group-hover:text-foreground transition-colors relative z-10">
                     {getSlideIcon(outline.type)}
                     <span className="text-xs font-medium">AI Generated</span>
                     <Sparkles className="h-3 w-3 group-hover:text-yellow-500 transition-colors animate-pulse" />
@@ -245,7 +293,17 @@ export function SlideOutlinePreview({ outlines }: SlideOutlinePreviewProps) {
               <div key={index} className="flex items-center">
                 <div className="glass-effect px-3 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-transform flex items-center gap-2">
                   {getSlideIcon(outline.type)}
-                  <span>{outline.title}</span>
+                  <span className="max-w-[120px] truncate">{outline.title}</span>
+                  {outline.chartData && (
+                    <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-200 ml-1">
+                      Chart
+                    </Badge>
+                  )}
+                  {(outline.imageUrl || outline.imageQuery) && (
+                    <Badge variant="outline" className="text-xs bg-orange-50 text-orange-700 border-orange-200 ml-1">
+                      Image
+                    </Badge>
+                  )}
                 </div>
                 {index < outlines.length - 1 && (
                   <ArrowRight className="h-4 w-4 text-muted-foreground mx-2" />
@@ -256,7 +314,7 @@ export function SlideOutlinePreview({ outlines }: SlideOutlinePreviewProps) {
           
           <div className="mt-4 text-sm text-muted-foreground">
             <CheckCircle className="inline h-4 w-4 text-green-500 mr-1" />
-            AI has optimized the flow for maximum audience engagement and logical progression
+            AI has optimized the flow with rich visuals, data charts, and logical progression for maximum audience engagement
           </div>
         </div>
       </Card>
