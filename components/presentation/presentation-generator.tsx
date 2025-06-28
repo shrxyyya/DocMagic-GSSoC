@@ -11,7 +11,7 @@ import { PresentationPreview } from "@/components/presentation/presentation-prev
 import { PresentationTemplates } from "@/components/presentation/presentation-templates";
 import { SlideOutlinePreview } from "@/components/presentation/slide-outline-preview";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Sparkles, Presentation as LayoutPresentation, Lock, Download, Wand2, Sliders as Slides, Palette, Eye, ArrowRight, CheckCircle } from "lucide-react";
+import { Loader2, Sparkles, Presentation as LayoutPresentation, Lock, Download, Wand2, Sliders as Slides, Palette, Eye, ArrowRight, CheckCircle, Play } from "lucide-react";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import pptxgen from 'pptxgenjs';
@@ -57,92 +57,96 @@ export function PresentationGenerator() {
     setIsGenerating(true);
 
     try {
-      // First, generate slide outlines
-      const outlineResponse = await fetch('/api/generate/presentation-outline', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt, pageCount }),
-      });
-
-      if (!outlineResponse.ok) {
-        // Fallback to mock data for demo
-        const mockOutlines = generateMockOutlines(pageCount);
-        setSlideOutlines(mockOutlines);
-        setCurrentStep('outline');
-        toast({
-          title: "Slide outline created! ✨",
-          description: `${mockOutlines.length} slides outlined. Choose a theme to continue.`,
-        });
-        return;
-      }
-
-      const outlineData = await outlineResponse.json();
-      setSlideOutlines(outlineData);
-      setCurrentStep('outline');
-
-      toast({
-        title: "Slide outline created! ✨",
-        description: `${outlineData.length} slides outlined. Choose a theme to continue.`,
-      });
-    } catch (error) {
-      // Fallback to mock data
-      const mockOutlines = generateMockOutlines(pageCount);
+      // Generate smart outlines based on prompt
+      const mockOutlines = generateSmartOutlines(prompt, pageCount);
       setSlideOutlines(mockOutlines);
       setCurrentStep('outline');
+
       toast({
         title: "Slide outline created! ✨",
         description: `${mockOutlines.length} slides outlined. Choose a theme to continue.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to generate outline. Please try again.",
+        variant: "destructive",
       });
     } finally {
       setIsGenerating(false);
     }
   };
 
-  const generateMockOutlines = (count: number) => {
+  const generateSmartOutlines = (prompt: string, count: number) => {
     const topics = prompt.toLowerCase();
-    const isBusinessPitch = topics.includes('pitch') || topics.includes('startup') || topics.includes('business');
-    const isTechnical = topics.includes('tech') || topics.includes('software') || topics.includes('ai');
+    const isBusinessPitch = topics.includes('pitch') || topics.includes('startup') || topics.includes('business') || topics.includes('company');
+    const isTechnical = topics.includes('tech') || topics.includes('software') || topics.includes('ai') || topics.includes('development');
+    const isEducational = topics.includes('education') || topics.includes('training') || topics.includes('course') || topics.includes('tutorial');
+    const isMarketing = topics.includes('marketing') || topics.includes('sales') || topics.includes('product') || topics.includes('launch');
     
-    const baseOutlines = [
-      { title: "Introduction", type: "cover", description: "Opening slide with main topic and presenter" },
-      { title: "Agenda", type: "list", description: "Overview of presentation structure" },
-      { title: "Problem Statement", type: "text", description: "Define the challenge or opportunity" },
-      { title: "Solution Overview", type: "split", description: "High-level solution approach" },
-      { title: "Key Benefits", type: "list", description: "Main advantages and value proposition" },
-      { title: "Implementation", type: "process", description: "Step-by-step execution plan" },
-      { title: "Results & Impact", type: "chart", description: "Expected outcomes and metrics" },
-      { title: "Next Steps", type: "text", description: "Call to action and follow-up" }
-    ];
-
     if (isBusinessPitch) {
       return [
-        { title: "Company Overview", type: "cover", description: "Company name, mission, and vision" },
-        { title: "Market Opportunity", type: "chart", description: "Market size and growth potential" },
-        { title: "Problem We Solve", type: "text", description: "Pain points in the market" },
-        { title: "Our Solution", type: "split", description: "Product/service overview" },
-        { title: "Business Model", type: "process", description: "Revenue streams and pricing" },
-        { title: "Traction & Growth", type: "chart", description: "Key metrics and milestones" },
-        { title: "Financial Projections", type: "chart", description: "Revenue and growth forecasts" },
-        { title: "Investment Ask", type: "text", description: "Funding requirements and use of funds" }
+        { title: "Company Overview", type: "cover", description: "Company name, mission, and vision statement" },
+        { title: "Market Opportunity", type: "chart", description: "Market size, growth potential, and target segments" },
+        { title: "Problem We Solve", type: "text", description: "Key pain points and market gaps" },
+        { title: "Our Solution", type: "split", description: "Product/service overview with visuals" },
+        { title: "Business Model", type: "process", description: "Revenue streams and pricing strategy" },
+        { title: "Traction & Growth", type: "chart", description: "Key metrics, milestones, and user growth" },
+        { title: "Financial Projections", type: "chart", description: "Revenue forecasts and growth trajectory" },
+        { title: "Investment Ask", type: "text", description: "Funding requirements and use of capital" }
       ].slice(0, count);
     }
 
     if (isTechnical) {
       return [
-        { title: "Technical Overview", type: "cover", description: "System architecture introduction" },
-        { title: "Current Challenges", type: "list", description: "Technical pain points" },
-        { title: "Proposed Architecture", type: "split", description: "System design overview" },
-        { title: "Technology Stack", type: "list", description: "Tools and frameworks" },
-        { title: "Implementation Plan", type: "process", description: "Development roadmap" },
-        { title: "Performance Metrics", type: "chart", description: "Benchmarks and KPIs" },
-        { title: "Security & Compliance", type: "text", description: "Security measures" },
-        { title: "Deployment Strategy", type: "process", description: "Go-live approach" }
+        { title: "Technical Overview", type: "cover", description: "System architecture and technology introduction" },
+        { title: "Current Challenges", type: "list", description: "Technical pain points and limitations" },
+        { title: "Proposed Architecture", type: "split", description: "System design and component overview" },
+        { title: "Technology Stack", type: "list", description: "Programming languages, frameworks, and tools" },
+        { title: "Implementation Plan", type: "process", description: "Development phases and timeline" },
+        { title: "Performance Metrics", type: "chart", description: "Benchmarks, KPIs, and success criteria" },
+        { title: "Security & Compliance", type: "text", description: "Security measures and regulatory compliance" },
+        { title: "Deployment Strategy", type: "process", description: "Go-live approach and rollout plan" }
       ].slice(0, count);
     }
 
-    return baseOutlines.slice(0, count);
+    if (isEducational) {
+      return [
+        { title: "Course Introduction", type: "cover", description: "Course title, objectives, and instructor" },
+        { title: "Learning Objectives", type: "list", description: "What students will learn and achieve" },
+        { title: "Course Structure", type: "process", description: "Modules, lessons, and timeline" },
+        { title: "Key Concepts", type: "text", description: "Fundamental principles and theories" },
+        { title: "Practical Examples", type: "split", description: "Real-world applications and case studies" },
+        { title: "Hands-on Activities", type: "list", description: "Exercises, projects, and assignments" },
+        { title: "Assessment Methods", type: "process", description: "Evaluation criteria and grading" },
+        { title: "Resources & Next Steps", type: "text", description: "Additional materials and continued learning" }
+      ].slice(0, count);
+    }
+
+    if (isMarketing) {
+      return [
+        { title: "Campaign Overview", type: "cover", description: "Campaign goals and brand positioning" },
+        { title: "Target Audience", type: "split", description: "Customer personas and demographics" },
+        { title: "Market Analysis", type: "chart", description: "Competitive landscape and opportunities" },
+        { title: "Marketing Strategy", type: "process", description: "Channel mix and tactical approach" },
+        { title: "Creative Concept", type: "split", description: "Visual identity and messaging framework" },
+        { title: "Campaign Timeline", type: "process", description: "Launch phases and key milestones" },
+        { title: "Budget & ROI", type: "chart", description: "Investment allocation and expected returns" },
+        { title: "Success Metrics", type: "chart", description: "KPIs and measurement framework" }
+      ].slice(0, count);
+    }
+
+    // Default generic outline
+    return [
+      { title: "Introduction", type: "cover", description: "Opening slide with main topic and presenter" },
+      { title: "Agenda", type: "list", description: "Overview of presentation structure and key points" },
+      { title: "Background", type: "text", description: "Context and background information" },
+      { title: "Main Content", type: "split", description: "Core information with supporting visuals" },
+      { title: "Key Points", type: "list", description: "Important takeaways and highlights" },
+      { title: "Analysis", type: "chart", description: "Data analysis and insights" },
+      { title: "Recommendations", type: "text", description: "Proposed actions and next steps" },
+      { title: "Conclusion", type: "text", description: "Summary and call to action" }
+    ].slice(0, count);
   };
 
   const generateFullPresentation = async () => {
@@ -150,62 +154,107 @@ export function PresentationGenerator() {
     setCurrentStep('generated');
 
     try {
-      const response = await fetch('/api/generate/presentation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          prompt, 
-          pageCount,
-          outlines: slideOutlines,
-          template: selectedTemplate 
-        }),
-      });
-
-      if (!response.ok) {
-        // Generate mock slides based on outlines
-        const mockSlides = slideOutlines.map((outline, index) => ({
+      // Generate actual slides based on outlines and template
+      const generatedSlides = slideOutlines.map((outline, index) => {
+        const slide = {
+          id: index + 1,
           title: outline.title,
-          content: outline.description,
+          content: generateSlideContent(outline),
           layout: outline.type,
           slideNumber: index + 1,
-          backgroundColor: selectedTemplate === 'dark' ? '#1a1a1a' : '#ffffff',
-          textColor: selectedTemplate === 'dark' ? '#ffffff' : '#000000'
-        }));
-        setSlides(mockSlides);
-        toast({
-          title: "Presentation generated! ✨",
-          description: `${mockSlides.length} slides created with ${selectedTemplate} theme`,
-        });
-        return;
-      }
+          template: selectedTemplate,
+          backgroundColor: getTemplateBackground(selectedTemplate),
+          textColor: getTemplateTextColor(selectedTemplate),
+          image: generateSlideImage(outline.type, outline.title),
+          bullets: generateBulletPoints(outline),
+          charts: outline.type === 'chart' ? generateChartData(outline.title) : null
+        };
+        return slide;
+      });
 
-      const data = await response.json();
-      setSlides(data);
+      setSlides(generatedSlides);
 
       toast({
         title: "Presentation generated! ✨",
-        description: `${data.length} slides created with ${selectedTemplate} theme`,
+        description: `${generatedSlides.length} slides created with ${selectedTemplate} theme`,
       });
     } catch (error) {
-      // Generate mock slides as fallback
-      const mockSlides = slideOutlines.map((outline, index) => ({
-        title: outline.title,
-        content: outline.description,
-        layout: outline.type,
-        slideNumber: index + 1,
-        backgroundColor: selectedTemplate === 'dark' ? '#1a1a1a' : '#ffffff',
-        textColor: selectedTemplate === 'dark' ? '#ffffff' : '#000000'
-      }));
-      setSlides(mockSlides);
       toast({
-        title: "Presentation generated! ✨",
-        description: `${mockSlides.length} slides created with ${selectedTemplate} theme`,
+        title: "Error",
+        description: "Failed to generate presentation. Please try again.",
+        variant: "destructive",
       });
     } finally {
       setIsGenerating(false);
     }
+  };
+
+  const generateSlideContent = (outline: any) => {
+    const contentMap: { [key: string]: string } = {
+      'cover': `Welcome to ${outline.title}. ${outline.description}`,
+      'list': outline.description,
+      'text': `${outline.description}. This section provides detailed information about ${outline.title.toLowerCase()}.`,
+      'chart': `Data visualization for ${outline.title}. ${outline.description}`,
+      'split': outline.description,
+      'process': `Step-by-step process for ${outline.title}. ${outline.description}`
+    };
+    return contentMap[outline.type] || outline.description;
+  };
+
+  const generateBulletPoints = (outline: any) => {
+    if (outline.type === 'list') {
+      return [
+        `Key aspect of ${outline.title}`,
+        `Important consideration for implementation`,
+        `Benefits and advantages`,
+        `Next steps and recommendations`
+      ];
+    }
+    return null;
+  };
+
+  const generateChartData = (title: string) => {
+    return {
+      type: 'bar',
+      data: [
+        { name: 'Q1', value: 65 },
+        { name: 'Q2', value: 78 },
+        { name: 'Q3', value: 82 },
+        { name: 'Q4', value: 95 }
+      ]
+    };
+  };
+
+  const generateSlideImage = (type: string, title: string) => {
+    const imageMap: { [key: string]: string } = {
+      'cover': 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'chart': 'https://images.pexels.com/photos/590022/pexels-photo-590022.jpg?auto=compress&cs=tinysrgb&w=1200',
+      'split': 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'process': 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1200'
+    };
+    return imageMap[type] || 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200';
+  };
+
+  const getTemplateBackground = (template: string) => {
+    const backgrounds: { [key: string]: string } = {
+      'modern': '#ffffff',
+      'minimal': '#f8f9fa',
+      'creative': '#ffffff',
+      'dark': '#1a1a1a',
+      'gradient': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+    };
+    return backgrounds[template] || '#ffffff';
+  };
+
+  const getTemplateTextColor = (template: string) => {
+    const colors: { [key: string]: string } = {
+      'modern': '#1a1a1a',
+      'minimal': '#2d3748',
+      'creative': '#1a1a1a',
+      'dark': '#ffffff',
+      'gradient': '#ffffff'
+    };
+    return colors[template] || '#1a1a1a';
   };
 
   const exportToPDF = async () => {
@@ -214,16 +263,27 @@ export function PresentationGenerator() {
 
     try {
       const pdf = new jsPDF('landscape', 'pt', 'a4');
-      const previewElement = document.getElementById('presentation-preview');
-
+      
       for (let i = 0; i < slides.length; i++) {
-        const canvas = await html2canvas(previewElement as HTMLElement);
-        const imgData = canvas.toDataURL('image/png');
-
         if (i > 0) pdf.addPage();
+        
+        // Add slide content to PDF
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        
+        // Add background
+        pdf.setFillColor(255, 255, 255);
+        pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
+        
+        // Add title
+        pdf.setFontSize(24);
+        pdf.setTextColor(0, 0, 0);
+        pdf.text(slides[i].title, 50, 80);
+        
+        // Add content
+        pdf.setFontSize(14);
+        const splitContent = pdf.splitTextToSize(slides[i].content, pdfWidth - 100);
+        pdf.text(splitContent, 50, 120);
       }
 
       pdf.save('presentation.pdf');
@@ -249,40 +309,48 @@ export function PresentationGenerator() {
     try {
       const pptx = new pptxgen();
 
-      pptx.defineSlideMaster({
-        title: 'MASTER_SLIDE',
-        background: { color: 'FFFFFF' },
-        slideNumber: { x: 0.5, y: '95%' },
-      });
-
       slides.forEach((slide, index) => {
-        const pptxSlide = pptx.addSlide('MASTER_SLIDE');
+        const pptxSlide = pptx.addSlide();
 
-        pptxSlide.addText(slide.title || `Slide ${index + 1}`, {
+        // Add title
+        pptxSlide.addText(slide.title, {
           x: 0.5,
           y: 0.5,
           w: 9,
-          h: 0.5,
-          fontSize: 24,
+          h: 1,
+          fontSize: 28,
           bold: true,
-          align: 'center',
+          color: slide.textColor === '#ffffff' ? 'FFFFFF' : '000000'
         });
 
-        if (selectedTemplate !== "minimal" && slide.content) {
+        // Add content
+        if (slide.content) {
           pptxSlide.addText(slide.content, {
             x: 0.5,
-            y: 1.5,
+            y: 1.8,
             w: 9,
-            h: 5,
+            h: 4,
+            fontSize: 16,
+            color: slide.textColor === '#ffffff' ? 'FFFFFF' : '000000'
+          });
+        }
+
+        // Add bullets if available
+        if (slide.bullets) {
+          pptxSlide.addText(slide.bullets, {
+            x: 0.5,
+            y: 3,
+            w: 9,
+            h: 3,
             fontSize: 14,
             bullet: true,
+            color: slide.textColor === '#ffffff' ? 'FFFFFF' : '000000'
           });
         }
       });
 
       await pptx.writeFile({
-        fileName: 'presentation.pptx',
-        compression: true,
+        fileName: 'presentation.pptx'
       });
 
       toast({
@@ -313,29 +381,29 @@ export function PresentationGenerator() {
   };
 
   const renderStepIndicator = () => (
-    <div className="flex items-center justify-center gap-4 mb-8">
-      <div className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all ${
+    <div className="flex items-center justify-center gap-2 sm:gap-4 mb-6 sm:mb-8 overflow-x-auto pb-2">
+      <div className={`flex items-center gap-2 px-2 sm:px-3 py-2 rounded-full transition-all whitespace-nowrap ${
         currentStep === 'input' ? 'bolt-gradient text-white' : 'glass-effect'
       }`}>
-        <span className="text-sm font-medium">1. Describe</span>
+        <span className="text-xs sm:text-sm font-medium">1. Describe</span>
       </div>
-      <ArrowRight className="h-4 w-4 text-muted-foreground" />
-      <div className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all ${
+      <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+      <div className={`flex items-center gap-2 px-2 sm:px-3 py-2 rounded-full transition-all whitespace-nowrap ${
         currentStep === 'outline' ? 'bolt-gradient text-white' : 'glass-effect'
       }`}>
-        <span className="text-sm font-medium">2. Outline</span>
+        <span className="text-xs sm:text-sm font-medium">2. Outline</span>
       </div>
-      <ArrowRight className="h-4 w-4 text-muted-foreground" />
-      <div className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all ${
+      <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+      <div className={`flex items-center gap-2 px-2 sm:px-3 py-2 rounded-full transition-all whitespace-nowrap ${
         currentStep === 'theme' ? 'bolt-gradient text-white' : 'glass-effect'
       }`}>
-        <span className="text-sm font-medium">3. Theme</span>
+        <span className="text-xs sm:text-sm font-medium">3. Theme</span>
       </div>
-      <ArrowRight className="h-4 w-4 text-muted-foreground" />
-      <div className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all ${
+      <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+      <div className={`flex items-center gap-2 px-2 sm:px-3 py-2 rounded-full transition-all whitespace-nowrap ${
         currentStep === 'generated' ? 'bolt-gradient text-white' : 'glass-effect'
       }`}>
-        <span className="text-sm font-medium">4. Generate</span>
+        <span className="text-xs sm:text-sm font-medium">4. Present</span>
       </div>
     </div>
   );
@@ -381,7 +449,8 @@ export function PresentationGenerator() {
                   {!isPro && (
                     <div className="flex items-center text-xs text-muted-foreground glass-effect px-3 py-2 rounded-full">
                       <Lock className="h-3 w-3 mr-1" />
-                      <span>Max {MAX_FREE_PAGES} slides (Pro: {MAX_PRO_PAGES})</span>
+                      <span className="hidden sm:inline">Max {MAX_FREE_PAGES} slides (Pro: {MAX_PRO_PAGES})</span>
+                      <span className="sm:hidden">Max {MAX_FREE_PAGES}</span>
                     </div>
                   )}
                 </div>
@@ -395,7 +464,7 @@ export function PresentationGenerator() {
                 <Textarea
                   id="prompt"
                   placeholder="E.g., Startup pitch deck for AI SaaS platform targeting enterprise customers"
-                  className="min-h-[150px] text-base glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20 resize-none"
+                  className="min-h-[120px] sm:min-h-[150px] text-base glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20 resize-none"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   disabled={isGenerating}
@@ -438,28 +507,28 @@ export function PresentationGenerator() {
               <h2 className="text-xl sm:text-2xl font-bold bolt-gradient-text">How it works</h2>
             </div>
 
-            <Card className="glass-effect border border-yellow-400/20 p-6 relative overflow-hidden">
+            <Card className="glass-effect border border-yellow-400/20 p-4 sm:p-6 relative overflow-hidden">
               <div className="absolute inset-0 shimmer opacity-10"></div>
               <div className="relative z-10 space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm">1</div>
+                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm flex-shrink-0">1</div>
                   <div>
                     <h3 className="font-semibold">Smart Outline</h3>
                     <p className="text-sm text-muted-foreground">AI analyzes your topic and creates a logical slide structure</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm">2</div>
+                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm flex-shrink-0">2</div>
                   <div>
                     <h3 className="font-semibold">Choose Theme</h3>
                     <p className="text-sm text-muted-foreground">Select from professional themes that match your style</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm">3</div>
+                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm flex-shrink-0">3</div>
                   <div>
-                    <h3 className="font-semibold">Generate & Export</h3>
-                    <p className="text-sm text-muted-foreground">Get your complete presentation ready for download</p>
+                    <h3 className="font-semibold">Generate & Present</h3>
+                    <p className="text-sm text-muted-foreground">Get your complete presentation with full-screen mode</p>
                   </div>
                 </div>
               </div>
@@ -486,7 +555,7 @@ export function PresentationGenerator() {
 
           <SlideOutlinePreview outlines={slideOutlines} />
 
-          <div className="flex justify-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button
               onClick={resetToInput}
               variant="outline"
@@ -525,7 +594,7 @@ export function PresentationGenerator() {
             onSelectTemplate={setSelectedTemplate}
           />
 
-          <div className="flex justify-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button
               onClick={() => setCurrentStep('outline')}
               variant="outline"
@@ -566,7 +635,7 @@ export function PresentationGenerator() {
               🎉 Presentation Generated Successfully
             </h2>
             <p className="text-sm text-muted-foreground">
-              Preview your slides and download when ready
+              Preview your slides and present in full-screen mode like Canva
             </p>
           </div>
 
@@ -594,11 +663,12 @@ export function PresentationGenerator() {
             >
               Change Theme
             </Button>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Button
                 onClick={exportToPDF}
                 disabled={isExporting}
-                className="bolt-gradient text-white font-semibold hover:scale-105 transition-all duration-300"
+                variant="outline"
+                className="glass-effect border-yellow-400/30 hover:border-yellow-400/60"
               >
                 {isExporting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -617,7 +687,7 @@ export function PresentationGenerator() {
                 ) : (
                   <Download className="mr-2 h-4 w-4" />
                 )}
-                PPTX
+                PowerPoint
               </Button>
             </div>
           </div>
