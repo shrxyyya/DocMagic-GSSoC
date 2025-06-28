@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Linkedin, Github, Globe, Mail, Phone, MapPin } from "lucide-react";
+import { Linkedin, Github, Globe, Mail, Phone, MapPin, Download, Edit, Check, X, Sparkles, FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 interface ResumeData {
   name?: string;
@@ -62,6 +66,8 @@ interface ResumePreviewProps {
 
 export function ResumePreview({ resume, template, onChange }: ResumePreviewProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const { toast } = useToast();
   const [editableResume, setEditableResume] = useState<ResumeData>({
     ...resume,
     phone: resume.phone?.toString() || "",
@@ -193,8 +199,63 @@ export function ResumePreview({ resume, template, onChange }: ResumePreviewProps
     );
   };
 
+  const exportToPDF = async () => {
+    setIsExporting(true);
+    
+    try {
+      const element = document.getElementById('resume-content');
+      if (!element) throw new Error('Resume content element not found');
+      
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff'
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      
+      // A4 dimensions in mm: 210 x 297
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      // Calculate ratio to fit the image within the PDF
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 0;
+      
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.save(`${resume.name?.replace(/\s+/g, '-').toLowerCase() || 'resume'}.pdf`);
+      
+      toast({
+        title: "Resume exported!",
+        description: "Your resume has been downloaded as a PDF.",
+      });
+    } catch (error) {
+      console.error('Error exporting to PDF:', error);
+      toast({
+        title: "Export failed",
+        description: "Failed to export resume to PDF. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const exportToWord = () => {
+    toast({
+      title: "Coming Soon",
+      description: "Word export will be available in the next update.",
+    });
+  };
+
   const renderProfessionalTemplate = () => (
-    <div className="w-full h-full bg-white text-gray-900 overflow-auto">
+    <div className="w-full h-full bg-white text-gray-900 overflow-auto" id="resume-content">
       <div className="p-6 sm:p-8 max-w-[800px] mx-auto font-sans min-h-[600px]">
         {/* Header Section */}
         <div className="text-center mb-6 border-b border-gray-200 pb-6">
@@ -724,17 +785,38 @@ export function ResumePreview({ resume, template, onChange }: ResumePreviewProps
         )}
 
         {/* Edit Controls */}
-        <div className="mt-8 pt-6 border-t border-gray-200 flex justify-center gap-4">
+        <div className="mt-8 pt-6 border-t border-gray-200 flex justify-between">
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={exportToPDF}
+              disabled={isExporting}
+              className="flex items-center gap-1"
+            >
+              {isExporting ? (
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent" />
+              ) : (
+                <Download className="h-4 w-4" />
+              )}
+              PDF
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={exportToWord}
+              className="flex items-center gap-1"
+            >
+              <FileText className="h-4 w-4" />
+              Word
+            </Button>
+          </div>
+          
           {isEditing ? (
-            <>
-              <button
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
-                onClick={() => setIsEditing(false)}
-              >
-                Save Changes
-              </button>
-              <button
-                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors font-medium"
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
                 onClick={() => {
                   setEditableResume({
                     ...resume,
@@ -762,23 +844,50 @@ export function ResumePreview({ resume, template, onChange }: ResumePreviewProps
                   });
                   setIsEditing(false);
                 }}
+                className="flex items-center gap-1"
               >
+                <X className="h-4 w-4" />
                 Cancel
-              </button>
-            </>
+              </Button>
+              <Button
+                size="sm"
+                onClick={() => setIsEditing(false)}
+                className="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white"
+              >
+                <Check className="h-4 w-4" />
+                Save Changes
+              </Button>
+            </div>
           ) : (
-            <button
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            <Button
+              size="sm"
               onClick={() => setIsEditing(true)}
+              className="flex items-center gap-1"
             >
+              <Edit className="h-4 w-4" />
               Edit Resume
-            </button>
+            </Button>
           )}
         </div>
       </div>
     </div>
   );
 
-  // Always render the professional template for now
-  return renderProfessionalTemplate();
+  // Render the appropriate template based on the selected template
+  switch (template) {
+    case 'modern':
+      // You would implement different template styles here
+      return renderProfessionalTemplate();
+    case 'creative':
+      return renderProfessionalTemplate();
+    case 'minimalist':
+      return renderProfessionalTemplate();
+    case 'executive':
+      return renderProfessionalTemplate();
+    case 'technical':
+      return renderProfessionalTemplate();
+    case 'professional':
+    default:
+      return renderProfessionalTemplate();
+  }
 }
