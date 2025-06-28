@@ -31,7 +31,7 @@ async function validateApiConnection() {
   }
 }
 
-// Enhanced presentation outline generator with professional styling
+// Enhanced presentation outline generator with GUARANTEED images and charts
 export async function generatePresentationOutline({ 
   prompt, 
   pageCount = 8 
@@ -45,100 +45,110 @@ export async function generatePresentationOutline({
     
     const systemPrompt = `Create a PROFESSIONAL presentation outline for: "${prompt}" with ${pageCount} slides.
 
-    Analyze the topic and create an intelligent slide structure with REAL IMAGES and PROFESSIONAL CHARTS like Canva/Gamma.app. Return a JSON array with this exact format:
+    CRITICAL REQUIREMENTS - EVERY SLIDE MUST HAVE:
+    1. A HIGH-QUALITY PROFESSIONAL IMAGE from Pexels
+    2. At least 30% of slides MUST have meaningful charts/graphs
+    3. Professional Canva-style design elements
+
+    Return a JSON array with this EXACT format:
 
     [
       {
-        "title": "Compelling Slide Title",
+        "title": "Compelling Professional Title",
         "type": "cover|list|chart|split|process|text",
-        "description": "Detailed description of what this slide will contain",
-        "content": "Main content for the slide (2-3 engaging sentences)",
-        "bullets": ["specific bullet point 1", "actionable bullet point 2"] (only for list type),
+        "description": "Detailed description of slide content and visuals",
+        "content": "Engaging 2-3 sentence content that tells a story",
+        "bullets": ["specific actionable point 1", "measurable result 2", "strategic insight 3"] (for list/split types),
         "chartData": {
           "type": "bar|pie|line|area|scatter",
           "title": "Professional Chart Title",
           "data": [
-            {"name": "Q1 2024", "value": 65, "category": "Revenue"},
-            {"name": "Q2 2024", "value": 78, "category": "Revenue"},
-            {"name": "Q3 2024", "value": 92, "category": "Revenue"},
-            {"name": "Q4 2024", "value": 105, "category": "Revenue"}
+            {"name": "Q1 2024", "value": 125, "category": "Revenue"},
+            {"name": "Q2 2024", "value": 158, "category": "Revenue"},
+            {"name": "Q3 2024", "value": 192, "category": "Revenue"},
+            {"name": "Q4 2024", "value": 234, "category": "Revenue"},
+            {"name": "Q1 2025", "value": 278, "category": "Revenue"}
           ],
           "xAxis": "Time Period",
           "yAxis": "Value ($M)",
           "colors": ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6"],
           "showLegend": true,
           "showGrid": true
-        } (only for chart type),
+        } (REQUIRED for chart type, OPTIONAL for others),
         "imageQuery": "specific professional image search query",
         "imageUrl": "https://images.pexels.com/photos/[ID]/pexels-photo-[ID].jpeg?auto=compress&cs=tinysrgb&w=1200&h=800",
         "layout": "cover|split|chart-focus|list-visual|process-flow|text-image"
       }
     ]
 
-    CRITICAL REQUIREMENTS FOR PROFESSIONAL STYLING:
-    1. ALWAYS include realistic, meaningful chart data with 4-8 data points
-    2. ALWAYS provide specific, relevant image search queries for professional photos
-    3. Use actual working Pexels image URLs (photo IDs: 3184291, 3184292, 3184293, etc.)
-    4. Make chart data realistic and support the narrative
-    5. Ensure proper visual hierarchy and professional design principles
+    SLIDE DISTRIBUTION REQUIREMENTS:
+    - Slide 1: ALWAYS "cover" type with hero image
+    - 30-40% of slides: "chart" type with meaningful data
+    - 30-40% of slides: "split" type with image + content
+    - 20-30% of slides: "list" type with supporting images
+    - 10% of slides: "process" type with workflow visuals
 
-    SLIDE TYPE GUIDELINES:
-    - "cover": Hero slide with compelling title + professional background image
-    - "chart": Data-driven slide with meaningful business/topic metrics
-    - "list": Key points with supporting professional imagery
-    - "split": Content + high-quality image side by side
-    - "process": Step-by-step workflow with visual elements
-    - "text": Detailed content with subtle supporting imagery
+    IMAGE REQUIREMENTS FOR EVERY SLIDE:
+    - Cover slides: Professional team meetings, office spaces, industry-specific imagery
+    - Chart slides: Business analytics, data visualization, professional dashboards
+    - Split slides: Relevant professional imagery supporting the content
+    - List slides: Conceptual imagery that enhances understanding
+    - Process slides: Workflow, teamwork, step-by-step visuals
 
-    PROFESSIONAL IMAGE SELECTION:
-    - Business/Startup: Team meetings, office spaces, growth charts, handshakes
-    - Technology: Modern devices, coding, innovation, digital transformation
-    - Education: Learning environments, students, academic settings
-    - Marketing: Creative teams, campaigns, analytics, customer engagement
-    - Finance: Professional meetings, charts, banking, investment
-
-    CHART DATA REQUIREMENTS:
-    - Use realistic business metrics relevant to the topic
-    - Include proper labels and meaningful categories
-    - Ensure data tells a story and supports key messages
+    CHART DATA REQUIREMENTS (for chart slides):
+    - Use realistic business metrics relevant to "${prompt}"
+    - Include 4-6 data points minimum
+    - Ensure data supports the narrative
     - Use professional color schemes
-    - Include legends and grid lines for clarity
+    - Include proper labels and categories
 
-    Topic Analysis for "${prompt}":
-    Create slides that flow logically and tell a compelling story with professional visuals.`;
+    PROFESSIONAL IMAGE SELECTION BY TOPIC:
+    - Business/Startup: Team meetings, handshakes, office spaces, growth charts, professional presentations
+    - Technology: Modern devices, coding environments, innovation labs, digital transformation, tech teams
+    - Education: Learning environments, students, academic settings, knowledge sharing, training
+    - Marketing: Creative teams, campaigns, customer engagement, brand development, analytics
+    - Finance: Professional meetings, banking, investment, financial planning, market analysis
+
+    ENSURE EVERY SLIDE HAS:
+    1. A compelling, action-oriented title
+    2. A high-quality professional image URL
+    3. Relevant, engaging content
+    4. Proper visual hierarchy
+    5. Charts/graphs where appropriate (minimum 30% of slides)`;
 
     const result = await model.generateContent(systemPrompt);
     const response = await result.response;
     const jsonText = extractJsonFromMarkdown(response.text());
     const outlines = JSON.parse(jsonText);
 
-    // Enhance outlines with professional styling and ensure all visual elements
+    // GUARANTEE every slide has professional images and proper chart distribution
     const enhancedOutlines = outlines.map((outline: any, index: number) => {
-      // Ensure proper professional image URLs
+      // Ensure EVERY slide has a professional image
+      const professionalImageIds = [
+        3184291, 3184292, 3184293, 3184294, 3184295, 3184296, 3184297, 3184298, 3184299, 3184300,
+        3184311, 3184312, 3184313, 3184314, 3184315, 3184316, 3184317, 3184318, 3184319, 3184320,
+        3184321, 3184322, 3184323, 3184324, 3184325, 3184326, 3184327, 3184328, 3184329, 3184330,
+        3184331, 3184332, 3184333, 3184334, 3184335, 3184336, 3184337, 3184338, 3184339, 3184340,
+        3184341, 3184342, 3184343, 3184344, 3184345, 3184346, 3184347, 3184348, 3184349, 3184350
+      ];
+      
+      // FORCE image URL if missing
       if (!outline.imageUrl || !outline.imageUrl.includes('pexels.com')) {
-        const professionalImageIds = [
-          3184291, 3184292, 3184293, 3184294, 3184295, 3184296, 3184297, 3184298, 3184299, 3184300,
-          3184311, 3184312, 3184313, 3184314, 3184315, 3184316, 3184317, 3184318, 3184319, 3184320,
-          3184321, 3184322, 3184323, 3184324, 3184325, 3184326, 3184327, 3184328, 3184329, 3184330
-        ];
         const randomId = professionalImageIds[index % professionalImageIds.length];
         outline.imageUrl = `https://images.pexels.com/photos/${randomId}/pexels-photo-${randomId}.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800`;
       }
 
-      // Enhance chart data for professional presentations
-      if (outline.type === 'chart' && outline.chartData) {
-        if (!outline.chartData.data || outline.chartData.data.length === 0) {
-          outline.chartData.data = generateProfessionalChartData(outline.chartData.type, prompt);
-        }
-        
-        // Ensure professional chart styling
+      // FORCE chart data for chart slides and ensure 30% have charts
+      if (outline.type === 'chart' || (index % 3 === 1 && !outline.chartData)) {
+        outline.type = 'chart';
+        outline.chartData = outline.chartData || generateProfessionalChartData('bar', prompt);
         outline.chartData.colors = outline.chartData.colors || ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6"];
         outline.chartData.showLegend = true;
         outline.chartData.showGrid = true;
         outline.chartData.title = outline.chartData.title || outline.title;
       }
 
-      // Ensure professional image queries
+      // FORCE professional image queries if missing
       if (!outline.imageQuery) {
         outline.imageQuery = generateProfessionalImageQuery(outline.type, outline.title, prompt);
       }
@@ -153,7 +163,7 @@ export async function generatePresentationOutline({
   }
 }
 
-// Enhanced full presentation generator with professional Canva-style templates
+// Enhanced full presentation generator with GUARANTEED visuals
 export async function generatePresentation({ 
   outlines,
   template = "modern-business",
@@ -167,18 +177,23 @@ export async function generatePresentation({
     await validateApiConnection();
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
-    const systemPrompt = `Generate a PROFESSIONAL presentation with CANVA-STYLE DESIGN based on these outlines and template: "${template}"
+    const systemPrompt = `Generate a PROFESSIONAL presentation with GUARANTEED IMAGES AND CHARTS for every slide.
 
     Original prompt: "${prompt}"
     Template: ${template}
     Outlines: ${JSON.stringify(outlines)}
 
-    Create slides with PROFESSIONAL STYLING like Canva/Gamma.app. Use this JSON structure:
+    CRITICAL REQUIREMENTS - EVERY SLIDE MUST HAVE:
+    1. A professional high-quality image from Pexels
+    2. Meaningful charts for data slides (30% minimum)
+    3. Canva-style professional design
+
+    Create slides with this JSON structure:
     [
       {
         "id": 1,
         "title": "Compelling Professional Title",
-        "content": "Engaging content that tells a story (2-3 sentences)",
+        "content": "Engaging story-driven content (2-3 sentences)",
         "layout": "cover|list|chart|split|process|text",
         "bullets": ["specific actionable point 1", "measurable result 2", "strategic insight 3"] (if applicable),
         "charts": {
@@ -193,7 +208,7 @@ export async function generatePresentation({
           "colors": ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6"],
           "showLegend": true,
           "showGrid": true
-        } (if chart layout),
+        } (REQUIRED for chart layout, OPTIONAL for others),
         "image": "https://images.pexels.com/photos/[ID]/pexels-photo-[ID].jpeg?auto=compress&cs=tinysrgb&w=1200&h=800",
         "imageAlt": "Professional descriptive alt text",
         "imagePosition": "center|top|left|right",
@@ -210,67 +225,62 @@ export async function generatePresentation({
       }
     ]
 
-    PROFESSIONAL DESIGN REQUIREMENTS:
-    1. Use REAL, high-quality Pexels images for every slide
-    2. Generate MEANINGFUL chart data that supports the narrative
-    3. Ensure professional color schemes and typography
-    4. Create compelling titles that grab attention
-    5. Write content that flows logically and tells a story
-    6. Use bullet points that are specific and actionable
+    MANDATORY VISUAL REQUIREMENTS:
+    1. EVERY slide MUST have a working Pexels image URL
+    2. Chart slides MUST have realistic, meaningful data
+    3. Images MUST be relevant to slide content
+    4. Charts MUST support the narrative with proper styling
+    5. Professional color schemes throughout
 
-    TEMPLATE-SPECIFIC STYLING:
-    - modern-business: Clean corporate design, blue gradients, professional imagery
-    - creative-gradient: Vibrant gradients, modern layouts, creative visuals
-    - minimalist-pro: Ultra-clean design, subtle shadows, perfect spacing
-    - tech-modern: Futuristic design, neon accents, tech-inspired layouts
-    - elegant-dark: Sophisticated dark theme, gold accents, luxury feel
-    - startup-pitch: Dynamic design, growth-focused, investor-ready
+    CONTENT QUALITY REQUIREMENTS:
+    - Compelling titles that grab attention
+    - Story-driven content that flows logically
+    - Specific, actionable bullet points
+    - Professional language and tone
+    - Consistent messaging throughout
 
-    CONTENT GUIDELINES:
-    - Make titles compelling and action-oriented
-    - Write content that tells a cohesive story
-    - Use bullet points that are specific and measurable
-    - Ensure chart data supports key messages
-    - Choose images that enhance understanding and engagement
-
-    VISUAL HIERARCHY:
-    - Use consistent spacing and alignment
-    - Apply proper contrast ratios for readability
-    - Include subtle animations for engagement
-    - Maintain brand consistency throughout
-    - Optimize for both desktop and mobile viewing`;
+    TEMPLATE STYLING FOR ${template}:
+    Apply professional design principles with consistent branding, proper typography, and visual hierarchy.`;
 
     const result = await model.generateContent(systemPrompt);
     const response = await result.response;
     const jsonText = extractJsonFromMarkdown(response.text());
     const slides = JSON.parse(jsonText);
 
-    // Enhance slides with professional template styling
+    // GUARANTEE every slide has professional visuals
     const enhancedSlides = slides.map((slide: any, index: number) => {
       const templateStyles = getProfessionalTemplateStyles(template);
       
-      // Ensure every slide has a professional image
+      // FORCE professional image for every slide
+      const professionalImageIds = [
+        3184291, 3184292, 3184293, 3184294, 3184295, 3184296, 3184297, 3184298, 3184299, 3184300,
+        3184311, 3184312, 3184313, 3184314, 3184315, 3184316, 3184317, 3184318, 3184319, 3184320,
+        3184321, 3184322, 3184323, 3184324, 3184325, 3184326, 3184327, 3184328, 3184329, 3184330,
+        3184331, 3184332, 3184333, 3184334, 3184335, 3184336, 3184337, 3184338, 3184339, 3184340,
+        3184341, 3184342, 3184343, 3184344, 3184345, 3184346, 3184347, 3184348, 3184349, 3184350,
+        3184351, 3184352, 3184353, 3184354, 3184355, 3184356, 3184357, 3184358, 3184359, 3184360
+      ];
+      
       if (!slide.image || !slide.image.includes('pexels.com')) {
-        const professionalImageIds = [
-          3184291, 3184292, 3184293, 3184294, 3184295, 3184296, 3184297, 3184298, 3184299, 3184300,
-          3184311, 3184312, 3184313, 3184314, 3184315, 3184316, 3184317, 3184318, 3184319, 3184320,
-          3184321, 3184322, 3184323, 3184324, 3184325, 3184326, 3184327, 3184328, 3184329, 3184330,
-          3184331, 3184332, 3184333, 3184334, 3184335, 3184336, 3184337, 3184338, 3184339, 3184340
-        ];
         const randomId = professionalImageIds[index % professionalImageIds.length];
         slide.image = `https://images.pexels.com/photos/${randomId}/pexels-photo-${randomId}.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800`;
       }
 
-      // Enhance chart data with professional styling
-      if (slide.charts && slide.layout === 'chart') {
+      // FORCE chart data for chart slides and ensure proper distribution
+      if (slide.layout === 'chart' || (slide.charts && slide.charts.type)) {
+        slide.layout = 'chart';
+        slide.charts = slide.charts || {};
         slide.charts.colors = slide.charts.colors || templateStyles.chartColors;
         slide.charts.showLegend = true;
         slide.charts.showGrid = true;
         
-        // Ensure meaningful chart data
+        // GUARANTEE meaningful chart data
         if (!slide.charts.data || slide.charts.data.length === 0) {
-          slide.charts.data = generateProfessionalChartData(slide.charts.type, prompt);
+          slide.charts.data = generateProfessionalChartData(slide.charts.type || 'bar', prompt);
+          slide.charts.type = slide.charts.type || 'bar';
         }
+        
+        slide.charts.title = slide.charts.title || slide.title;
       }
 
       return {
@@ -296,7 +306,7 @@ export async function generatePresentation({
   }
 }
 
-// Professional template styles like Canva
+// Professional template styles with enhanced chart colors
 function getProfessionalTemplateStyles(template: string) {
   const styles = {
     'modern-business': {
@@ -304,49 +314,49 @@ function getProfessionalTemplateStyles(template: string) {
       textColor: '#1e3a8a',
       accentColor: '#3b82f6',
       borderColor: '#dbeafe',
-      chartColors: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
+      chartColors: ['#3b82f6', '#1e40af', '#1d4ed8', '#2563eb', '#3b82f6']
     },
     'creative-gradient': {
       backgroundColor: '#ffffff',
       textColor: '#7c2d92',
       accentColor: '#a855f7',
       borderColor: '#e9d5ff',
-      chartColors: ['#a855f7', '#ec4899', '#f97316', '#10b981', '#3b82f6']
+      chartColors: ['#a855f7', '#9333ea', '#7c3aed', '#8b5cf6', '#a855f7']
     },
     'minimalist-pro': {
       backgroundColor: '#ffffff',
       textColor: '#374151',
       accentColor: '#6b7280',
       borderColor: '#e5e7eb',
-      chartColors: ['#6b7280', '#9ca3af', '#d1d5db', '#374151', '#111827']
+      chartColors: ['#6b7280', '#4b5563', '#374151', '#9ca3af', '#6b7280']
     },
     'tech-modern': {
       backgroundColor: '#0f172a',
       textColor: '#ffffff',
       accentColor: '#06b6d4',
       borderColor: '#164e63',
-      chartColors: ['#06b6d4', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444']
+      chartColors: ['#06b6d4', '#0891b2', '#0e7490', '#155e75', '#06b6d4']
     },
     'elegant-dark': {
       backgroundColor: '#111827',
       textColor: '#ffffff',
       accentColor: '#fbbf24',
       borderColor: '#374151',
-      chartColors: ['#fbbf24', '#f59e0b', '#d97706', '#92400e', '#451a03']
+      chartColors: ['#fbbf24', '#f59e0b', '#d97706', '#b45309', '#fbbf24']
     },
     'startup-pitch': {
       backgroundColor: '#ffffff',
       textColor: '#065f46',
       accentColor: '#10b981',
       borderColor: '#d1fae5',
-      chartColors: ['#10b981', '#059669', '#047857', '#065f46', '#064e3b']
+      chartColors: ['#10b981', '#059669', '#047857', '#065f46', '#10b981']
     }
   };
   
   return styles[template as keyof typeof styles] || styles['modern-business'];
 }
 
-// Generate professional chart data based on topic
+// Generate professional chart data with guaranteed meaningful content
 function generateProfessionalChartData(chartType: string, topic: string) {
   const isBusinessTopic = topic.toLowerCase().includes('business') || topic.toLowerCase().includes('startup') || topic.toLowerCase().includes('revenue') || topic.toLowerCase().includes('growth');
   const isTechTopic = topic.toLowerCase().includes('tech') || topic.toLowerCase().includes('software') || topic.toLowerCase().includes('ai') || topic.toLowerCase().includes('digital');
@@ -363,11 +373,11 @@ function generateProfessionalChartData(chartType: string, topic: string) {
       ];
     } else if (isTechTopic) {
       return [
-        { name: "Frontend", value: 45, category: "Development Hours" },
-        { name: "Backend", value: 38, category: "Development Hours" },
-        { name: "Database", value: 28, category: "Development Hours" },
-        { name: "DevOps", value: 22, category: "Development Hours" },
-        { name: "Testing", value: 18, category: "Development Hours" }
+        { name: "Frontend", value: 45, category: "Development %" },
+        { name: "Backend", value: 38, category: "Development %" },
+        { name: "Database", value: 28, category: "Development %" },
+        { name: "DevOps", value: 22, category: "Development %" },
+        { name: "Testing", value: 18, category: "Development %" }
       ];
     } else if (isMarketingTopic) {
       return [
@@ -424,7 +434,7 @@ function generateProfessionalChartData(chartType: string, topic: string) {
     }
   }
 
-  // Default professional data
+  // Enhanced default professional data
   return [
     { name: "Category A", value: 65 },
     { name: "Category B", value: 78 },
@@ -434,21 +444,29 @@ function generateProfessionalChartData(chartType: string, topic: string) {
   ];
 }
 
-// Generate professional image queries
+// Generate professional image queries with guaranteed relevance
 function generateProfessionalImageQuery(slideType: string, title: string, topic: string) {
   const isBusinessTopic = topic.toLowerCase().includes('business') || topic.toLowerCase().includes('startup');
   const isTechTopic = topic.toLowerCase().includes('tech') || topic.toLowerCase().includes('software');
+  const isMarketingTopic = topic.toLowerCase().includes('marketing') || topic.toLowerCase().includes('brand');
   
   if (slideType === 'cover') {
-    if (isBusinessTopic) return "professional business team meeting modern office";
-    if (isTechTopic) return "modern technology workspace coding development";
-    return "professional presentation business meeting";
+    if (isBusinessTopic) return "professional business team meeting modern office boardroom";
+    if (isTechTopic) return "modern technology workspace coding development team";
+    if (isMarketingTopic) return "creative marketing team brainstorming session";
+    return "professional presentation business meeting conference";
   } else if (slideType === 'chart') {
-    return "business analytics data visualization charts";
+    return "business analytics data visualization charts dashboard professional";
   } else if (slideType === 'split') {
-    if (isBusinessTopic) return "professional business handshake partnership";
+    if (isBusinessTopic) return "professional business handshake partnership collaboration";
     if (isTechTopic) return "modern technology innovation digital transformation";
-    return "professional business collaboration";
+    if (isMarketingTopic) return "creative marketing campaign strategy planning";
+    return "professional business collaboration teamwork";
+  } else if (slideType === 'list') {
+    if (isBusinessTopic) return "business strategy planning professional meeting";
+    if (isTechTopic) return "technology innovation development process";
+    if (isMarketingTopic) return "marketing strategy creative planning";
+    return "professional business planning strategy";
   }
   
   return "professional business presentation modern office";
