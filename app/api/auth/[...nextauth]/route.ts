@@ -5,8 +5,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import type { NextAuthOptions } from "next-auth";
 
-const handler = NextAuth({
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -20,7 +21,7 @@ const handler = NextAuth({
         }
 
         // Create Supabase client within the request context
-        const supabase = createRouteHandlerClient({ cookies: () => cookies() });
+        const supabase = createRouteHandlerClient({ cookies });
         
         // Get user from Supabase
         const { data: user, error } = await supabase
@@ -56,12 +57,8 @@ const handler = NextAuth({
   pages: {
     signIn: "/auth/signin",
   },
-  // Optional: Add Supabase adapter if you want to use it for sessions
-  // You'll need to install @next-auth/supabase-adapter
-  // adapter: SupabaseAdapter({
-  //   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  //   supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  // }),
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
