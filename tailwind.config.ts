@@ -90,54 +90,11 @@ const config: Config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'float': 'float 20s ease-in-out infinite',
       },
-      perspective: {
-        '1000': '1000px',
-      },
-      transformStyle: {
-        'preserve-3d': 'preserve-3d',
-      },
-      backfaceVisibility: {
-        'hidden': 'hidden',
-      },
       boxShadow: {
         '3xl': '0 35px 60px -12px rgba(0, 0, 0, 0.25)',
       },
     },
   },
-  plugins: [
-    require('tailwindcss-animate'),
-    function({ addUtilities }: any) {
-      const newUtilities = {
-        '.perspective-1000': {
-          perspective: '1000px',
-        },
-        '.transform-style-3d': {
-          transformStyle: 'preserve-3d',
-        },
-        '.backface-hidden': {
-          backfaceVisibility: 'hidden',
-        },
-        '.rotate-x-2': {
-          transform: 'rotateX(2deg)',
-        },
-        '.rotate-x-3': {
-          transform: 'rotateX(3deg)',
-        },
-        '.rotate-x-6': {
-          transform: 'rotateX(6deg)',
-        },
-        '.rotate-y-2': {
-          transform: 'rotateY(2deg)',
-        },
-        '.rotate-y-6': {
-          transform: 'rotateY(6deg)',
-        },
-        '.rotate-y-12': {
-          transform: 'rotateY(12deg)',
-        },
-      }
-      addUtilities(newUtilities)
-    }
-  ],
+  plugins: [require('tailwindcss-animate')],
 };
 export default config;
