@@ -78,12 +78,12 @@ export function LetterGenerator() {
       // Ensure the letter object has the expected structure
       const formattedLetter = {
         from: {
-          name: fromName,
-          address: fromAddress
+          name: data.from?.name || fromName,
+          address: data.from?.address || fromAddress || ""
         },
         to: {
-          name: toName,
-          address: toAddress
+          name: data.to?.name || toName,
+          address: data.to?.address || toAddress || ""
         },
         date: data.date || new Date().toLocaleDateString('en-US', {
           year: 'numeric',
@@ -91,7 +91,7 @@ export function LetterGenerator() {
           day: 'numeric'
         }),
         subject: data.subject || "Re: " + prompt.substring(0, 30) + "...",
-        content: data.letter || data.content || "Letter content not available."
+        content: data.content || "Letter content not available."
       };
       
       setLetterData(formattedLetter);
@@ -145,7 +145,6 @@ ${letterData.content || ''}
         variant: "destructive",
       });
     } finally {
-      setIsCopying(false);
       setTimeout(() => setIsCopying(false), 2000);
     }
   };

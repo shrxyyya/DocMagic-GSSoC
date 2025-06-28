@@ -3,7 +3,6 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { generateLetter } from '@/lib/gemini';
 
-// Only export HTTP methods (GET, POST, etc.)
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -28,12 +27,12 @@ export async function POST(request: Request) {
     // Format the response to ensure it has the expected structure
     const formattedResponse = {
       from: {
-        name: fromName,
-        address: fromAddress || ""
+        name: letter.from?.name || fromName,
+        address: letter.from?.address || fromAddress || ""
       },
       to: {
-        name: toName,
-        address: toAddress || ""
+        name: letter.to?.name || toName,
+        address: letter.to?.address || toAddress || ""
       },
       date: letter.date || new Date().toLocaleDateString('en-US', {
         year: 'numeric',
