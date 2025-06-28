@@ -19,15 +19,15 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 45 93% 47%;
-    --primary-foreground: 0 0% 98%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 47 96% 53%;
+    --primary-foreground: 0 0% 9%;
     --secondary: 210 40% 98%;
-    --secondary-foreground: 222.2 84% 4.9%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
     --accent: 210 40% 94%;
@@ -36,38 +36,40 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 45 93% 47%;
-    --chart-1: 45 93% 47%;
-    --chart-2: 210 100% 50%;
+    --ring: 47 96% 53%;
+    --chart-1: 47 96% 53%;
+    --chart-2: 221 83% 53%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.75rem;
-    --bolt-gold: 45 93% 47%;
-    --bolt-blue: 210 100% 50%;
+    --bolt-gold: 47 96% 53%;
+    --bolt-blue: 221 83% 53%;
+    --bolt-purple: 262 83% 58%;
+    --bolt-cyan: 189 94% 43%;
   }
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 45 93% 47%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+    --primary: 47 96% 53%;
+    --primary-foreground: 224 71% 4%;
+    --secondary: 215 27.9% 16.9%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+    --accent: 215 27.9% 16.9%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 45 93% 47%;
-    --chart-1: 45 93% 47%;
-    --chart-2: 210 100% 50%;
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 47 96% 53%;
+    --chart-1: 47 96% 53%;
+    --chart-2: 221 83% 53%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
@@ -80,20 +82,44 @@
   }
   body {
     @apply bg-background text-foreground;
+    background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(120, 119, 198, 0.3), transparent),
+                radial-gradient(ellipse 80% 80% at 80% 80%, rgba(255, 214, 0, 0.15), transparent);
+  }
+  .dark body {
+    background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(120, 119, 198, 0.15), transparent),
+                radial-gradient(ellipse 80% 80% at 80% 80%, rgba(255, 214, 0, 0.08), transparent);
   }
 }
 
-/* Custom animations for Bolt.new style */
+/* Enhanced animations for Bolt.new style */
 @keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  25% { transform: translateY(-20px) rotate(90deg); }
-  50% { transform: translateY(-10px) rotate(180deg); }
-  75% { transform: translateY(-15px) rotate(270deg); }
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg) scale(1); 
+    opacity: 0.7;
+  }
+  25% { 
+    transform: translateY(-20px) rotate(90deg) scale(1.1); 
+    opacity: 0.9;
+  }
+  50% { 
+    transform: translateY(-10px) rotate(180deg) scale(1.05); 
+    opacity: 1;
+  }
+  75% { 
+    transform: translateY(-15px) rotate(270deg) scale(1.1); 
+    opacity: 0.8;
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(251, 191, 36, 0.6); }
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(255, 214, 0, 0.4), 0 0 40px rgba(59, 130, 246, 0.2);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(255, 214, 0, 0.6), 0 0 80px rgba(59, 130, 246, 0.4);
+    transform: scale(1.02);
+  }
 }
 
 @keyframes gradient-shift {
@@ -102,38 +128,223 @@
   100% { background-position: 0% 50%; }
 }
 
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes bounce-in {
+  0% { 
+    transform: scale(0.3) rotate(-10deg);
+    opacity: 0;
+  }
+  50% { 
+    transform: scale(1.05) rotate(5deg);
+    opacity: 0.8;
+  }
+  70% { 
+    transform: scale(0.9) rotate(-2deg);
+    opacity: 0.9;
+  }
+  100% { 
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .animate-float {
   animation: float 20s ease-in-out infinite;
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+  animation: pulse-glow 3s ease-in-out infinite;
 }
 
 .animate-gradient {
   background-size: 200% 200%;
-  animation: gradient-shift 3s ease infinite;
+  animation: gradient-shift 4s ease infinite;
 }
 
-/* Bolt.new inspired gradients */
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out;
+}
+
+/* Enhanced Bolt.new inspired gradients */
 .bolt-gradient {
-  background: linear-gradient(135deg, hsl(var(--bolt-gold)) 0%, hsl(var(--bolt-blue)) 100%);
+  background: linear-gradient(135deg, 
+    hsl(var(--bolt-gold)) 0%, 
+    hsl(var(--bolt-blue)) 50%, 
+    hsl(var(--bolt-purple)) 100%);
 }
 
 .bolt-gradient-text {
-  background: linear-gradient(135deg, hsl(var(--bolt-gold)) 0%, hsl(var(--bolt-blue)) 100%);
+  background: linear-gradient(135deg, 
+    hsl(var(--bolt-gold)) 0%, 
+    hsl(var(--bolt-blue)) 50%, 
+    hsl(var(--bolt-purple)) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
 }
 
 .glass-effect {
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .dark .glass-effect {
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.dark .glass-card {
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Gradient backgrounds */
+.gradient-gold {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+}
+
+.gradient-blue {
+  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+}
+
+.gradient-purple {
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+}
+
+.gradient-cyan {
+  background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Shimmer effect */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+/* Text effects */
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(255, 214, 0, 0.5);
+}
+
+/* Button enhancements */
+.btn-bolt {
+  background: linear-gradient(135deg, hsl(var(--bolt-gold)) 0%, hsl(var(--bolt-blue)) 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-bolt::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-bolt:hover::before {
+  left: 100%;
+}
+
+.btn-bolt:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Card enhancements */
+.card-bolt {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.card-bolt:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 214, 0, 0.3);
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .animate-float {
+    animation-duration: 15s;
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(10px);
+  }
 }
