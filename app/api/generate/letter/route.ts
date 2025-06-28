@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { generateLetter } from '@/lib/gemini';
 
+// Only export HTTP methods (GET, POST, etc.)
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -23,7 +24,7 @@ export async function POST(request: Request) {
       toAddress,
       letterType,
     });
-    return NextResponse.json(letter);
+    return NextResponse.json({ letter });
   } catch (error) {
     console.error('Error generating letter:', error);
     return NextResponse.json(
@@ -32,3 +33,5 @@ export async function POST(request: Request) {
     );
   }
 }
+
+// Remove any other exports, especially named exports

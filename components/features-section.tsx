@@ -2,7 +2,7 @@ import { CheckCircle, FileText, PresentationIcon as LayoutPresentationIcon, Book
 
 export function FeaturesSection() {
   return (
-    <div className="py-24 sm:py-32" id="how-it-works">
+    <div className="py-20 sm:py-32" id="how-it-works">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
           <h2 className="text-base font-semibold leading-7 text-primary">How It Works</h2>
