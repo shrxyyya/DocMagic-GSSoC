@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { PresentationPreview } from "@/components/presentation/presentation-preview";
 import { PresentationTemplates } from "@/components/presentation/presentation-templates";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Sparkles, Presentation as LayoutPresentation, Lock, Download, Wand2, Slides, Palette } from "lucide-react";
+import { Loader2, Sparkles, Presentation as LayoutPresentation, Lock, Download, Wand2, Sliders as Slides, Palette } from "lucide-react";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import pptxgen from 'pptxgenjs';
