@@ -13,15 +13,18 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create a test SMTP transporter
-    // In production, you would use your actual SMTP credentials
+    // Create a test SMTP transporter using Ethereal
+    // For testing purposes, we'll create a test account
+    const testAccount = await nodemailer.createTestAccount();
+
+    // Create reusable transporter object using the test account
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_SECURE === 'true',
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false, // true for 465, false for other ports
       auth: {
-        user: process.env.SMTP_USER || 'ethereal.user@ethereal.email',
-        pass: process.env.SMTP_PASSWORD || 'ethereal_pass',
+        user: testAccount.user,
+        pass: testAccount.pass,
       },
     });
 
@@ -50,24 +53,34 @@ export async function POST(request: Request) {
       </div>
     `;
 
+    // Additional personal message if provided
+    const personalMessage = content ? 
+      `<div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+        <p><em>Personal message:</em></p>
+        <p>${content}</p>
+      </div>` : '';
+
     // Send email
     const info = await transporter.sendMail({
-      from: `"${fromName}" <${fromEmail || process.env.SMTP_FROM_EMAIL || 'noreply@docmagic.com'}>`,
+      from: `"${fromName}" <${fromEmail || 'noreply@docmagic.com'}>`,
       to,
       subject,
-      html: formattedContent,
-      text: content || letterContent.content || '',
+      html: `${formattedContent}${personalMessage}`,
+      text: `${letterContent.content || ''}\n\n${content ? `Personal message: ${content}` : ''}`,
     });
+
+    // Get the Ethereal URL for viewing the test email
+    const previewUrl = nodemailer.getTestMessageUrl(info);
 
     return NextResponse.json({
       success: true,
       messageId: info.messageId,
-      previewUrl: nodemailer.getTestMessageUrl(info),
+      previewUrl
     });
   } catch (error) {
     console.error('Error sending email:', error);
     return NextResponse.json(
-      { error: 'Failed to send email' },
+      { error: error instanceof Error ? error.message : 'Failed to send email' },
       { status: 500 }
     );
   }
