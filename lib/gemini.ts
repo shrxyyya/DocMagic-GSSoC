@@ -472,56 +472,198 @@ function generateProfessionalImageQuery(slideType: string, title: string, topic:
   return "professional business presentation modern office";
 }
 
-// Original resume and letter generators remain unchanged
-export async function generateResume({ 
-  prompt, 
-  name, 
-  email 
+// ENHANCED ATS-OPTIMIZED RESUME GENERATOR WITH GUIDED INPUT
+export async function generateGuidedResume({ 
+  personalInfo,
+  professionalSummary,
+  workExperience,
+  education,
+  skills,
+  projects,
+  certifications,
+  links,
+  targetRole,
+  jobDescription
 }: { 
-  prompt: string; 
-  name: string; 
-  email: string;
+  personalInfo: any;
+  professionalSummary: string;
+  workExperience: any[];
+  education: any[];
+  skills: string[];
+  projects: any[];
+  certifications: any[];
+  links: any;
+  targetRole: string;
+  jobDescription?: string;
 }) {
   try {
     await validateApiConnection();
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
-    const systemPrompt = `Create a professional resume for ${name} (${email}) based on: ${prompt}. 
-    Return as JSON with structure:
+    const systemPrompt = `Create a 100% ATS-OPTIMIZED professional resume based on the provided information.
+
+    CRITICAL ATS REQUIREMENTS:
+    1. Use EXACT keywords from the target role: "${targetRole}"
+    2. Include quantifiable achievements with numbers and percentages
+    3. Use standard section headers that ATS systems recognize
+    4. Optimize for keyword density without keyword stuffing
+    5. Use action verbs and industry-specific terminology
+    6. Include relevant technical skills and certifications
+    7. Format for maximum ATS compatibility
+
+    TARGET ROLE: ${targetRole}
+    ${jobDescription ? `JOB DESCRIPTION KEYWORDS: ${jobDescription}` : ''}
+
+    PROVIDED INFORMATION:
+    Personal Info: ${JSON.stringify(personalInfo)}
+    Professional Summary: ${professionalSummary}
+    Work Experience: ${JSON.stringify(workExperience)}
+    Education: ${JSON.stringify(education)}
+    Skills: ${JSON.stringify(skills)}
+    Projects: ${JSON.stringify(projects)}
+    Certifications: ${JSON.stringify(certifications)}
+    Professional Links: ${JSON.stringify(links)}
+
+    Return as JSON with this EXACT ATS-optimized structure:
     {
-      name: string,
-      email: string,
-      phone: string,
-      location: string,
-      summary: string,
-      experience: Array<{
-        title: string,
-        company: string,
-        date: string,
-        description: string[]
-      }>,
-      education: Array<{
-        degree: string,
-        institution: string,
-        date: string
-      }>,
-      skills: string[],
-      projects: Array<{
-        name: string,
-        description: string
-      }>
-    }`;
+      "name": "${personalInfo.name}",
+      "email": "${personalInfo.email}",
+      "phone": "${personalInfo.phone}",
+      "location": "${personalInfo.location}",
+      "linkedin": "${links.linkedin || ''}",
+      "github": "${links.github || ''}",
+      "website": "${links.website || ''}",
+      "portfolio": "${links.portfolio || ''}",
+      "summary": "ATS-optimized professional summary with target role keywords",
+      "experience": [
+        {
+          "title": "Job title with relevant keywords",
+          "company": "Company name",
+          "location": "City, State",
+          "date": "MM/YYYY - MM/YYYY",
+          "description": [
+            "• Quantified achievement with numbers/percentages using action verbs",
+            "• Technical accomplishment with relevant keywords for ${targetRole}",
+            "• Leadership/collaboration example with measurable impact"
+          ]
+        }
+      ],
+      "education": [
+        {
+          "degree": "Degree type and field",
+          "institution": "University/College name",
+          "location": "City, State",
+          "date": "MM/YYYY",
+          "gpa": "X.X/4.0 (if 3.5+)",
+          "honors": "Relevant honors/achievements"
+        }
+      ],
+      "skills": {
+        "technical": ["keyword-optimized technical skills for ${targetRole}"],
+        "programming": ["relevant programming languages/frameworks"],
+        "tools": ["industry-standard tools and software"],
+        "soft": ["leadership, communication, problem-solving skills"]
+      },
+      "projects": [
+        {
+          "name": "Project name with relevant keywords",
+          "description": "Brief description with technologies and quantified results",
+          "technologies": ["tech stack used"],
+          "link": "project URL if available"
+        }
+      ],
+      "certifications": [
+        {
+          "name": "Certification name",
+          "issuer": "Issuing organization",
+          "date": "MM/YYYY",
+          "credential": "Credential ID if available"
+        }
+      ],
+      "atsScore": 95,
+      "keywordOptimization": {
+        "targetKeywords": ["extracted keywords from target role"],
+        "includedKeywords": ["keywords successfully included"],
+        "density": "optimal keyword density achieved"
+      }
+    }
+
+    ATS OPTIMIZATION RULES:
+    1. Use standard section headers: "Professional Summary", "Work Experience", "Education", "Skills", "Projects", "Certifications"
+    2. Include 15-20 relevant keywords from the target role naturally throughout
+    3. Start bullet points with strong action verbs (Led, Developed, Implemented, Optimized, etc.)
+    4. Include quantifiable metrics (increased by X%, reduced by Y hours, managed $Z budget)
+    5. Use industry-standard terminology and acronyms
+    6. Ensure 2-3 keyword mentions per job description
+    7. Include both hard and soft skills relevant to the role
+    8. Format dates consistently (MM/YYYY)
+    9. Use professional language and avoid personal pronouns
+    10. Include relevant certifications and technical proficiencies
+
+    KEYWORD EXTRACTION FROM TARGET ROLE:
+    - Extract 15-20 most important keywords from "${targetRole}"
+    - Include technical skills, soft skills, and industry terms
+    - Naturally integrate keywords into experience descriptions
+    - Ensure keyword density of 2-3% throughout the resume
+
+    MAKE THE RESUME 100% ATS-COMPATIBLE AND KEYWORD-OPTIMIZED FOR MAXIMUM SCORING.`;
 
     const result = await model.generateContent(systemPrompt);
     const response = await result.response;
     const jsonText = extractJsonFromMarkdown(response.text());
     return JSON.parse(jsonText);
   } catch (error) {
-    console.error("Error generating resume:", error);
-    throw new Error(`Failed to generate resume: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    console.error("Error generating guided resume:", error);
+    throw new Error(`Failed to generate guided resume: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
+// ENHANCED RESUME STEP GUIDANCE GENERATOR
+export async function generateResumeStepGuidance(step: string, targetRole: string, existingData?: any) {
+  try {
+    await validateApiConnection();
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    
+    const systemPrompt = `Provide intelligent, personalized guidance for the "${step}" section of a resume targeting: "${targetRole}".
+
+    CURRENT STEP: ${step}
+    TARGET ROLE: ${targetRole}
+    EXISTING DATA: ${existingData ? JSON.stringify(existingData) : 'None'}
+
+    Provide guidance as JSON:
+    {
+      "stepTitle": "Section name",
+      "description": "Why this section is important for ATS and recruiters",
+      "tips": [
+        "Specific, actionable tip 1 for ${targetRole}",
+        "Keyword optimization tip 2",
+        "ATS-friendly formatting tip 3"
+      ],
+      "examples": [
+        "Example 1 relevant to ${targetRole}",
+        "Example 2 with quantified results"
+      ],
+      "keywords": ["relevant keywords for this section targeting ${targetRole}"],
+      "commonMistakes": [
+        "Common mistake 1 to avoid",
+        "ATS-unfriendly practice 2"
+      ],
+      "nextStep": "What to focus on next"
+    }
+
+    Make guidance specific to ${targetRole} and include ATS optimization tips.`;
+
+    const result = await model.generateContent(systemPrompt);
+    const response = await result.response;
+    const jsonText = extractJsonFromMarkdown(response.text());
+    return JSON.parse(jsonText);
+  } catch (error) {
+    console.error("Error generating step guidance:", error);
+    throw new Error(`Failed to generate step guidance: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
+// Original letter generator remains unchanged
 export async function generateLetter({ 
   prompt, 
   fromName, 
@@ -561,7 +703,7 @@ export async function generateLetter({
   }
 }
 
-// ATS score generator remains unchanged
+// ENHANCED ATS ANALYSIS WITH DETAILED SCORING
 export async function generateATSScore({ 
   resumeContent, 
   jobDescription 
@@ -573,19 +715,65 @@ export async function generateATSScore({
     await validateApiConnection();
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
-    const systemPrompt = `Analyze resume against job description:
-    Resume: ${resumeContent}
-    Job: ${jobDescription}
-    Return JSON with:
+    const systemPrompt = `Perform a comprehensive ATS analysis of the resume against the job description.
+
+    RESUME CONTENT: ${resumeContent}
+    JOB DESCRIPTION: ${jobDescription}
+
+    Provide detailed ATS scoring and analysis as JSON:
     {
-      score: number,
-      analysis: {
-        keywordMatch: { found: string[], missing: string[] },
-        formatIssues: string[],
-        sectionScores: { skills: number, experience: number, education: number }
+      "overallScore": number (0-100),
+      "analysis": {
+        "keywordMatch": {
+          "found": ["keyword1", "keyword2"],
+          "missing": ["missing1", "missing2"],
+          "score": number (0-100),
+          "density": "keyword density percentage"
+        },
+        "sectionScores": {
+          "summary": number (0-100),
+          "experience": number (0-100),
+          "education": number (0-100),
+          "skills": number (0-100),
+          "formatting": number (0-100)
+        },
+        "atsCompatibility": {
+          "fileFormat": "ATS-friendly format check",
+          "sectionHeaders": "Standard headers used",
+          "dateFormat": "Consistent date formatting",
+          "bulletPoints": "Proper bullet point usage",
+          "score": number (0-100)
+        }
       },
-      improvements: { critical: string[], recommended: string[] }
-    }`;
+      "improvements": {
+        "critical": [
+          "Critical improvement 1 for ATS optimization",
+          "Critical improvement 2 for keyword matching"
+        ],
+        "recommended": [
+          "Recommended enhancement 1",
+          "Recommended enhancement 2"
+        ],
+        "atsSpecific": [
+          "ATS-specific optimization 1",
+          "ATS-specific optimization 2"
+        ]
+      },
+      "keywordOptimization": {
+        "targetKeywords": ["extracted from job description"],
+        "currentDensity": "X%",
+        "recommendedDensity": "2-3%",
+        "suggestions": ["specific keyword placement suggestions"]
+      }
+    }
+
+    SCORING CRITERIA:
+    - Keyword Match (40%): How well resume keywords match job description
+    - Section Completeness (25%): All required sections present and well-written
+    - ATS Formatting (20%): Proper formatting for ATS parsing
+    - Quantified Achievements (15%): Use of numbers and metrics
+
+    Provide actionable, specific recommendations for ATS optimization.`;
 
     const result = await model.generateContent(systemPrompt);
     const response = await result.response;
