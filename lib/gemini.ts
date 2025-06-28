@@ -663,7 +663,7 @@ export async function generateResumeStepGuidance(step: string, targetRole: strin
   }
 }
 
-// Original letter generator remains unchanged
+// Enhanced letter generator with improved structure
 export async function generateLetter({ 
   prompt, 
   fromName, 
@@ -683,20 +683,96 @@ export async function generateLetter({
     await validateApiConnection();
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
-    const systemPrompt = `Create a ${letterType} letter from ${fromName} to ${toName} about: ${prompt}.
-    Return as JSON:
+    const systemPrompt = `Create a professional ${letterType} letter from ${fromName} to ${toName} about: ${prompt}.
+    
+    LETTER TYPE: ${letterType}
+    FROM: ${fromName}${fromAddress ? `, ${fromAddress}` : ''}
+    TO: ${toName}${toAddress ? `, ${toAddress}` : ''}
+    
+    Return as JSON with this EXACT structure:
     {
-      from: { name: string, address?: string },
-      to: { name: string, address?: string },
-      date: string,
-      subject: string,
-      content: string
-    }`;
+      "from": {
+        "name": "${fromName}",
+        "address": "${fromAddress || ''}"
+      },
+      "to": {
+        "name": "${toName}",
+        "address": "${toAddress || ''}"
+      },
+      "date": "Current date in Month Day, Year format",
+      "subject": "Clear, concise subject line related to the letter purpose",
+      "content": "Full letter content with proper formatting, paragraphs, and professional tone"
+    }
+    
+    LETTER FORMATTING REQUIREMENTS:
+    1. Use proper business letter format
+    2. Include appropriate salutation and closing
+    3. Maintain professional tone throughout
+    4. Organize content in clear paragraphs
+    5. Include specific details from the prompt
+    6. Use appropriate language for the letter type
+    
+    LETTER TYPE GUIDELINES:
+    - Cover Letter: Highlight relevant skills and experience for a job application
+    - Business Letter: Formal communication between businesses or professionals
+    - Thank You Letter: Express gratitude with specific details
+    - Recommendation Letter: Highlight strengths and achievements of the person being recommended
+    - Complaint Letter: Professional expression of dissatisfaction with proposed resolution
+    
+    ENSURE THE LETTER IS:
+    - Professional
+    - Well-structured
+    - Grammatically correct
+    - Appropriate for the specified letter type
+    - Addresses the specific prompt details`;
 
     const result = await model.generateContent(systemPrompt);
     const response = await result.response;
     const jsonText = extractJsonFromMarkdown(response.text());
-    return JSON.parse(jsonText);
+    
+    try {
+      const letterData = JSON.parse(jsonText);
+      
+      // Ensure the letter has the expected structure
+      return {
+        from: {
+          name: letterData.from?.name || fromName,
+          address: letterData.from?.address || fromAddress || ""
+        },
+        to: {
+          name: letterData.to?.name || toName,
+          address: letterData.to?.address || toAddress || ""
+        },
+        date: letterData.date || new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }),
+        subject: letterData.subject || "Re: " + prompt.substring(0, 30) + "...",
+        content: letterData.content || "Letter content not available."
+      };
+    } catch (parseError) {
+      console.error("Error parsing letter JSON:", parseError);
+      
+      // Fallback structure if JSON parsing fails
+      return {
+        from: {
+          name: fromName,
+          address: fromAddress || ""
+        },
+        to: {
+          name: toName,
+          address: toAddress || ""
+        },
+        date: new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }),
+        subject: "Re: " + prompt.substring(0, 30) + "...",
+        content: jsonText // Use the raw text as content
+      };
+    }
   } catch (error) {
     console.error("Error generating letter:", error);
     throw new Error(`Failed to generate letter: ${error instanceof Error ? error.message : 'Unknown error'}`);
