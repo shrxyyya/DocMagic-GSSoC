@@ -3,7 +3,7 @@ import { PresentationGenerator } from "@/components/presentation/presentation-ge
 
 export default function PresentationPage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col px-8">
       <SiteHeader />
       <main className="flex-1">
         <div className="container py-10">

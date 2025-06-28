@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+
 async function extractTextFromFile(file: File): Promise<string> {
   // Mock: Just read as text (you can extend with real parsers)
   return await file.text();
