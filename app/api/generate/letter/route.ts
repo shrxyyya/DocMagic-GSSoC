@@ -24,7 +24,27 @@ export async function POST(request: Request) {
       toAddress,
       letterType,
     });
-    return NextResponse.json({ letter });
+    
+    // Format the response to ensure it has the expected structure
+    const formattedResponse = {
+      from: {
+        name: fromName,
+        address: fromAddress || ""
+      },
+      to: {
+        name: toName,
+        address: toAddress || ""
+      },
+      date: letter.date || new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }),
+      subject: letter.subject || "Re: " + prompt.substring(0, 30) + "...",
+      content: letter.content || letter.letter || "Letter content not available."
+    };
+    
+    return NextResponse.json(formattedResponse);
   } catch (error) {
     console.error('Error generating letter:', error);
     return NextResponse.json(
@@ -33,5 +53,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
-// Remove any other exports, especially named exports

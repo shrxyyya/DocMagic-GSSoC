@@ -15,7 +15,9 @@ import {
 } from "@/components/ui/select";
 import { LetterPreview } from "@/components/letter/letter-preview";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Sparkles, Mail as MailIcon, Download, User, MapPin, FileText, Wand2 } from "lucide-react";
+import { Loader2, Sparkles, Mail as MailIcon, Download, User, MapPin, FileText, Wand2, Copy, Check } from "lucide-react";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export function LetterGenerator() {
   const [prompt, setPrompt] = useState("");
@@ -26,6 +28,8 @@ export function LetterGenerator() {
   const [letterType, setLetterType] = useState("cover");
   const [isGenerating, setIsGenerating] = useState(false);
   const [letterData, setLetterData] = useState<any>(null);
+  const [isCopying, setIsCopying] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const { toast } = useToast();
   
   const generateLetter = async () => {
@@ -41,7 +45,7 @@ export function LetterGenerator() {
     if (!fromName || !toName) {
       toast({
         title: "Missing information",
-        description: "Please enter the sender and recipient names",
+        description: "Please enter your name and recipient name",
         variant: "destructive",
       });
       return;
@@ -70,13 +74,34 @@ export function LetterGenerator() {
       }
 
       const data = await response.json();
-      setLetterData(data);
+      
+      // Ensure the letter object has the expected structure
+      const formattedLetter = {
+        from: {
+          name: fromName,
+          address: fromAddress
+        },
+        to: {
+          name: toName,
+          address: toAddress
+        },
+        date: data.date || new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }),
+        subject: data.subject || "Re: " + prompt.substring(0, 30) + "...",
+        content: data.letter || data.content || "Letter content not available."
+      };
+      
+      setLetterData(formattedLetter);
       
       toast({
         title: "Letter generated! ✨",
         description: "Your professional letter is ready to preview and download",
       });
     } catch (error) {
+      console.error("Error generating letter:", error);
       toast({
         title: "Error",
         description: "Failed to generate letter. Please try again.",
@@ -84,6 +109,94 @@ export function LetterGenerator() {
       });
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const copyToClipboard = async () => {
+    if (!letterData) return;
+    
+    setIsCopying(true);
+    
+    try {
+      const letterText = `
+${letterData.from.name || ''}
+${letterData.from.address || ''}
+
+${letterData.date || ''}
+
+${letterData.to.name || ''}
+${letterData.to.address || ''}
+
+Subject: ${letterData.subject || ''}
+
+${letterData.content || ''}
+      `.trim();
+      
+      await navigator.clipboard.writeText(letterText);
+      
+      toast({
+        title: "Copied to clipboard!",
+        description: "Letter content has been copied to your clipboard",
+      });
+    } catch (error) {
+      toast({
+        title: "Copy failed",
+        description: "Failed to copy letter to clipboard. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCopying(false);
+      setTimeout(() => setIsCopying(false), 2000);
+    }
+  };
+
+  const exportToPDF = async () => {
+    if (!letterData) return;
+    
+    setIsExporting(true);
+    
+    try {
+      const element = document.getElementById('letter-preview');
+      if (!element) throw new Error('Letter preview element not found');
+      
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff'
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      
+      // A4 dimensions in mm: 210 x 297
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      // Calculate ratio to fit the image within the PDF
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 0;
+      
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.save(`${letterType}-letter.pdf`);
+      
+      toast({
+        title: "Letter exported!",
+        description: "Your letter has been downloaded as a PDF.",
+      });
+    } catch (error) {
+      console.error('Error exporting to PDF:', error);
+      toast({
+        title: "Export failed",
+        description: "Failed to export letter to PDF. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -245,16 +358,30 @@ export function LetterGenerator() {
                 Download Options
               </h3>
               <div className="flex flex-wrap gap-2">
-                <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60">
-                  <Download className="mr-2 h-4 w-4" />
+                <Button 
+                  variant="outline" 
+                  className="glass-effect border-yellow-400/30 hover:border-yellow-400/60"
+                  onClick={exportToPDF}
+                  disabled={isExporting}
+                >
+                  {isExporting ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent mr-2"></div>
+                  ) : (
+                    <Download className="mr-2 h-4 w-4" />
+                  )}
                   Download PDF
                 </Button>
-                <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60">
-                  <Download className="mr-2 h-4 w-4" />
-                  Download DOCX
-                </Button>
-                <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60">
-                  <MailIcon className="mr-2 h-4 w-4" />
+                <Button 
+                  variant="outline" 
+                  className="glass-effect border-yellow-400/30 hover:border-yellow-400/60"
+                  onClick={copyToClipboard}
+                  disabled={isCopying}
+                >
+                  {isCopying ? (
+                    <Check className="mr-2 h-4 w-4 text-green-500" />
+                  ) : (
+                    <Copy className="mr-2 h-4 w-4" />
+                  )}
                   Copy to Clipboard
                 </Button>
               </div>
@@ -273,7 +400,7 @@ export function LetterGenerator() {
           </div>
 
           {letterData ? (
-            <div className="glass-effect border border-yellow-400/20 rounded-xl overflow-hidden bg-white relative">
+            <div id="letter-preview" className="glass-effect border border-yellow-400/20 rounded-xl overflow-hidden bg-white relative">
               <div className="absolute inset-0 shimmer opacity-10"></div>
               <div className="relative z-10">
                 <LetterPreview letter={letterData} />
