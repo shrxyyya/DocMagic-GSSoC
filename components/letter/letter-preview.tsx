@@ -17,7 +17,7 @@ export function LetterPreview({ letter }: LetterPreviewProps) {
   const content = letter.content || "";
 
   return (
-    <div className="p-8 max-w-[800px] mx-auto font-serif">
+    <div className="p-8 max-w-[800px] mx-auto font-serif bg-white text-black">
       {/* Sender Information */}
       <div className="mb-8">
         {from.name && (
