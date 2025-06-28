@@ -5,14 +5,18 @@ interface LetterPreviewProps {
 export function LetterPreview({ letter }: LetterPreviewProps) {
   if (!letter) return null;
 
+  // Ensure letter has the expected structure to prevent "Cannot read properties of undefined" errors
+  const from = letter.from || {};
+  const to = letter.to || {};
+
   return (
     <div className="p-8 max-w-[800px] mx-auto font-serif">
       <div className="mb-8">
-        {letter.from.name && (
-          <p className="mb-1">{letter.from.name}</p>
+        {from.name && (
+          <p className="mb-1">{from.name}</p>
         )}
-        {letter.from.address && (
-          <p className="text-sm text-gray-700">{letter.from.address}</p>
+        {from.address && (
+          <p className="text-sm text-gray-700">{from.address}</p>
         )}
       </div>
       
@@ -21,11 +25,11 @@ export function LetterPreview({ letter }: LetterPreviewProps) {
       </div>
       
       <div className="mb-8">
-        {letter.to.name && (
-          <p className="mb-1">{letter.to.name}</p>
+        {to.name && (
+          <p className="mb-1">{to.name}</p>
         )}
-        {letter.to.address && (
-          <p className="text-sm text-gray-700">{letter.to.address}</p>
+        {to.address && (
+          <p className="text-sm text-gray-700">{to.address}</p>
         )}
       </div>
       
