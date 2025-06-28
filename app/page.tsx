@@ -27,50 +27,50 @@ export default function Home() {
       <main className="flex-1">
         <HeroSection />
         
-        <section id="document-types" className="py-24 relative overflow-hidden">
+        <section id="document-types" className="py-16 sm:py-24 relative overflow-hidden">
           {/* Background decoration */}
-          <div className="absolute top-10 left-10 w-20 h-20 bolt-gradient rounded-full opacity-10 animate-pulse"></div>
-          <div className="absolute bottom-10 right-10 w-16 h-16 bolt-gradient rounded-full opacity-15 animate-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-10 left-10 w-16 h-16 sm:w-20 sm:h-20 bolt-gradient rounded-full opacity-10 animate-pulse"></div>
+          <div className="absolute bottom-10 right-10 w-12 h-12 sm:w-16 sm:h-16 bolt-gradient rounded-full opacity-15 animate-pulse" style={{animationDelay: '1s'}}></div>
           
-          <div className="container relative z-10">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-effect mb-6">
-                <Sparkles className="h-4 w-4 text-yellow-500" />
-                <span className="text-sm font-medium">Document Types</span>
+          <div className="container relative z-10 px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full glass-effect mb-4 sm:mb-6">
+                <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500" />
+                <span className="text-xs sm:text-sm font-medium">Document Types</span>
               </div>
               
-              <h2 className="text-3xl font-bold text-center mb-4 sm:text-5xl">
+              <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-center mb-4 sm:mb-6 leading-tight">
                 Choose Your <span className="bolt-gradient-text">Document Type</span>
               </h2>
               
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4 sm:px-0">
                 Select from our AI-powered document generators to create professional content in seconds
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-7xl mx-auto px-4 sm:px-0">
               <DocumentCard
                 title="Resume"
                 description="Craft a professional resume for your desired role and company with AI assistance"
-                icon={<FileIcon className="h-6 w-6" />}
+                icon={<FileIcon className="h-5 w-5 sm:h-6 sm:w-6" />}
                 href="/resume"
               />
               <DocumentCard
                 title="Presentation"
                 description="Generate beautiful slide decks from simple text prompts with smart layouts"
-                icon={<LayoutPresentation className="h-6 w-6" />}
+                icon={<LayoutPresentation className="h-5 w-5 sm:h-6 sm:w-6" />}
                 href="/presentation"
               />
               <DocumentCard
                 title="CV"
                 description="Build a comprehensive curriculum vitae highlighting your achievements"
-                icon={<FileText className="h-6 w-6" />}
+                icon={<FileText className="h-5 w-5 sm:h-6 sm:w-6" />}
                 href="/cv"
               />
               <DocumentCard
                 title="Letter"
                 description="Draft professional letters for any purpose in seconds with perfect formatting"
-                icon={<Mail className="h-6 w-6" />}
+                icon={<Mail className="h-5 w-5 sm:h-6 sm:w-6" />}
                 href="/letter"
               />
             </div>
@@ -82,89 +82,89 @@ export default function Home() {
       </main>
 
       <footer className="border-t border-border/40 bg-background/95 backdrop-blur">
-        <div className="container px-4 py-12 mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="container px-4 sm:px-6 lg:px-8 py-8 sm:py-12 mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
             {/* Brand Column */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
+            <div className="space-y-4 text-center sm:text-left">
+              <div className="flex items-center justify-center sm:justify-start space-x-2">
                 <div className="relative">
-                  <FileText className="h-6 w-6 bolt-gradient-text" />
-                  <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-yellow-500" />
+                  <FileText className="h-5 w-5 sm:h-6 sm:w-6 bolt-gradient-text" />
+                  <Sparkles className="absolute -top-1 -right-1 h-2 w-2 sm:h-3 sm:w-3 text-yellow-500" />
                 </div>
-                <span className="font-bold text-lg bolt-gradient-text">DocMagic</span>
+                <span className="font-bold text-base sm:text-lg bolt-gradient-text">DocMagic</span>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Create professional documents in minutes with our AI-powered tools. Transform your ideas into polished content.
               </p>
-              <div className="flex space-x-4">
+              <div className="flex justify-center sm:justify-start space-x-4">
                 <a href="#" className="text-muted-foreground hover:bolt-gradient-text transition-colors">
-                  <Twitter className="h-4 w-4" />
+                  <Twitter className="h-3 w-3 sm:h-4 sm:w-4" />
                 </a>
                 <a href="#" className="text-muted-foreground hover:bolt-gradient-text transition-colors">
-                  <Linkedin className="h-4 w-4" />
+                  <Linkedin className="h-3 w-3 sm:h-4 sm:w-4" />
                 </a>
                 <a href="#" className="text-muted-foreground hover:bolt-gradient-text transition-colors">
-                  <Github className="h-4 w-4" />
+                  <Github className="h-3 w-3 sm:h-4 sm:w-4" />
                 </a>
               </div>
             </div>
 
             {/* Product Column */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-muted-foreground">PRODUCT</h3>
+            <div className="space-y-4 text-center sm:text-left">
+              <h3 className="text-xs sm:text-sm font-semibold text-muted-foreground">PRODUCT</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Features</a></li>
-                <li><a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Pricing</a></li>
-                <li><a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Templates</a></li>
-                <li><a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Integrations</a></li>
+                <li><a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Features</a></li>
+                <li><a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Pricing</a></li>
+                <li><a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Templates</a></li>
+                <li><a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Integrations</a></li>
               </ul>
             </div>
 
             {/* Resources Column */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-muted-foreground">RESOURCES</h3>
+            <div className="space-y-4 text-center sm:text-left">
+              <h3 className="text-xs sm:text-sm font-semibold text-muted-foreground">RESOURCES</h3>
               <ul className="space-y-2">
-                <li className="flex items-center space-x-2">
-                  <BookOpen className="h-4 w-4 text-muted-foreground" />
-                  <a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Documentation</a>
+                <li className="flex items-center justify-center sm:justify-start space-x-2">
+                  <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                  <a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Documentation</a>
                 </li>
-                <li className="flex items-center space-x-2">
-                  <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                  <a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Help Center</a>
+                <li className="flex items-center justify-center sm:justify-start space-x-2">
+                  <HelpCircle className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                  <a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Help Center</a>
                 </li>
-                <li className="flex items-center space-x-2">
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                  <a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Community</a>
+                <li className="flex items-center justify-center sm:justify-start space-x-2">
+                  <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                  <a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Community</a>
                 </li>
               </ul>
             </div>
 
             {/* Company Column */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-muted-foreground">COMPANY</h3>
+            <div className="space-y-4 text-center sm:text-left">
+              <h3 className="text-xs sm:text-sm font-semibold text-muted-foreground">COMPANY</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">About Us</a></li>
-                <li><a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Careers</a></li>
-                <li><a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Blog</a></li>
-                <li><a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Contact</a></li>
+                <li><a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">About Us</a></li>
+                <li><a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Careers</a></li>
+                <li><a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Blog</a></li>
+                <li><a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Contact</a></li>
               </ul>
             </div>
           </div>
 
-          <div className="border-t border-border/40 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center gap-2 mb-4 md:mb-0">
-              <p className="text-sm text-muted-foreground">
+          <div className="border-t border-border/40 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center">
+            <div className="flex items-center gap-2 mb-4 sm:mb-0">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 &copy; {new Date().getFullYear()} DocMagic. Made with
               </p>
-              <Heart className="h-4 w-4 text-red-500 animate-pulse" />
-              <p className="text-sm text-muted-foreground">
+              <Heart className="h-3 w-3 sm:h-4 sm:w-4 text-red-500 animate-pulse" />
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 for the community
               </p>
             </div>
-            <div className="flex space-x-6">
-              <a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Privacy</a>
-              <a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Terms</a>
-              <a href="#" className="text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Cookies</a>
+            <div className="flex space-x-4 sm:space-x-6">
+              <a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Privacy</a>
+              <a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Terms</a>
+              <a href="#" className="text-xs sm:text-sm text-muted-foreground hover:bolt-gradient-text transition-colors">Cookies</a>
             </div>
           </div>
         </div>

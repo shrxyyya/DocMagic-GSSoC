@@ -62,6 +62,9 @@ export default {
           ring: "var(--sidebar-ring)",
         },
       },
+      screens: {
+        'xs': '475px',
+      },
       keyframes: {
         "accordion-down": {
           from: {
