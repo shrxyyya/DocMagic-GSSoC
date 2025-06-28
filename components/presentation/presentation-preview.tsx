@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, Quote, Maximize2, Minimize2, Play, Pause, RotateCcw } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote, Maximize2, Minimize2, Play, Pause, RotateCcw, Image as ImageIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import {
   BarChart,
@@ -18,6 +18,11 @@ import {
   Cell,
   LineChart,
   Line,
+  AreaChart,
+  Area,
+  ScatterChart,
+  Scatter,
+  Legend
 } from "recharts";
 
 interface PresentationPreviewProps {
@@ -30,6 +35,7 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [autoPlayInterval, setAutoPlayInterval] = useState<NodeJS.Timeout | null>(null);
+  const [imageLoadErrors, setImageLoadErrors] = useState<{[key: number]: boolean}>({});
   const { theme } = useTheme();
 
   const nextSlide = useCallback(() => {
@@ -75,6 +81,10 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
     setIsPlaying(false);
   }, [autoPlayInterval]);
 
+  const handleImageError = useCallback((slideIndex: number) => {
+    setImageLoadErrors(prev => ({ ...prev, [slideIndex]: true }));
+  }, []);
+
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' || e.key === ' ') {
@@ -113,37 +123,53 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
   }, [nextSlide, prevSlide, toggleFullscreen, autoPlayInterval]);
 
   const renderChart = (chart: any) => {
-    if (!chart) return null;
+    if (!chart || !chart.data) return null;
 
-    const chartTheme = theme === 'dark' ? {
-      stroke: 'white',
-      fill: 'white',
-    } : {
-      stroke: 'black',
-      fill: 'black',
+    const chartColors = chart.colors || ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6"];
+    
+    const chartTheme = {
+      stroke: theme === 'dark' ? 'white' : 'black',
+      fill: theme === 'dark' ? 'white' : 'black',
+    };
+
+    const commonProps = {
+      data: chart.data,
+      margin: { top: 20, right: 30, left: 20, bottom: 20 }
     };
 
     switch (chart.type) {
       case "bar":
         return (
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chart.data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" tick={{ ...chartTheme }} />
-              <YAxis tick={{ ...chartTheme }} />
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart {...commonProps}>
+              {chart.showGrid && <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#374151' : '#E5E7EB'} />}
+              <XAxis 
+                dataKey="name" 
+                tick={{ ...chartTheme, fontSize: 12 }}
+                axisLine={{ stroke: chartTheme.stroke }}
+              />
+              <YAxis 
+                tick={{ ...chartTheme, fontSize: 12 }}
+                axisLine={{ stroke: chartTheme.stroke }}
+                label={{ value: chart.yAxis, angle: -90, position: 'insideLeft', style: chartTheme }}
+              />
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: theme === 'dark' ? '#1a1a1a' : 'white',
+                  backgroundColor: theme === 'dark' ? '#1F2937' : 'white',
                   color: theme === 'dark' ? 'white' : 'black',
+                  border: `1px solid ${theme === 'dark' ? '#374151' : '#E5E7EB'}`,
+                  borderRadius: '8px'
                 }}
               />
-              <Bar dataKey="value" fill="var(--chart-1)" />
+              {chart.showLegend && <Legend />}
+              <Bar dataKey="value" fill={chartColors[0]} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         );
+        
       case "pie":
         return (
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={400}>
             <PieChart>
               <Pie
                 data={chart.data}
@@ -151,38 +177,129 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                outerRadius={100}
+                outerRadius={120}
+                innerRadius={40}
+                paddingAngle={2}
               >
                 {chart.data.map((_: any, index: number) => (
-                  <Cell key={`cell-${index}`} fill={`hsl(var(--chart-${(index % 5) + 1}))`} />
+                  <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
                 ))}
               </Pie>
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: theme === 'dark' ? '#1a1a1a' : 'white',
+                  backgroundColor: theme === 'dark' ? '#1F2937' : 'white',
                   color: theme === 'dark' ? 'white' : 'black',
+                  border: `1px solid ${theme === 'dark' ? '#374151' : '#E5E7EB'}`,
+                  borderRadius: '8px'
                 }}
               />
+              {chart.showLegend && <Legend />}
             </PieChart>
           </ResponsiveContainer>
         );
+        
       case "line":
         return (
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={chart.data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" tick={{ ...chartTheme }} />
-              <YAxis tick={{ ...chartTheme }} />
+          <ResponsiveContainer width="100%" height={400}>
+            <LineChart {...commonProps}>
+              {chart.showGrid && <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#374151' : '#E5E7EB'} />}
+              <XAxis 
+                dataKey="name" 
+                tick={{ ...chartTheme, fontSize: 12 }}
+                axisLine={{ stroke: chartTheme.stroke }}
+              />
+              <YAxis 
+                tick={{ ...chartTheme, fontSize: 12 }}
+                axisLine={{ stroke: chartTheme.stroke }}
+                label={{ value: chart.yAxis, angle: -90, position: 'insideLeft', style: chartTheme }}
+              />
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: theme === 'dark' ? '#1a1a1a' : 'white',
+                  backgroundColor: theme === 'dark' ? '#1F2937' : 'white',
                   color: theme === 'dark' ? 'white' : 'black',
+                  border: `1px solid ${theme === 'dark' ? '#374151' : '#E5E7EB'}`,
+                  borderRadius: '8px'
                 }}
               />
-              <Line type="monotone" dataKey="value" stroke="var(--chart-1)" />
+              {chart.showLegend && <Legend />}
+              <Line 
+                type="monotone" 
+                dataKey="value" 
+                stroke={chartColors[0]} 
+                strokeWidth={3}
+                dot={{ fill: chartColors[0], strokeWidth: 2, r: 6 }}
+                activeDot={{ r: 8, stroke: chartColors[0], strokeWidth: 2 }}
+              />
             </LineChart>
           </ResponsiveContainer>
         );
+        
+      case "area":
+        return (
+          <ResponsiveContainer width="100%" height={400}>
+            <AreaChart {...commonProps}>
+              {chart.showGrid && <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#374151' : '#E5E7EB'} />}
+              <XAxis 
+                dataKey="name" 
+                tick={{ ...chartTheme, fontSize: 12 }}
+                axisLine={{ stroke: chartTheme.stroke }}
+              />
+              <YAxis 
+                tick={{ ...chartTheme, fontSize: 12 }}
+                axisLine={{ stroke: chartTheme.stroke }}
+                label={{ value: chart.yAxis, angle: -90, position: 'insideLeft', style: chartTheme }}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: theme === 'dark' ? '#1F2937' : 'white',
+                  color: theme === 'dark' ? 'white' : 'black',
+                  border: `1px solid ${theme === 'dark' ? '#374151' : '#E5E7EB'}`,
+                  borderRadius: '8px'
+                }}
+              />
+              {chart.showLegend && <Legend />}
+              <Area 
+                type="monotone" 
+                dataKey="value" 
+                stroke={chartColors[0]} 
+                fill={chartColors[0]}
+                fillOpacity={0.3}
+                strokeWidth={3}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        );
+        
+      case "scatter":
+        return (
+          <ResponsiveContainer width="100%" height={400}>
+            <ScatterChart {...commonProps}>
+              {chart.showGrid && <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#374151' : '#E5E7EB'} />}
+              <XAxis 
+                dataKey="name" 
+                tick={{ ...chartTheme, fontSize: 12 }}
+                axisLine={{ stroke: chartTheme.stroke }}
+              />
+              <YAxis 
+                dataKey="value"
+                tick={{ ...chartTheme, fontSize: 12 }}
+                axisLine={{ stroke: chartTheme.stroke }}
+                label={{ value: chart.yAxis, angle: -90, position: 'insideLeft', style: chartTheme }}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: theme === 'dark' ? '#1F2937' : 'white',
+                  color: theme === 'dark' ? 'white' : 'black',
+                  border: `1px solid ${theme === 'dark' ? '#374151' : '#E5E7EB'}`,
+                  borderRadius: '8px'
+                }}
+              />
+              {chart.showLegend && <Legend />}
+              <Scatter dataKey="value" fill={chartColors[0]} />
+            </ScatterChart>
+          </ResponsiveContainer>
+        );
+        
       default:
         return null;
     }
@@ -224,74 +341,93 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
     return styles[template as keyof typeof styles] || styles.modern;
   };
 
-  const renderSlideContent = (slide: any) => {
+  const renderSlideContent = (slide: any, slideIndex: number) => {
     const templateStyles = getTemplateStyles(template);
     
     const baseClasses = cn(
-      "h-full w-full transition-all duration-300 ease-in-out p-8 sm:p-12 flex flex-col justify-center",
+      "h-full w-full transition-all duration-300 ease-in-out relative overflow-hidden",
       templateStyles.background,
       templateStyles.text
     );
 
+    // Background image for slides that have images
+    const backgroundImage = slide.image && !imageLoadErrors[slideIndex] 
+      ? `url(${slide.image})` 
+      : undefined;
+
     switch (slide.layout) {
       case "cover":
         return (
-          <div className={baseClasses}>
-            <div className="text-center space-y-6">
-              <h1 className={cn("text-4xl sm:text-6xl font-bold", templateStyles.accent)}>
+          <div 
+            className={baseClasses}
+            style={{
+              backgroundImage,
+              backgroundSize: "cover",
+              backgroundPosition: slide.imagePosition || "center",
+            }}
+          >
+            <div className="absolute inset-0 bg-black/40"></div>
+            <div className="relative z-10 h-full flex flex-col items-center justify-center p-8 sm:p-12 text-center text-white">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
                 {slide.title}
               </h1>
               {slide.content && (
-                <p className="text-xl sm:text-2xl opacity-80 max-w-4xl mx-auto">
+                <p className="text-xl sm:text-2xl lg:text-3xl opacity-90 max-w-4xl leading-relaxed">
                   {slide.content}
                 </p>
               )}
-              <div className={cn("w-24 h-1 mx-auto", templateStyles.accent.replace('text-', 'bg-'))}></div>
+              <div className="w-24 h-1 bg-white/80 mt-8"></div>
             </div>
-          </div>
-        );
-
-      case "list":
-        return (
-          <div className={baseClasses}>
-            <h2 className={cn("text-3xl sm:text-4xl font-bold mb-8", templateStyles.accent)}>
-              {slide.title}
-            </h2>
-            {slide.bullets && (
-              <ul className="space-y-4 text-lg sm:text-xl">
-                {slide.bullets.map((bullet: string, i: number) => (
-                  <li key={i} className="flex items-start gap-4">
-                    <div className={cn("w-3 h-3 rounded-full mt-2 flex-shrink-0", templateStyles.accent.replace('text-', 'bg-'))}></div>
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
+            {slide.image && imageLoadErrors[slideIndex] && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                <ImageIcon className="h-16 w-16 text-gray-400" />
+              </div>
             )}
+            <img 
+              src={slide.image} 
+              alt={slide.imageAlt || slide.title}
+              className="hidden"
+              onError={() => handleImageError(slideIndex)}
+            />
           </div>
         );
 
       case "split":
         return (
           <div className={baseClasses}>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
-              <div className="flex flex-col justify-center">
-                <h2 className={cn("text-3xl sm:text-4xl font-bold mb-6", templateStyles.accent)}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full p-8 sm:p-12">
+              <div className="flex flex-col justify-center space-y-6">
+                <h2 className={cn("text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight", templateStyles.accent)}>
                   {slide.title}
                 </h2>
-                <p className="text-lg sm:text-xl leading-relaxed">
-                  {slide.content}
-                </p>
+                {slide.content && (
+                  <p className="text-lg sm:text-xl leading-relaxed opacity-90">
+                    {slide.content}
+                  </p>
+                )}
+                {slide.bullets && (
+                  <ul className="space-y-3 text-lg">
+                    {slide.bullets.map((bullet: string, i: number) => (
+                      <li key={i} className="flex items-start gap-4">
+                        <div className={cn("w-3 h-3 rounded-full mt-2 flex-shrink-0", templateStyles.accent.replace('text-', 'bg-'))}></div>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div className="flex items-center justify-center">
-                {slide.image ? (
+                {slide.image && !imageLoadErrors[slideIndex] ? (
                   <img 
                     src={slide.image} 
-                    alt={slide.title}
-                    className="max-w-full h-auto rounded-lg shadow-lg"
+                    alt={slide.imageAlt || slide.title}
+                    className="max-w-full h-auto rounded-xl shadow-2xl object-cover"
+                    style={{ maxHeight: '500px' }}
+                    onError={() => handleImageError(slideIndex)}
                   />
                 ) : (
-                  <div className={cn("w-full h-64 rounded-lg flex items-center justify-center", templateStyles.border, "border-2 border-dashed")}>
-                    <span className="text-muted-foreground">Visual Content</span>
+                  <div className={cn("w-full h-80 rounded-xl flex items-center justify-center", templateStyles.border, "border-2 border-dashed bg-gray-50")}>
+                    <ImageIcon className="h-16 w-16 text-gray-400" />
                   </div>
                 )}
               </div>
@@ -301,37 +437,109 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
 
       case "chart":
         return (
-          <div className={baseClasses}>
-            <h2 className={cn("text-3xl sm:text-4xl font-bold mb-8", templateStyles.accent)}>
-              {slide.title}
-            </h2>
-            <div className="flex-1 flex items-center justify-center">
-              {slide.charts ? renderChart(slide.charts) : (
-                <div className={cn("w-full h-64 rounded-lg flex items-center justify-center", templateStyles.border, "border-2 border-dashed")}>
-                  <span className="text-muted-foreground">Chart Visualization</span>
-                </div>
-              )}
+          <div className={cn(baseClasses, "p-8 sm:p-12")}>
+            <div className="h-full flex flex-col">
+              <div className="text-center mb-8">
+                <h2 className={cn("text-3xl sm:text-4xl lg:text-5xl font-bold mb-4", templateStyles.accent)}>
+                  {slide.title}
+                </h2>
+                {slide.content && (
+                  <p className="text-lg sm:text-xl opacity-80 max-w-3xl mx-auto">
+                    {slide.content}
+                  </p>
+                )}
+              </div>
+              <div className="flex-1 flex items-center justify-center">
+                {slide.charts ? (
+                  <div className="w-full max-w-4xl">
+                    {slide.charts.title && (
+                      <h3 className="text-xl font-semibold text-center mb-6">{slide.charts.title}</h3>
+                    )}
+                    {renderChart(slide.charts)}
+                  </div>
+                ) : (
+                  <div className={cn("w-full h-80 rounded-xl flex items-center justify-center", templateStyles.border, "border-2 border-dashed")}>
+                    <span className="text-muted-foreground text-lg">Chart Visualization</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
+      case "list":
+        return (
+          <div className={cn(baseClasses, "p-8 sm:p-12")}>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
+              <div className="lg:col-span-2 flex flex-col justify-center">
+                <h2 className={cn("text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 leading-tight", templateStyles.accent)}>
+                  {slide.title}
+                </h2>
+                {slide.content && (
+                  <p className="text-lg sm:text-xl mb-8 leading-relaxed opacity-90">
+                    {slide.content}
+                  </p>
+                )}
+                {slide.bullets && (
+                  <ul className="space-y-4 text-lg sm:text-xl">
+                    {slide.bullets.map((bullet: string, i: number) => (
+                      <li key={i} className="flex items-start gap-4 group">
+                        <div className={cn("w-4 h-4 rounded-full mt-2 flex-shrink-0 group-hover:scale-110 transition-transform", templateStyles.accent.replace('text-', 'bg-'))}></div>
+                        <span className="leading-relaxed">{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div className="flex items-center justify-center">
+                {slide.image && !imageLoadErrors[slideIndex] ? (
+                  <img 
+                    src={slide.image} 
+                    alt={slide.imageAlt || slide.title}
+                    className="max-w-full h-auto rounded-xl shadow-xl object-cover"
+                    style={{ maxHeight: '400px' }}
+                    onError={() => handleImageError(slideIndex)}
+                  />
+                ) : (
+                  <div className={cn("w-full h-64 rounded-xl flex items-center justify-center", templateStyles.border, "border-2 border-dashed bg-gray-50")}>
+                    <ImageIcon className="h-12 w-12 text-gray-400" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         );
 
       case "process":
         return (
-          <div className={baseClasses}>
-            <h2 className={cn("text-3xl sm:text-4xl font-bold mb-8", templateStyles.accent)}>
-              {slide.title}
-            </h2>
-            <div className="flex-1 flex items-center justify-center">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-4xl">
-                {[1, 2, 3].map((step) => (
-                  <div key={step} className="text-center">
-                    <div className={cn("w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl", templateStyles.accent.replace('text-', 'bg-'))}>
-                      {step}
+          <div className={cn(baseClasses, "p-8 sm:p-12")}>
+            <div className="h-full flex flex-col">
+              <div className="text-center mb-12">
+                <h2 className={cn("text-3xl sm:text-4xl lg:text-5xl font-bold mb-4", templateStyles.accent)}>
+                  {slide.title}
+                </h2>
+                {slide.content && (
+                  <p className="text-lg sm:text-xl opacity-80 max-w-3xl mx-auto">
+                    {slide.content}
+                  </p>
+                )}
+              </div>
+              <div className="flex-1 flex items-center justify-center">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full max-w-4xl">
+                  {[1, 2, 3].map((step) => (
+                    <div key={step} className="text-center group">
+                      <div className={cn("w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center text-white font-bold text-2xl group-hover:scale-110 transition-transform shadow-lg", templateStyles.accent.replace('text-', 'bg-'))}>
+                        {step}
+                      </div>
+                      <h3 className="font-semibold text-xl mb-3">Step {step}</h3>
+                      <p className="text-sm opacity-80 leading-relaxed">
+                        {slide.bullets && slide.bullets[step - 1] 
+                          ? slide.bullets[step - 1] 
+                          : `Process description for step ${step}`}
+                      </p>
                     </div>
-                    <h3 className="font-semibold mb-2">Step {step}</h3>
-                    <p className="text-sm opacity-80">Process description for step {step}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -339,12 +547,26 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
 
       default:
         return (
-          <div className={baseClasses}>
-            <h2 className={cn("text-3xl sm:text-4xl font-bold mb-6", templateStyles.accent)}>
-              {slide.title}
-            </h2>
-            <div className="text-lg sm:text-xl leading-relaxed">
-              {slide.content}
+          <div className={cn(baseClasses, "p-8 sm:p-12")}>
+            <div className="h-full flex flex-col justify-center max-w-4xl mx-auto">
+              <h2 className={cn("text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 leading-tight", templateStyles.accent)}>
+                {slide.title}
+              </h2>
+              <div className="text-lg sm:text-xl lg:text-2xl leading-relaxed space-y-6">
+                {slide.content && (
+                  <p className="opacity-90">{slide.content}</p>
+                )}
+                {slide.bullets && (
+                  <ul className="space-y-4">
+                    {slide.bullets.map((bullet: string, i: number) => (
+                      <li key={i} className="flex items-start gap-4">
+                        <div className={cn("w-3 h-3 rounded-full mt-3 flex-shrink-0", templateStyles.accent.replace('text-', 'bg-'))}></div>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           </div>
         );
@@ -410,7 +632,7 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
         "h-full overflow-hidden rounded-lg",
         isFullscreen && "rounded-none"
       )}>
-        {renderSlideContent(slides[currentSlide])}
+        {renderSlideContent(slides[currentSlide], currentSlide)}
       </div>
 
       {/* Navigation */}
