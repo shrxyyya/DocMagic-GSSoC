@@ -3,8 +3,6 @@ export const dynamic = 'force-dynamic';
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 import type { NextAuthOptions } from "next-auth";
 
 const authOptions: NextAuthOptions = {
@@ -20,8 +18,12 @@ const authOptions: NextAuthOptions = {
           throw new Error("Missing credentials");
         }
 
+        // Import these inside the function to ensure they're called within request context
+        const { createRouteHandlerClient } = await import("@supabase/auth-helpers-nextjs");
+        const { cookies } = await import("next/headers");
+
         // Create Supabase client within the request context
-        const supabase = createRouteHandlerClient({ cookies: () => cookies() });
+        const supabase = createRouteHandlerClient({ cookies });
         
         // Get user from Supabase
         const { data: user, error } = await supabase
