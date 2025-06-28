@@ -19,12 +19,12 @@ export async function POST(request: Request) {
 
     // Create reusable transporter object using the test account
     const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
+      host: process.env.EMAIL_HOST || 'smtp.ethereal.email',
+      port: parseInt(process.env.EMAIL_PORT || '587'),
       secure: false, // true for 465, false for other ports
       auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
+        user: process.env.EMAIL_USER || testAccount.user,
+        pass: process.env.EMAIL_PASS || testAccount.pass,
       },
     });
 
@@ -62,15 +62,15 @@ export async function POST(request: Request) {
 
     // Send email
     const info = await transporter.sendMail({
-      from: `"${fromName}" <${fromEmail || 'noreply@docmagic.com'}>`,
+      from: `"${fromName}" <${fromEmail || process.env.EMAIL_FROM || 'noreply@docmagic.com'}>`,
       to,
       subject,
       html: `${formattedContent}${personalMessage}`,
       text: `${letterContent.content || ''}\n\n${content ? `Personal message: ${content}` : ''}`,
     });
 
-    // Get the Ethereal URL for viewing the test email
-    const previewUrl = nodemailer.getTestMessageUrl(info);
+    // Get the Ethereal URL for viewing the test email (only for Ethereal emails)
+    const previewUrl = process.env.EMAIL_HOST ? null : nodemailer.getTestMessageUrl(info);
 
     return NextResponse.json({
       success: true,
