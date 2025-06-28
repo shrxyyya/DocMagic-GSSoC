@@ -21,7 +21,7 @@ const authOptions: NextAuthOptions = {
         }
 
         // Create Supabase client within the request context
-        const supabase = createRouteHandlerClient({ cookies });
+        const supabase = createRouteHandlerClient({ cookies: () => cookies() });
         
         // Get user from Supabase
         const { data: user, error } = await supabase
