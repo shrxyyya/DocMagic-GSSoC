@@ -11,7 +11,7 @@ import { PresentationPreview } from "@/components/presentation/presentation-prev
 import { PresentationTemplates } from "@/components/presentation/presentation-templates";
 import { SlideOutlinePreview } from "@/components/presentation/slide-outline-preview";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Sparkles, Presentation as LayoutPresentation, Lock, Download, Wand2, Sliders as Slides, Palette, Eye, ArrowRight, CheckCircle, Play } from "lucide-react";
+import { Loader2, Sparkles, Presentation as LayoutPresentation, Lock, Download, Wand2, Sliders as Slides, Palette, Eye, ArrowRight, CheckCircle, Play, Brain, Zap } from "lucide-react";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import pptxgen from 'pptxgenjs';
@@ -57,14 +57,25 @@ export function PresentationGenerator() {
     setIsGenerating(true);
 
     try {
-      // Generate smart outlines based on prompt
-      const mockOutlines = generateSmartOutlines(prompt, pageCount);
-      setSlideOutlines(mockOutlines);
+      const response = await fetch('/api/generate/presentation-outline', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt, pageCount }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate outline');
+      }
+
+      const data = await response.json();
+      setSlideOutlines(data.outlines);
       setCurrentStep('outline');
 
       toast({
-        title: "Slide outline created! ✨",
-        description: `${mockOutlines.length} slides outlined. Choose a theme to continue.`,
+        title: "AI outline created! ✨",
+        description: `${data.outlines.length} slides intelligently structured. Choose a theme to continue.`,
       });
     } catch (error) {
       toast({
@@ -77,106 +88,33 @@ export function PresentationGenerator() {
     }
   };
 
-  const generateSmartOutlines = (prompt: string, count: number) => {
-    const topics = prompt.toLowerCase();
-    const isBusinessPitch = topics.includes('pitch') || topics.includes('startup') || topics.includes('business') || topics.includes('company');
-    const isTechnical = topics.includes('tech') || topics.includes('software') || topics.includes('ai') || topics.includes('development');
-    const isEducational = topics.includes('education') || topics.includes('training') || topics.includes('course') || topics.includes('tutorial');
-    const isMarketing = topics.includes('marketing') || topics.includes('sales') || topics.includes('product') || topics.includes('launch');
-    
-    if (isBusinessPitch) {
-      return [
-        { title: "Company Overview", type: "cover", description: "Company name, mission, and vision statement" },
-        { title: "Market Opportunity", type: "chart", description: "Market size, growth potential, and target segments" },
-        { title: "Problem We Solve", type: "text", description: "Key pain points and market gaps" },
-        { title: "Our Solution", type: "split", description: "Product/service overview with visuals" },
-        { title: "Business Model", type: "process", description: "Revenue streams and pricing strategy" },
-        { title: "Traction & Growth", type: "chart", description: "Key metrics, milestones, and user growth" },
-        { title: "Financial Projections", type: "chart", description: "Revenue forecasts and growth trajectory" },
-        { title: "Investment Ask", type: "text", description: "Funding requirements and use of capital" }
-      ].slice(0, count);
-    }
-
-    if (isTechnical) {
-      return [
-        { title: "Technical Overview", type: "cover", description: "System architecture and technology introduction" },
-        { title: "Current Challenges", type: "list", description: "Technical pain points and limitations" },
-        { title: "Proposed Architecture", type: "split", description: "System design and component overview" },
-        { title: "Technology Stack", type: "list", description: "Programming languages, frameworks, and tools" },
-        { title: "Implementation Plan", type: "process", description: "Development phases and timeline" },
-        { title: "Performance Metrics", type: "chart", description: "Benchmarks, KPIs, and success criteria" },
-        { title: "Security & Compliance", type: "text", description: "Security measures and regulatory compliance" },
-        { title: "Deployment Strategy", type: "process", description: "Go-live approach and rollout plan" }
-      ].slice(0, count);
-    }
-
-    if (isEducational) {
-      return [
-        { title: "Course Introduction", type: "cover", description: "Course title, objectives, and instructor" },
-        { title: "Learning Objectives", type: "list", description: "What students will learn and achieve" },
-        { title: "Course Structure", type: "process", description: "Modules, lessons, and timeline" },
-        { title: "Key Concepts", type: "text", description: "Fundamental principles and theories" },
-        { title: "Practical Examples", type: "split", description: "Real-world applications and case studies" },
-        { title: "Hands-on Activities", type: "list", description: "Exercises, projects, and assignments" },
-        { title: "Assessment Methods", type: "process", description: "Evaluation criteria and grading" },
-        { title: "Resources & Next Steps", type: "text", description: "Additional materials and continued learning" }
-      ].slice(0, count);
-    }
-
-    if (isMarketing) {
-      return [
-        { title: "Campaign Overview", type: "cover", description: "Campaign goals and brand positioning" },
-        { title: "Target Audience", type: "split", description: "Customer personas and demographics" },
-        { title: "Market Analysis", type: "chart", description: "Competitive landscape and opportunities" },
-        { title: "Marketing Strategy", type: "process", description: "Channel mix and tactical approach" },
-        { title: "Creative Concept", type: "split", description: "Visual identity and messaging framework" },
-        { title: "Campaign Timeline", type: "process", description: "Launch phases and key milestones" },
-        { title: "Budget & ROI", type: "chart", description: "Investment allocation and expected returns" },
-        { title: "Success Metrics", type: "chart", description: "KPIs and measurement framework" }
-      ].slice(0, count);
-    }
-
-    // Default generic outline
-    return [
-      { title: "Introduction", type: "cover", description: "Opening slide with main topic and presenter" },
-      { title: "Agenda", type: "list", description: "Overview of presentation structure and key points" },
-      { title: "Background", type: "text", description: "Context and background information" },
-      { title: "Main Content", type: "split", description: "Core information with supporting visuals" },
-      { title: "Key Points", type: "list", description: "Important takeaways and highlights" },
-      { title: "Analysis", type: "chart", description: "Data analysis and insights" },
-      { title: "Recommendations", type: "text", description: "Proposed actions and next steps" },
-      { title: "Conclusion", type: "text", description: "Summary and call to action" }
-    ].slice(0, count);
-  };
-
   const generateFullPresentation = async () => {
     setIsGenerating(true);
     setCurrentStep('generated');
 
     try {
-      // Generate actual slides based on outlines and template
-      const generatedSlides = slideOutlines.map((outline, index) => {
-        const slide = {
-          id: index + 1,
-          title: outline.title,
-          content: generateSlideContent(outline),
-          layout: outline.type,
-          slideNumber: index + 1,
+      const response = await fetch('/api/generate/presentation-full', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          outlines: slideOutlines, 
           template: selectedTemplate,
-          backgroundColor: getTemplateBackground(selectedTemplate),
-          textColor: getTemplateTextColor(selectedTemplate),
-          image: generateSlideImage(outline.type, outline.title),
-          bullets: generateBulletPoints(outline),
-          charts: outline.type === 'chart' ? generateChartData(outline.title) : null
-        };
-        return slide;
+          prompt 
+        }),
       });
 
-      setSlides(generatedSlides);
+      if (!response.ok) {
+        throw new Error('Failed to generate presentation');
+      }
+
+      const data = await response.json();
+      setSlides(data.slides);
 
       toast({
         title: "Presentation generated! ✨",
-        description: `${generatedSlides.length} slides created with ${selectedTemplate} theme`,
+        description: `${data.slides.length} slides created with AI-powered content and ${selectedTemplate} theme`,
       });
     } catch (error) {
       toast({
@@ -187,74 +125,6 @@ export function PresentationGenerator() {
     } finally {
       setIsGenerating(false);
     }
-  };
-
-  const generateSlideContent = (outline: any) => {
-    const contentMap: { [key: string]: string } = {
-      'cover': `Welcome to ${outline.title}. ${outline.description}`,
-      'list': outline.description,
-      'text': `${outline.description}. This section provides detailed information about ${outline.title.toLowerCase()}.`,
-      'chart': `Data visualization for ${outline.title}. ${outline.description}`,
-      'split': outline.description,
-      'process': `Step-by-step process for ${outline.title}. ${outline.description}`
-    };
-    return contentMap[outline.type] || outline.description;
-  };
-
-  const generateBulletPoints = (outline: any) => {
-    if (outline.type === 'list') {
-      return [
-        `Key aspect of ${outline.title}`,
-        `Important consideration for implementation`,
-        `Benefits and advantages`,
-        `Next steps and recommendations`
-      ];
-    }
-    return null;
-  };
-
-  const generateChartData = (title: string) => {
-    return {
-      type: 'bar',
-      data: [
-        { name: 'Q1', value: 65 },
-        { name: 'Q2', value: 78 },
-        { name: 'Q3', value: 82 },
-        { name: 'Q4', value: 95 }
-      ]
-    };
-  };
-
-  const generateSlideImage = (type: string, title: string) => {
-    const imageMap: { [key: string]: string } = {
-      'cover': 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      'chart': 'https://images.pexels.com/photos/590022/pexels-photo-590022.jpg?auto=compress&cs=tinysrgb&w=1200',
-      'split': 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      'process': 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1200'
-    };
-    return imageMap[type] || 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200';
-  };
-
-  const getTemplateBackground = (template: string) => {
-    const backgrounds: { [key: string]: string } = {
-      'modern': '#ffffff',
-      'minimal': '#f8f9fa',
-      'creative': '#ffffff',
-      'dark': '#1a1a1a',
-      'gradient': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-    };
-    return backgrounds[template] || '#ffffff';
-  };
-
-  const getTemplateTextColor = (template: string) => {
-    const colors: { [key: string]: string } = {
-      'modern': '#1a1a1a',
-      'minimal': '#2d3748',
-      'creative': '#1a1a1a',
-      'dark': '#ffffff',
-      'gradient': '#ffffff'
-    };
-    return colors[template] || '#1a1a1a';
   };
 
   const exportToPDF = async () => {
@@ -385,24 +255,28 @@ export function PresentationGenerator() {
       <div className={`flex items-center gap-2 px-2 sm:px-3 py-2 rounded-full transition-all whitespace-nowrap ${
         currentStep === 'input' ? 'bolt-gradient text-white' : 'glass-effect'
       }`}>
+        <Brain className="h-3 w-3 sm:h-4 sm:w-4" />
         <span className="text-xs sm:text-sm font-medium">1. Describe</span>
       </div>
       <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
       <div className={`flex items-center gap-2 px-2 sm:px-3 py-2 rounded-full transition-all whitespace-nowrap ${
         currentStep === 'outline' ? 'bolt-gradient text-white' : 'glass-effect'
       }`}>
-        <span className="text-xs sm:text-sm font-medium">2. Outline</span>
+        <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
+        <span className="text-xs sm:text-sm font-medium">2. AI Outline</span>
       </div>
       <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
       <div className={`flex items-center gap-2 px-2 sm:px-3 py-2 rounded-full transition-all whitespace-nowrap ${
         currentStep === 'theme' ? 'bolt-gradient text-white' : 'glass-effect'
       }`}>
+        <Palette className="h-3 w-3 sm:h-4 sm:w-4" />
         <span className="text-xs sm:text-sm font-medium">3. Theme</span>
       </div>
       <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
       <div className={`flex items-center gap-2 px-2 sm:px-3 py-2 rounded-full transition-all whitespace-nowrap ${
         currentStep === 'generated' ? 'bolt-gradient text-white' : 'glass-effect'
       }`}>
+        <Play className="h-3 w-3 sm:h-4 sm:w-4" />
         <span className="text-xs sm:text-sm font-medium">4. Present</span>
       </div>
     </div>
@@ -418,14 +292,14 @@ export function PresentationGenerator() {
           <div className="space-y-6">
             <div className="text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-effect mb-3">
-                <Wand2 className="h-3 w-3 text-yellow-500" />
-                <span className="text-xs font-medium">Step 1: Describe Your Presentation</span>
+                <Brain className="h-3 w-3 text-yellow-500" />
+                <span className="text-xs font-medium">Step 1: AI Analysis</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-bold mb-2 bolt-gradient-text">
                 What's your presentation about?
               </h2>
               <p className="text-sm text-muted-foreground">
-                Describe your topic and we'll create a smart outline for you
+                Our AI will analyze your topic and create an intelligent slide structure
               </p>
             </div>
 
@@ -463,7 +337,7 @@ export function PresentationGenerator() {
                 </Label>
                 <Textarea
                   id="prompt"
-                  placeholder="E.g., Startup pitch deck for AI SaaS platform targeting enterprise customers"
+                  placeholder="E.g., Startup pitch deck for AI SaaS platform targeting enterprise customers with focus on market opportunity, product demo, and financial projections"
                   className="min-h-[120px] sm:min-h-[150px] text-base glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20 resize-none"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -480,12 +354,12 @@ export function PresentationGenerator() {
                   {isGenerating ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>Creating outline...</span>
+                      <span>AI is analyzing...</span>
                     </>
                   ) : (
                     <>
-                      <Eye className="h-4 w-4" />
-                      <span>Visualize Slides</span>
+                      <Brain className="h-4 w-4" />
+                      <span>Generate AI Outline</span>
                       <ArrowRight className="h-4 w-4" />
                     </>
                   )}
@@ -502,33 +376,39 @@ export function PresentationGenerator() {
             <div className="text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-effect mb-3">
                 <LayoutPresentation className="h-3 w-3 text-blue-500" />
-                <span className="text-xs font-medium">Preview</span>
+                <span className="text-xs font-medium">AI-Powered Process</span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-bold bolt-gradient-text">How it works</h2>
+              <h2 className="text-xl sm:text-2xl font-bold bolt-gradient-text">How our AI works</h2>
             </div>
 
             <Card className="glass-effect border border-yellow-400/20 p-4 sm:p-6 relative overflow-hidden">
               <div className="absolute inset-0 shimmer opacity-10"></div>
               <div className="relative z-10 space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm flex-shrink-0">1</div>
+                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                    <Brain className="h-4 w-4" />
+                  </div>
                   <div>
-                    <h3 className="font-semibold">Smart Outline</h3>
-                    <p className="text-sm text-muted-foreground">AI analyzes your topic and creates a logical slide structure</p>
+                    <h3 className="font-semibold">Smart Analysis</h3>
+                    <p className="text-sm text-muted-foreground">AI analyzes your topic and identifies the best presentation structure</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm flex-shrink-0">2</div>
+                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                    <Zap className="h-4 w-4" />
+                  </div>
                   <div>
-                    <h3 className="font-semibold">Choose Theme</h3>
-                    <p className="text-sm text-muted-foreground">Select from professional themes that match your style</p>
+                    <h3 className="font-semibold">Intelligent Content</h3>
+                    <p className="text-sm text-muted-foreground">Generates detailed content, charts, and visuals for each slide</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm flex-shrink-0">3</div>
+                  <div className="w-8 h-8 rounded-full bolt-gradient flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                    <Play className="h-4 w-4" />
+                  </div>
                   <div>
-                    <h3 className="font-semibold">Generate & Present</h3>
-                    <p className="text-sm text-muted-foreground">Get your complete presentation with full-screen mode</p>
+                    <h3 className="font-semibold">Professional Design</h3>
+                    <p className="text-sm text-muted-foreground">Applies beautiful themes with full-screen presentation mode</p>
                   </div>
                 </div>
               </div>
@@ -543,13 +423,13 @@ export function PresentationGenerator() {
           <div className="text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-effect mb-3">
               <CheckCircle className="h-3 w-3 text-green-500" />
-              <span className="text-xs font-medium">Step 2: Review Your Slide Outline</span>
+              <span className="text-xs font-medium">Step 2: AI-Generated Outline</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold mb-2 bolt-gradient-text">
-              Perfect! Here's your presentation structure
+              🎯 Perfect! AI created your presentation structure
             </h2>
             <p className="text-sm text-muted-foreground">
-              Review the slides and choose a theme to bring them to life
+              Our AI analyzed your topic and created an intelligent slide flow. Review and choose a theme.
             </p>
           </div>
 
@@ -567,6 +447,7 @@ export function PresentationGenerator() {
               onClick={goToThemeSelection}
               className="bolt-gradient text-white font-semibold hover:scale-105 transition-all duration-300"
             >
+              <Palette className="mr-2 h-4 w-4" />
               Choose Theme →
             </Button>
           </div>
@@ -582,10 +463,10 @@ export function PresentationGenerator() {
               <span className="text-xs font-medium">Step 3: Choose Your Theme</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold mb-2 bolt-gradient-text">
-              Select a theme for your presentation
+              🎨 Select a theme for your presentation
             </h2>
             <p className="text-sm text-muted-foreground">
-              Pick a design that matches your style and audience
+              Pick a design that matches your style and audience. AI will apply it to all slides.
             </p>
           </div>
 
@@ -610,12 +491,12 @@ export function PresentationGenerator() {
               {isGenerating ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Generating...
+                  AI is creating...
                 </>
               ) : (
                 <>
                   <Sparkles className="mr-2 h-4 w-4" />
-                  Generate Presentation
+                  Generate with AI
                 </>
               )}
             </Button>
@@ -629,13 +510,13 @@ export function PresentationGenerator() {
           <div className="text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-effect mb-3">
               <CheckCircle className="h-3 w-3 text-green-500" />
-              <span className="text-xs font-medium">Step 4: Your Presentation is Ready!</span>
+              <span className="text-xs font-medium">Step 4: AI Presentation Ready!</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold mb-2 bolt-gradient-text">
-              🎉 Presentation Generated Successfully
+              🎉 Your AI-Generated Presentation is Ready!
             </h2>
             <p className="text-sm text-muted-foreground">
-              Preview your slides and present in full-screen mode like Canva
+              Complete with intelligent content, charts, and professional design. Present in full-screen like Canva!
             </p>
           </div>
 
@@ -654,13 +535,15 @@ export function PresentationGenerator() {
               variant="outline"
               className="glass-effect border-yellow-400/30 hover:border-yellow-400/60"
             >
-              Create New Presentation
+              <Brain className="mr-2 h-4 w-4" />
+              Create New with AI
             </Button>
             <Button
               onClick={() => setCurrentStep('theme')}
               variant="outline"
               className="glass-effect border-yellow-400/30 hover:border-yellow-400/60"
             >
+              <Palette className="mr-2 h-4 w-4" />
               Change Theme
             </Button>
             <div className="flex flex-col sm:flex-row gap-2">
