@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 // Validate API key
 const GOOGLE_API_KEY = process.env.GEMINI_API_KEY;
 if (!GOOGLE_API_KEY) {
-  throw new Error("GOOGLE_API_KEY environment variable is not set.");
+  throw new Error("GEMINI_API_KEY environment variable is not set.");
 }
 
 // Initialize with error handling
@@ -31,93 +31,181 @@ async function validateApiConnection() {
   }
 }
 
-// Enhanced presentation generator with Gamma.app styling
-export async function generatePresentation({ 
+// Enhanced presentation outline generator
+export async function generatePresentationOutline({ 
   prompt, 
-  pageCount = 8,
-  style = "modern",
-  themeColor = "blue"
+  pageCount = 8 
 }: { 
   prompt: string; 
   pageCount?: number;
-  style?: "modern" | "minimal" | "creative" | "professional";
-  themeColor?: string;
 }) {
   try {
     await validateApiConnection();
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
-    const systemPrompt = `Create a Gamma.app-style presentation about "${prompt}" with ${pageCount} slides.
+    const systemPrompt = `Create a smart presentation outline for: "${prompt}" with ${pageCount} slides.
 
-    Follow Gamma.app design principles:
-    1. VISUAL HIERARCHY:
-       - Primary image per slide (90% of slides)
-       - Text overlays on images with proper contrast
-       - Consistent spacing (32px padding)
-    
-    2. IMAGE SELECTION:
-       - Cover: "dramatic ${prompt} background" (full-bleed)
-       - Sections: "abstract ${prompt} concept" 
-       - Content: "specific ${prompt} illustration"
-       - All from Pexels/Unsplash (1080p+)
-    
-    3. LAYOUTS:
-       - 40% cover slides (full-bleed image + title)
-       - 30% split-content (image + text side-by-side)
-       - 20% quote/stat slides (image with overlay)
-       - 10% process slides (image sequence)
+    Analyze the topic and create an intelligent slide structure. Return a JSON array with this exact format:
 
-    Return JSON array with:
-    [{
-      title: string,
-      subtitle?: string,
-      content: string[],
-      layout: "cover" | "split-left" | "split-right" | "quote" | "stats" | "process",
-      image: {
-        url: string, // High-res Pexels/Unsplash URL
-        query: string, // Exact search query used
-        source: "pexels" | "unsplash",
-        filter: "darken" | "lighten" | "blur-light" | null,
-        position: "center" | "top" | "left" // Focal point
-      },
-      design: {
-        textColor: "light" | "dark", // Auto contrast
-        overlay: string | null, // rgba overlay
-        padding: number // 32px default
-      },
-      // Content fields...
-    }]`;
+    [
+      {
+        "title": "Slide Title",
+        "type": "cover|list|chart|split|process|text",
+        "description": "Detailed description of what this slide will contain",
+        "content": "Main content for the slide",
+        "bullets": ["bullet point 1", "bullet point 2"] (only for list type),
+        "chartData": {
+          "type": "bar|pie|line",
+          "data": [{"name": "Q1", "value": 65}]
+        } (only for chart type),
+        "imageQuery": "search query for relevant image",
+        "layout": "cover|split-left|split-right|full-text|chart-focus"
+      }
+    ]
+
+    Guidelines:
+    1. First slide should always be "cover" type
+    2. Use "chart" type for data, statistics, or metrics
+    3. Use "list" type for key points, features, or steps
+    4. Use "split" type for content that needs visual support
+    5. Use "process" type for workflows or timelines
+    6. Use "text" type for detailed explanations
+    7. Make content specific and actionable
+    8. Include relevant chart data for chart slides
+    9. Provide specific image search queries
+
+    Topic Analysis:
+    - Business/Startup: Include market, problem, solution, traction, financials
+    - Technical: Include architecture, implementation, performance, security
+    - Educational: Include objectives, concepts, examples, assessment
+    - Marketing: Include audience, strategy, creative, metrics`;
 
     const result = await model.generateContent(systemPrompt);
     const response = await result.response;
     const jsonText = extractJsonFromMarkdown(response.text());
-    let slides = JSON.parse(jsonText);
+    const outlines = JSON.parse(jsonText);
 
-    // Apply Gamma.app-style image enhancements
-    slides = slides.map((slide: any) => ({
-      ...slide,
-      image: {
-        ...slide.image,
-        // Ensure proper Gamma.app image formatting
-        url: slide.image.url.includes('?') 
-          ? `${slide.image.url}&auto=format&fit=crop&w=1200&h=800` 
-          : `${slide.image.url}?auto=format&fit=crop&w=1200&h=800`,
-        // Add default focal point if missing
-        position: slide.image.position || "center"
-      },
-      design: {
-        // Default Gamma.app styling
-        textColor: slide.design?.textColor || "light",
-        overlay: slide.design?.overlay || "rgba(0,0,0,0.3)",
-        padding: 32
+    return outlines.slice(0, pageCount);
+  } catch (error) {
+    console.error("Error generating presentation outline:", error);
+    throw new Error(`Failed to generate presentation outline: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
+// Enhanced full presentation generator
+export async function generatePresentation({ 
+  outlines,
+  template = "modern",
+  prompt
+}: { 
+  outlines: any[];
+  template?: string;
+  prompt: string;
+}) {
+  try {
+    await validateApiConnection();
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    
+    const systemPrompt = `Generate a complete presentation based on these outlines and the original prompt: "${prompt}"
+
+    Template: ${template}
+    
+    Outlines: ${JSON.stringify(outlines)}
+
+    Create detailed slides with the following JSON structure:
+    [
+      {
+        "id": 1,
+        "title": "Slide Title",
+        "content": "Detailed slide content (2-3 sentences)",
+        "layout": "cover|list|chart|split|process|text",
+        "bullets": ["detailed bullet point 1", "detailed bullet point 2"] (if applicable),
+        "charts": {
+          "type": "bar|pie|line",
+          "data": [{"name": "Category", "value": number}],
+          "title": "Chart Title"
+        } (if applicable),
+        "image": "https://images.pexels.com/photos/[relevant-image-id]/pexels-photo-[id].jpeg?auto=compress&cs=tinysrgb&w=1200",
+        "backgroundColor": "#ffffff",
+        "textColor": "#1a1a1a",
+        "template": "${template}",
+        "slideNumber": number
       }
+    ]
+
+    Requirements:
+    1. Generate rich, detailed content for each slide
+    2. For chart slides, create realistic data that supports the narrative
+    3. Use high-quality Pexels image URLs (use actual working URLs)
+    4. Ensure content flows logically from slide to slide
+    5. Make bullet points specific and actionable
+    6. Include proper styling based on template
+    7. Create compelling titles that grab attention
+    8. Ensure content is professional and engaging
+
+    Template Styling:
+    - modern: Clean, blue accents, white background
+    - minimal: Subtle, gray tones, lots of whitespace  
+    - creative: Vibrant, purple/pink gradients
+    - dark: Dark background, light text, blue accents
+    - gradient: Gradient backgrounds, white text`;
+
+    const result = await model.generateContent(systemPrompt);
+    const response = await result.response;
+    const jsonText = extractJsonFromMarkdown(response.text());
+    const slides = JSON.parse(jsonText);
+
+    // Enhance slides with template-specific styling
+    const enhancedSlides = slides.map((slide: any, index: number) => ({
+      ...slide,
+      id: index + 1,
+      slideNumber: index + 1,
+      template,
+      ...getTemplateStyles(template)
     }));
 
-    return slides.slice(0, pageCount);
+    return enhancedSlides;
   } catch (error) {
     console.error("Error generating presentation:", error);
     throw new Error(`Failed to generate presentation: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
+}
+
+function getTemplateStyles(template: string) {
+  const styles = {
+    modern: {
+      backgroundColor: '#ffffff',
+      textColor: '#1a1a1a',
+      accentColor: '#3b82f6',
+      borderColor: '#e5e7eb'
+    },
+    minimal: {
+      backgroundColor: '#f8f9fa',
+      textColor: '#2d3748',
+      accentColor: '#6b7280',
+      borderColor: '#d1d5db'
+    },
+    creative: {
+      backgroundColor: '#ffffff',
+      textColor: '#1a1a1a',
+      accentColor: '#8b5cf6',
+      borderColor: '#e5e7eb'
+    },
+    dark: {
+      backgroundColor: '#1a1a1a',
+      textColor: '#ffffff',
+      accentColor: '#60a5fa',
+      borderColor: '#374151'
+    },
+    gradient: {
+      backgroundColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      textColor: '#ffffff',
+      accentColor: '#93c5fd',
+      borderColor: '#60a5fa'
+    }
+  };
+  
+  return styles[template as keyof typeof styles] || styles.modern;
 }
 
 // Original resume and letter generators remain unchanged
