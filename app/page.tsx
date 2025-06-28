@@ -25,13 +25,14 @@ export default function Home() {
         
         <section id="document-types" className="py-24">
           <div className="container">
-            <h2 className="text-3xl font-bold text-center mb-12">Choose Your Document Type</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <h2 className="text-3xl font-bold text-center mb-12 ">Choose Your Document Type</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ml-16">
               <DocumentCard
                 title="Resume"
-                description="Create a professional resume tailored to your target role and company"
+                description="Craft a professional resume for your desired role and company"
                 icon={<FileIcon className="h-6 w-6" />}
                 href="/resume"
+                className=""
               />
               <DocumentCard
                 title="Presentation"
