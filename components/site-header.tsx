@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { File as FileIcon, FileText, Presentation as LayoutPresentation, Mail as MailIcon, Menu, LogOut } from "lucide-react";
+import { File as FileIcon, FileText, Presentation as LayoutPresentation, Mail as MailIcon, Menu, LogOut, Sparkles, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -32,121 +32,98 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur px-10 supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-10">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6 md:gap-10">
           <Link href="/" className="hidden md:block">
-            <div className="flex items-center space-x-2">
-              <FileText className="h-6 w-6" />
-              <span className="font-bold text-xl">DocMagic</span>
+            <div className="flex items-center space-x-2 group">
+              <div className="relative">
+                <FileText className="h-7 w-7 bolt-gradient-text group-hover:scale-110 transition-transform duration-300" />
+                <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-yellow-500 animate-pulse" />
+              </div>
+              <span className="font-bold text-xl bolt-gradient-text">DocMagic</span>
             </div>
           </Link>
+          
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden">
+              <Button variant="outline" size="icon" className="md:hidden glass-effect border-yellow-400/30">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left">
+            <SheetContent side="left" className="glass-effect border-r border-yellow-400/20">
               <div className="flex flex-col gap-6 pt-6">
                 <Link href="/" className="flex items-center space-x-2">
-                  <FileText className="h-6 w-6" />
-                  <span className="font-bold text-xl">DocMagic</span>
+                  <div className="relative">
+                    <FileText className="h-6 w-6 bolt-gradient-text" />
+                    <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-yellow-500" />
+                  </div>
+                  <span className="font-bold text-xl bolt-gradient-text">DocMagic</span>
                 </Link>
                 <nav className="flex flex-col gap-4">
-                  <Link
-                    href="/resume"
-                    className={cn(
-                      "text-lg font-medium transition-colors hover:text-primary",
-                      pathname === "/resume" ? "text-primary" : "text-muted-foreground"
-                    )}
-                  >
-                    <div className="flex items-center gap-2">
-                      <FileIcon className="h-5 w-5" />
-                      <span>Resume</span>
-                    </div>
-                  </Link>
-                  <Link
-                    href="/presentation"
-                    className={cn(
-                      "text-lg font-medium transition-colors hover:text-primary",
-                      pathname === "/presentation" ? "text-primary" : "text-muted-foreground"
-                    )}
-                  >
-                    <div className="flex items-center gap-2">
-                      <LayoutPresentation className="h-5 w-5" />
-                      <span>Presentation</span>
-                    </div>
-                  </Link>
-                  <Link
-                    href="/letter"
-                    className={cn(
-                      "text-lg font-medium transition-colors hover:text-primary",
-                      pathname === "/letter" ? "text-primary" : "text-muted-foreground"
-                    )}
-                  >
-                    <div className="flex items-center gap-2">
-                      <MailIcon className="h-5 w-5" />
-                      <span>Letter</span>
-                    </div>
-                  </Link>
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={cn(
+                        "text-lg font-medium transition-colors hover:bolt-gradient-text flex items-center gap-2",
+                        pathname === item.href ? "bolt-gradient-text" : "text-muted-foreground"
+                      )}
+                    >
+                      {item.icon}
+                      <span>{item.label}</span>
+                    </Link>
+                  ))}
                 </nav>
               </div>
             </SheetContent>
           </Sheet>
+          
           <nav className="hidden md:flex items-center gap-6">
-            <Link
-              href="/resume"
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/resume" ? "text-primary" : "text-muted-foreground"
-              )}
-            >
-              Resume
-            </Link>
-            <Link
-              href="/presentation"
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/presentation" ? "text-primary" : "text-muted-foreground"
-              )}
-            >
-              Presentation
-            </Link>
-            <Link
-              href="/letter"
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/letter" ? "text-primary" : "text-muted-foreground"
-              )}
-            >
-              Letter
-            </Link>
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "text-sm font-medium transition-all duration-300 hover:bolt-gradient-text hover:scale-105 flex items-center gap-1",
+                  pathname === item.href ? "bolt-gradient-text" : "text-muted-foreground"
+                )}
+              >
+                {item.icon}
+                {item.label}
+              </Link>
+            ))}
           </nav>
         </div>
+        
         <div className="flex items-center gap-2">
           <ThemeToggle />
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
+                  <Avatar className="h-8 w-8 ring-2 ring-yellow-400/20 hover:ring-yellow-400/40 transition-all">
                     <AvatarImage src={user.user_metadata?.avatar_url} alt={user.user_metadata?.name || user.email} />
-                    <AvatarFallback>{(user.user_metadata?.name?.[0] || user.email?.[0] || 'U').toUpperCase()}</AvatarFallback>
+                    <AvatarFallback className="bolt-gradient text-white font-semibold">
+                      {(user.user_metadata?.name?.[0] || user.email?.[0] || 'U').toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={handleSignOut}>
+              <DropdownMenuContent align="end" className="glass-effect border-yellow-400/20">
+                <DropdownMenuItem onClick={handleSignOut} className="hover:bg-red-50 hover:text-red-600">
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button asChild>
-              <Link href="/auth/signin">Sign In</Link>
+            <Button asChild className="bolt-gradient text-white font-semibold hover:scale-105 transition-all duration-300">
+              <Link href="/auth/signin" className="flex items-center gap-1">
+                <Zap className="h-4 w-4" />
+                Sign In
+              </Link>
             </Button>
           )}
         </div>
@@ -154,3 +131,21 @@ export function SiteHeader() {
     </header>
   );
 }
+
+const navItems = [
+  {
+    href: "/resume",
+    label: "Resume",
+    icon: <FileIcon className="h-4 w-4" />
+  },
+  {
+    href: "/presentation", 
+    label: "Presentation",
+    icon: <LayoutPresentation className="h-4 w-4" />
+  },
+  {
+    href: "/letter",
+    label: "Letter", 
+    icon: <MailIcon className="h-4 w-4" />
+  }
+];
