@@ -9,8 +9,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ResumePreview } from "@/components/resume/resume-preview";
 import { ResumeTemplates } from "@/components/resume/resume-templates";
+import { GuidedResumeGenerator } from "@/components/resume/guided-resume-generator";
 import { useToast } from "@/hooks/use-toast";
-import { File as FileIcon, Loader2, Sparkles, Maximize2, Minimize2, Download, User, Mail, Wand2, Palette } from "lucide-react";
+import { File as FileIcon, Loader2, Sparkles, Maximize2, Minimize2, Download, User, Mail, Wand2, Palette, Brain, Target, Zap } from "lucide-react";
 import { useSubscription } from "@/hooks/use-subscription";
 
 export function ResumeGenerator() {
@@ -80,17 +81,28 @@ export function ResumeGenerator() {
     }
   };
 
+  const handleGuidedResumeGenerated = (resume: any) => {
+    setResumeData(resume);
+  };
+
   return (
     <div className={`space-y-6 transition-all duration-300 ${isFullView ? 'p-0' : ''}`}>
-      <Tabs defaultValue="create" className="w-full">
+      <Tabs defaultValue="guided" className="w-full">
         <div className={`flex justify-center mb-6 ${isFullView ? 'hidden' : ''}`}>
           <TabsList className="glass-effect border border-yellow-400/20 p-1 h-auto">
             <TabsTrigger 
-              value="create" 
+              value="guided" 
+              className="data-[state=active]:bolt-gradient data-[state=active]:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2"
+            >
+              <Brain className="h-4 w-4" />
+              ATS-Optimized Builder
+            </TabsTrigger>
+            <TabsTrigger 
+              value="quick" 
               className="data-[state=active]:bolt-gradient data-[state=active]:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2"
             >
               <Sparkles className="h-4 w-4" />
-              Create
+              Quick Create
             </TabsTrigger>
             <TabsTrigger 
               value="templates" 
@@ -103,14 +115,105 @@ export function ResumeGenerator() {
           </TabsList>
         </div>
 
-        <TabsContent value="create" className="space-y-6 pt-4">
+        <TabsContent value="guided" className="space-y-6 pt-4">
+          <div className={`${isFullView ? 'hidden' : ''}`}>
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-effect mb-4 shimmer">
+                <Target className="h-4 w-4 text-yellow-500" />
+                <span className="text-sm font-medium">100% ATS-Optimized</span>
+                <Zap className="h-4 w-4 text-blue-500" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3 bolt-gradient-text">
+                Build Your ATS-Friendly Resume
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Our AI-powered guided builder creates resumes that pass Applicant Tracking Systems
+                with perfect keyword optimization and professional formatting
+              </p>
+            </div>
+
+            <div className="glass-effect p-6 sm:p-8 rounded-2xl border border-yellow-400/20 relative overflow-hidden">
+              <div className="absolute inset-0 shimmer opacity-20"></div>
+              <div className="relative z-10">
+                <GuidedResumeGenerator onResumeGenerated={handleGuidedResumeGenerated} />
+              </div>
+            </div>
+          </div>
+
+          {resumeData && (
+            <div className={`${isFullView ? 'w-full' : ''}`}>
+              <div className="flex justify-between items-center mb-4">
+                <div className="text-center lg:text-left">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-effect mb-3">
+                    <FileIcon className="h-3 w-3 text-blue-500" />
+                    <span className="text-xs font-medium">ATS-Optimized Resume</span>
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-bold bolt-gradient-text">Preview</h2>
+                </div>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsFullView(!isFullView)}
+                  className="glass-effect border-yellow-400/30 hover:border-yellow-400/60"
+                >
+                  {isFullView ? (
+                    <>
+                      <Minimize2 className="h-4 w-4 mr-2" />
+                      Exit Full View
+                    </>
+                  ) : (
+                    <>
+                      <Maximize2 className="h-4 w-4 mr-2" />
+                      Full View
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              <div className={`glass-effect border border-yellow-400/20 rounded-xl overflow-hidden bg-white transition-all duration-300 relative ${
+                isFullView ? 'fixed inset-4 z-50 shadow-2xl' : ''
+              }`}>
+                <div className="absolute inset-0 shimmer opacity-10"></div>
+                <div className="relative z-10">
+                  <ResumePreview resume={resumeData} template={selectedTemplate} />
+                </div>
+              </div>
+
+              {/* Download Options */}
+              <div className="glass-effect p-4 rounded-xl border border-yellow-400/20 mt-6">
+                <h3 className="text-lg font-medium mb-3 flex items-center gap-2">
+                  <Download className="h-4 w-4 text-yellow-500" />
+                  Download Options
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download PDF
+                  </Button>
+                  <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download DOCX
+                  </Button>
+                  {isPro && (
+                    <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60">
+                      Share Link
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="quick" className="space-y-6 pt-4">
           <div className={`grid grid-cols-1 ${isFullView ? '' : 'lg:grid-cols-2'} gap-6 sm:gap-8`}>
             {/* Left Side - Form */}
             <div className={isFullView ? 'hidden' : 'space-y-6'}>
               <div className="text-center lg:text-left">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-effect mb-3">
                   <Wand2 className="h-3 w-3 text-yellow-500" />
-                  <span className="text-xs font-medium">AI Resume Generator</span>
+                  <span className="text-xs font-medium">Quick AI Resume Generator</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold mb-2 bolt-gradient-text">
                   Generate Your Resume
