@@ -4,6 +4,7 @@ import { FeaturesSection } from "@/components/features-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { DocumentCard } from "@/components/document-card";
 import { BoltSponsorshipBanner } from "@/components/bolt-sponsorship-banner";
+import { FloatingElements } from "@/components/floating-elements";
 import { 
   File as FileIcon, 
   FileText, 
@@ -17,90 +18,122 @@ import {
   Users,
   Sparkles,
   Zap,
-  Star
+  Star,
+  ArrowRight,
+  Play,
+  Shield,
+  Clock,
+  Globe,
+  Award
 } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
+      <FloatingElements />
       <SiteHeader />
       <BoltSponsorshipBanner />
-      <main className="flex-1">
+      <main className="flex-1 relative z-10">
         <HeroSection />
         
-        {/* Stats Section */}
-        <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
-          <div className="container">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-              <div className="space-y-2">
-                <div className="text-4xl font-bold text-primary">10K+</div>
-                <div className="text-muted-foreground">Documents Created</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-4xl font-bold text-primary">5K+</div>
-                <div className="text-muted-foreground">Happy Users</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-4xl font-bold text-primary">99%</div>
-                <div className="text-muted-foreground">Success Rate</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-4xl font-bold text-primary">24/7</div>
-                <div className="text-muted-foreground">AI Availability</div>
-              </div>
+        {/* Floating Stats Section */}
+        <section className="py-20 relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 via-purple-50/30 to-indigo-50/50 dark:from-blue-900/10 dark:via-purple-900/10 dark:to-indigo-900/10" />
+          <div className="container relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {[
+                { number: "50K+", label: "Documents Created", icon: FileText, color: "from-blue-500 to-cyan-500" },
+                { number: "15K+", label: "Happy Users", icon: Users, color: "from-purple-500 to-pink-500" },
+                { number: "99.9%", label: "Uptime", icon: Shield, color: "from-green-500 to-emerald-500" },
+                { number: "30s", label: "Average Generation", icon: Clock, color: "from-orange-500 to-red-500" }
+              ].map((stat, index) => (
+                <div key={index} className="group">
+                  <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20 dark:border-gray-700/20 hover:shadow-3xl transition-all duration-500 hover:scale-105 hover:-translate-y-2">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent dark:from-gray-700/40 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-xl group-hover:blur-2xl transition-all duration-500" />
+                    
+                    <div className="relative z-10 text-center">
+                      <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${stat.color} text-white mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                        <stat.icon className="h-8 w-8" />
+                      </div>
+                      <div className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-2">
+                        {stat.number}
+                      </div>
+                      <div className="text-muted-foreground font-medium">{stat.label}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
         
-        <section id="document-types" className="py-24 relative overflow-hidden">
-          {/* Background decoration */}
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-blue-50/30 to-indigo-50/50 dark:from-purple-900/10 dark:via-blue-900/10 dark:to-indigo-900/10" />
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-r from-indigo-400/20 to-pink-400/20 rounded-full blur-3xl" />
+        {/* 3D Document Types Section */}
+        <section id="document-types" className="py-32 relative overflow-hidden">
+          {/* Animated background */}
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-r from-indigo-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-purple-400/10 to-blue-400/10 rounded-full blur-3xl animate-spin" style={{ animationDuration: '20s' }} />
+          </div>
           
           <div className="container relative z-10">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <Sparkles className="h-4 w-4" />
+            <div className="text-center mb-20">
+              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600/10 to-purple-600/10 backdrop-blur-xl border border-blue-200/50 dark:border-blue-800/50 text-blue-700 dark:text-blue-300 px-6 py-3 rounded-full text-sm font-medium mb-8 shadow-lg">
+                <Sparkles className="h-5 w-5" />
                 AI-Powered Document Creation
+                <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-                Choose Your Document Type
+              
+              <h2 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+                <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent">
+                  Choose Your
+                </span>
+                <br />
+                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                  Document Type
+                </span>
               </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
                 Transform your ideas into professional documents with our AI-powered platform. 
-                From resumes to presentations, we've got you covered.
+                From resumes to presentations, we create magic in seconds.
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            {/* 3D Document Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto perspective-1000">
               <DocumentCard
                 title="Resume"
-                description="Craft a professional resume tailored for your dream job with AI optimization"
-                icon={<FileIcon className="h-6 w-6" />}
+                description="Craft a professional resume tailored for your dream job with AI optimization and ATS compatibility"
+                icon={<FileIcon className="h-7 w-7" />}
                 href="/resume"
-                className="group hover:scale-105 transition-all duration-300 hover:shadow-2xl border-0 bg-gradient-to-br from-white to-blue-50 dark:from-gray-800 dark:to-blue-900/20"
+                className="transform-gpu hover:rotate-y-12 hover:scale-105 transition-all duration-700 hover:shadow-3xl"
+                gradient="from-blue-500 to-cyan-500"
               />
               <DocumentCard
                 title="Presentation"
-                description="Generate stunning slide decks that captivate your audience instantly"
-                icon={<LayoutPresentation className="h-6 w-6" />}
+                description="Generate stunning slide decks that captivate your audience with professional layouts and content"
+                icon={<LayoutPresentation className="h-7 w-7" />}
                 href="/presentation"
-                className="group hover:scale-105 transition-all duration-300 hover:shadow-2xl border-0 bg-gradient-to-br from-white to-purple-50 dark:from-gray-800 dark:to-purple-900/20"
+                className="transform-gpu hover:rotate-y-12 hover:scale-105 transition-all duration-700 hover:shadow-3xl"
+                gradient="from-purple-500 to-pink-500"
               />
               <DocumentCard
                 title="CV"
-                description="Build comprehensive CVs that showcase your academic and professional journey"
-                icon={<FileText className="h-6 w-6" />}
+                description="Build comprehensive CVs that showcase your academic and professional journey effectively"
+                icon={<FileText className="h-7 w-7" />}
                 href="/cv"
-                className="group hover:scale-105 transition-all duration-300 hover:shadow-2xl border-0 bg-gradient-to-br from-white to-green-50 dark:from-gray-800 dark:to-green-900/20"
+                className="transform-gpu hover:rotate-y-12 hover:scale-105 transition-all duration-700 hover:shadow-3xl"
+                gradient="from-green-500 to-emerald-500"
               />
               <DocumentCard
                 title="Letter"
-                description="Draft professional letters for any purpose with perfect tone and structure"
-                icon={<Mail className="h-6 w-6" />}
+                description="Draft professional letters for any purpose with perfect tone, structure, and formatting"
+                icon={<Mail className="h-7 w-7" />}
                 href="/letter"
-                className="group hover:scale-105 transition-all duration-300 hover:shadow-2xl border-0 bg-gradient-to-br from-white to-orange-50 dark:from-gray-800 dark:to-orange-900/20"
+                className="transform-gpu hover:rotate-y-12 hover:scale-105 transition-all duration-700 hover:shadow-3xl"
+                gradient="from-orange-500 to-red-500"
               />
             </div>
           </div>
@@ -109,125 +142,165 @@ export default function Home() {
         <FeaturesSection />
         <TestimonialsSection />
         
-        {/* CTA Section */}
-        <section className="py-24 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 relative overflow-hidden">
+        {/* Ultra Modern CTA Section */}
+        <section className="py-32 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900" />
           <div className="absolute inset-0 bg-black/20" />
-          <div className="absolute inset-0">
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-600/50 to-purple-600/50" />
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
+          
+          {/* Animated background elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-2xl animate-spin" style={{ animationDuration: '30s' }} />
           </div>
           
           <div className="container relative z-10 text-center text-white">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl md:text-6xl font-bold mb-6">
-                Ready to Create Magic?
+            <div className="max-w-5xl mx-auto">
+              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-xl border border-white/20 text-white px-6 py-3 rounded-full text-sm font-medium mb-8">
+                <Award className="h-5 w-5 text-yellow-400" />
+                Join the AI Revolution
+              </div>
+              
+              <h2 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+                Ready to Create
+                <br />
+                <span className="bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+                  Pure Magic?
+                </span>
               </h2>
-              <p className="text-xl md:text-2xl mb-8 text-white/90">
-                Join thousands of professionals who trust DocMagic for their document needs
+              
+              <p className="text-xl md:text-2xl mb-12 text-white/90 max-w-3xl mx-auto leading-relaxed">
+                Join thousands of professionals who trust DocMagic for their document needs. 
+                Experience the future of document creation today.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <button className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-xl">
-                  Start Creating Now
+              
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+                <button className="group relative bg-white text-blue-600 px-10 py-5 rounded-full font-bold text-xl hover:bg-gray-100 transition-all duration-300 hover:scale-110 shadow-2xl hover:shadow-3xl overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+                  <div className="relative flex items-center gap-3">
+                    <Sparkles className="h-6 w-6" />
+                    Start Creating Now
+                    <ArrowRight className="h-6 w-6 group-hover:translate-x-1 transition-transform duration-300" />
+                  </div>
                 </button>
-                <button className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300">
-                  Watch Demo
+                
+                <button className="group border-2 border-white/30 text-white px-10 py-5 rounded-full font-bold text-xl hover:bg-white/10 hover:border-white/50 transition-all duration-300 backdrop-blur-xl">
+                  <div className="flex items-center gap-3">
+                    <Play className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+                    Watch Demo
+                  </div>
                 </button>
               </div>
-              <div className="flex items-center justify-center gap-2 mt-8 text-white/80">
-                <Star className="h-5 w-5 fill-current" />
-                <Star className="h-5 w-5 fill-current" />
-                <Star className="h-5 w-5 fill-current" />
-                <Star className="h-5 w-5 fill-current" />
-                <Star className="h-5 w-5 fill-current" />
-                <span className="ml-2">Rated 5/5 by 1000+ users</span>
+              
+              <div className="flex items-center justify-center gap-3 text-white/80">
+                <div className="flex items-center gap-1">
+                  {Array(5).fill(0).map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-current text-yellow-400" />
+                  ))}
+                </div>
+                <span className="text-lg font-medium">Rated 5/5 by 10,000+ users</span>
               </div>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t bg-background relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800" />
-        <div className="container px-4 py-16 mx-auto relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+      {/* Ultra Modern Footer */}
+      <footer className="relative overflow-hidden border-t border-gray-200/50 dark:border-gray-700/50">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/30" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/5 to-purple-400/5 rounded-full blur-3xl" />
+        
+        <div className="container px-4 py-20 mx-auto relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
             {/* Brand Column */}
             <div className="space-y-6">
-              <div className="flex items-center space-x-2">
-                <div className="h-8 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Zap className="h-5 w-5 text-white" />
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className="h-12 w-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Zap className="h-7 w-7 text-white" />
+                  </div>
+                  <div className="absolute -top-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-800 animate-pulse" />
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   DocMagic
                 </span>
               </div>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed text-lg">
                 Create professional documents in minutes with our AI-powered tools. 
-                Built for the modern professional.
+                Built for the modern professional who values quality and efficiency.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-muted-foreground hover:text-blue-600 transition-colors p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20">
-                  <Twitter className="h-5 w-5" />
-                </a>
-                <a href="#" className="text-muted-foreground hover:text-blue-600 transition-colors p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20">
-                  <Linkedin className="h-5 w-5" />
-                </a>
-                <a href="#" className="text-muted-foreground hover:text-blue-600 transition-colors p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20">
-                  <Github className="h-5 w-5" />
-                </a>
+                {[
+                  { icon: Twitter, href: "#", color: "hover:text-blue-500" },
+                  { icon: Linkedin, href: "#", color: "hover:text-blue-600" },
+                  { icon: Github, href: "#", color: "hover:text-gray-900 dark:hover:text-white" }
+                ].map((social, index) => (
+                  <a key={index} href={social.href} className={`text-muted-foreground ${social.color} transition-all duration-300 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-110`}>
+                    <social.icon className="h-6 w-6" />
+                  </a>
+                ))}
               </div>
             </div>
 
             {/* Product Column */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Product</h3>
-              <ul className="space-y-3">
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Features</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Templates</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">API</a></li>
+            <div className="space-y-6">
+              <h3 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">Product</h3>
+              <ul className="space-y-4">
+                {["Features", "Pricing", "Templates", "API", "Integrations"].map((item, index) => (
+                  <li key={index}>
+                    <a href="#" className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-lg hover:translate-x-2 inline-block">
+                      {item}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
 
             {/* Resources Column */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Resources</h3>
-              <ul className="space-y-3">
-                <li className="flex items-center space-x-2">
-                  <BookOpen className="h-4 w-4 text-muted-foreground" />
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Documentation</a>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Help Center</a>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Community</a>
-                </li>
+            <div className="space-y-6">
+              <h3 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">Resources</h3>
+              <ul className="space-y-4">
+                {[
+                  { icon: BookOpen, text: "Documentation" },
+                  { icon: HelpCircle, text: "Help Center" },
+                  { icon: Users, text: "Community" },
+                  { icon: Globe, text: "Blog" }
+                ].map((item, index) => (
+                  <li key={index} className="flex items-center space-x-3 group">
+                    <item.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
+                    <a href="#" className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-lg">
+                      {item.text}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
 
             {/* Company Column */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Company</h3>
-              <ul className="space-y-3">
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">About Us</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Careers</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Blog</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Contact</a></li>
+            <div className="space-y-6">
+              <h3 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">Company</h3>
+              <ul className="space-y-4">
+                {["About Us", "Careers", "Press", "Contact", "Partners"].map((item, index) => (
+                  <li key={index}>
+                    <a href="#" className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-lg hover:translate-x-2 inline-block">
+                      {item}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
 
-          <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-muted-foreground">
-              &copy; {new Date().getFullYear()} DocMagic. All rights reserved.
+          <div className="border-t border-gray-200/50 dark:border-gray-700/50 pt-12 flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
+            <p className="text-muted-foreground text-lg">
+              &copy; {new Date().getFullYear()} DocMagic. All rights reserved. Made with ❤️ for professionals worldwide.
             </p>
-            <div className="flex items-center space-x-6">
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Privacy</a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Terms</a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Cookies</a>
+            <div className="flex items-center space-x-8">
+              {["Privacy", "Terms", "Cookies", "Security"].map((item, index) => (
+                <a key={index} href="#" className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-lg">
+                  {item}
+                </a>
+              ))}
             </div>
           </div>
         </div>
