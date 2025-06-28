@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Sparkles } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -15,6 +16,7 @@ interface DocumentCardProps {
   description: string;
   icon: React.ReactNode;
   href: string;
+  gradient: string;
   className?: string;
 }
 
@@ -23,31 +25,61 @@ export function DocumentCard({
   description,
   icon,
   href,
+  gradient,
   className,
 }: DocumentCardProps) {
   return (
     <Card 
       className={cn(
-        "overflow-hidden transition-all hover:shadow-lg group",
+        "overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 group border-0 glass-effect",
         className
       )}
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <CardHeader className="relative z-10">
-        <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-3">
+      {/* Gradient background */}
+      <div className={cn(
+        "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-300",
+        gradient
+      )} />
+      
+      {/* Animated border */}
+      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-yellow-400 via-blue-500 to-yellow-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-gradient" />
+      
+      <CardHeader className="relative z-10 pb-4">
+        <div className={cn(
+          "h-14 w-14 rounded-xl flex items-center justify-center text-white mb-4 bg-gradient-to-br shadow-lg group-hover:scale-110 transition-transform duration-300",
+          gradient
+        )}>
           {icon}
         </div>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardTitle className="text-xl font-bold group-hover:text-yellow-600 transition-colors">
+          {title}
+        </CardTitle>
+        <CardDescription className="text-muted-foreground">
+          {description}
+        </CardDescription>
       </CardHeader>
-      <CardContent className="relative z-10">
-        <div className="h-32 rounded-md bg-muted flex items-center justify-center">
-          <span className="text-muted-foreground">Preview</span>
+      
+      <CardContent className="relative z-10 pb-4">
+        <div className="h-32 rounded-lg bg-muted/50 flex items-center justify-center group-hover:bg-muted/70 transition-colors">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Sparkles className="h-4 w-4" />
+            <span className="text-sm">AI Preview</span>
+          </div>
         </div>
       </CardContent>
+      
       <CardFooter className="relative z-10">
-        <Button asChild className="w-full">
-          <Link href={href}>Create Now</Link>
+        <Button 
+          asChild 
+          className={cn(
+            "w-full bg-gradient-to-r text-white font-semibold hover:scale-105 transition-all duration-300 shadow-lg",
+            gradient
+          )}
+        >
+          <Link href={href} className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4" />
+            Create Now
+          </Link>
         </Button>
       </CardFooter>
     </Card>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { File as FileIcon, FileText, Presentation as LayoutPresentation, Mail as MailIcon, Menu, LogOut } from "lucide-react";
+import { File as FileIcon, FileText, Presentation as LayoutPresentation, Mail as MailIcon, Menu, LogOut, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -32,13 +32,15 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur px-10 supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 px-10">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6 md:gap-10">
           <Link href="/" className="hidden md:block">
             <div className="flex items-center space-x-2">
-              <FileText className="h-6 w-6" />
-              <span className="font-bold text-xl">DocMagic</span>
+              <div className="h-8 w-8 rounded-lg bolt-gradient flex items-center justify-center">
+                <Zap className="h-5 w-5 text-white" />
+              </div>
+              <span className="font-bold text-xl bolt-gradient-text">DocMagic</span>
             </div>
           </Link>
           <Sheet>
@@ -48,18 +50,20 @@ export function SiteHeader() {
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left">
+            <SheetContent side="left" className="glass-effect">
               <div className="flex flex-col gap-6 pt-6">
                 <Link href="/" className="flex items-center space-x-2">
-                  <FileText className="h-6 w-6" />
-                  <span className="font-bold text-xl">DocMagic</span>
+                  <div className="h-6 w-6 rounded bolt-gradient flex items-center justify-center">
+                    <Zap className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="font-bold text-xl bolt-gradient-text">DocMagic</span>
                 </Link>
                 <nav className="flex flex-col gap-4">
                   <Link
                     href="/resume"
                     className={cn(
-                      "text-lg font-medium transition-colors hover:text-primary",
-                      pathname === "/resume" ? "text-primary" : "text-muted-foreground"
+                      "text-lg font-medium transition-colors hover:text-yellow-600",
+                      pathname === "/resume" ? "text-yellow-600" : "text-muted-foreground"
                     )}
                   >
                     <div className="flex items-center gap-2">
@@ -70,8 +74,8 @@ export function SiteHeader() {
                   <Link
                     href="/presentation"
                     className={cn(
-                      "text-lg font-medium transition-colors hover:text-primary",
-                      pathname === "/presentation" ? "text-primary" : "text-muted-foreground"
+                      "text-lg font-medium transition-colors hover:text-yellow-600",
+                      pathname === "/presentation" ? "text-yellow-600" : "text-muted-foreground"
                     )}
                   >
                     <div className="flex items-center gap-2">
@@ -82,8 +86,8 @@ export function SiteHeader() {
                   <Link
                     href="/letter"
                     className={cn(
-                      "text-lg font-medium transition-colors hover:text-primary",
-                      pathname === "/letter" ? "text-primary" : "text-muted-foreground"
+                      "text-lg font-medium transition-colors hover:text-yellow-600",
+                      pathname === "/letter" ? "text-yellow-600" : "text-muted-foreground"
                     )}
                   >
                     <div className="flex items-center gap-2">
@@ -99,8 +103,8 @@ export function SiteHeader() {
             <Link
               href="/resume"
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/resume" ? "text-primary" : "text-muted-foreground"
+                "text-sm font-medium transition-colors hover:text-yellow-600",
+                pathname === "/resume" ? "text-yellow-600" : "text-muted-foreground"
               )}
             >
               Resume
@@ -108,8 +112,8 @@ export function SiteHeader() {
             <Link
               href="/presentation"
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/presentation" ? "text-primary" : "text-muted-foreground"
+                "text-sm font-medium transition-colors hover:text-yellow-600",
+                pathname === "/presentation" ? "text-yellow-600" : "text-muted-foreground"
               )}
             >
               Presentation
@@ -117,8 +121,8 @@ export function SiteHeader() {
             <Link
               href="/letter"
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/letter" ? "text-primary" : "text-muted-foreground"
+                "text-sm font-medium transition-colors hover:text-yellow-600",
+                pathname === "/letter" ? "text-yellow-600" : "text-muted-foreground"
               )}
             >
               Letter
@@ -131,21 +135,23 @@ export function SiteHeader() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
+                  <Avatar className="h-8 w-8 ring-2 ring-yellow-400/20">
                     <AvatarImage src={user.user_metadata?.avatar_url} alt={user.user_metadata?.name || user.email} />
-                    <AvatarFallback>{(user.user_metadata?.name?.[0] || user.email?.[0] || 'U').toUpperCase()}</AvatarFallback>
+                    <AvatarFallback className="bolt-gradient text-white font-semibold">
+                      {(user.user_metadata?.name?.[0] || user.email?.[0] || 'U').toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={handleSignOut}>
+              <DropdownMenuContent align="end" className="glass-effect">
+                <DropdownMenuItem onClick={handleSignOut} className="hover:bg-red-50 dark:hover:bg-red-950">
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button asChild>
+            <Button asChild className="bolt-gradient text-white hover:scale-105 transition-all duration-300">
               <Link href="/auth/signin">Sign In</Link>
             </Button>
           )}
