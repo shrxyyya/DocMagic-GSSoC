@@ -66,7 +66,7 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
     } else {
       const interval = setInterval(() => {
         nextSlide();
-      }, 5000); // 5 seconds per slide
+      }, 5000);
       setAutoPlayInterval(interval);
       setIsPlaying(true);
     }
@@ -307,38 +307,56 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
 
   const getTemplateStyles = (template: string) => {
     const styles = {
-      modern: {
-        background: 'bg-white',
-        text: 'text-gray-900',
+      'modern-business': {
+        background: 'bg-gradient-to-br from-blue-50 to-white',
+        text: 'text-blue-900',
         accent: 'text-blue-600',
-        border: 'border-blue-200'
+        border: 'border-blue-200',
+        cardBg: 'bg-white/80 backdrop-blur-sm',
+        shadow: 'shadow-blue-100'
       },
-      minimal: {
-        background: 'bg-gray-50',
-        text: 'text-gray-800',
-        accent: 'text-gray-600',
-        border: 'border-gray-300'
-      },
-      creative: {
-        background: 'bg-gradient-to-br from-purple-50 to-pink-50',
+      'creative-gradient': {
+        background: 'bg-gradient-to-br from-purple-100 via-pink-50 to-orange-50',
         text: 'text-purple-900',
         accent: 'text-purple-600',
-        border: 'border-purple-200'
+        border: 'border-purple-200',
+        cardBg: 'bg-white/90 backdrop-blur-sm',
+        shadow: 'shadow-purple-100'
       },
-      dark: {
-        background: 'bg-gray-900',
-        text: 'text-white',
-        accent: 'text-blue-400',
-        border: 'border-gray-700'
+      'minimalist-pro': {
+        background: 'bg-gradient-to-br from-gray-50 to-white',
+        text: 'text-gray-800',
+        accent: 'text-gray-600',
+        border: 'border-gray-200',
+        cardBg: 'bg-white/95 backdrop-blur-sm',
+        shadow: 'shadow-gray-100'
       },
-      gradient: {
-        background: 'bg-gradient-to-br from-blue-600 to-purple-700',
+      'tech-modern': {
+        background: 'bg-gradient-to-br from-slate-900 to-gray-900',
         text: 'text-white',
-        accent: 'text-blue-200',
-        border: 'border-blue-400'
+        accent: 'text-cyan-400',
+        border: 'border-cyan-400',
+        cardBg: 'bg-slate-800/80 backdrop-blur-sm',
+        shadow: 'shadow-cyan-500/20'
+      },
+      'elegant-dark': {
+        background: 'bg-gradient-to-br from-gray-900 to-black',
+        text: 'text-white',
+        accent: 'text-yellow-400',
+        border: 'border-yellow-400',
+        cardBg: 'bg-gray-800/80 backdrop-blur-sm',
+        shadow: 'shadow-yellow-500/20'
+      },
+      'startup-pitch': {
+        background: 'bg-gradient-to-br from-green-50 to-emerald-50',
+        text: 'text-green-900',
+        accent: 'text-green-600',
+        border: 'border-green-200',
+        cardBg: 'bg-white/90 backdrop-blur-sm',
+        shadow: 'shadow-green-100'
       }
     };
-    return styles[template as keyof typeof styles] || styles.modern;
+    return styles[template as keyof typeof styles] || styles['modern-business'];
   };
 
   const renderSlideContent = (slide: any, slideIndex: number) => {
@@ -350,7 +368,6 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
       templateStyles.text
     );
 
-    // Background image for slides that have images
     const backgroundImage = slide.image && !imageLoadErrors[slideIndex] 
       ? `url(${slide.image})` 
       : undefined;
@@ -366,17 +383,19 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
               backgroundPosition: slide.imagePosition || "center",
             }}
           >
-            <div className="absolute inset-0 bg-black/40"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60"></div>
             <div className="relative z-10 h-full flex flex-col items-center justify-center p-8 sm:p-12 text-center text-white">
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                {slide.title}
-              </h1>
-              {slide.content && (
-                <p className="text-xl sm:text-2xl lg:text-3xl opacity-90 max-w-4xl leading-relaxed">
-                  {slide.content}
-                </p>
-              )}
-              <div className="w-24 h-1 bg-white/80 mt-8"></div>
+              <div className="max-w-4xl mx-auto">
+                <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                  {slide.title}
+                </h1>
+                {slide.content && (
+                  <p className="text-xl sm:text-2xl lg:text-3xl opacity-90 max-w-4xl leading-relaxed mb-8">
+                    {slide.content}
+                  </p>
+                )}
+                <div className="w-24 h-1 bg-white/80 mx-auto"></div>
+              </div>
             </div>
             {slide.image && imageLoadErrors[slideIndex] && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
@@ -406,7 +425,7 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
                   </p>
                 )}
                 {slide.bullets && (
-                  <ul className="space-y-3 text-lg">
+                  <ul className="space-y-4 text-lg">
                     {slide.bullets.map((bullet: string, i: number) => (
                       <li key={i} className="flex items-start gap-4">
                         <div className={cn("w-3 h-3 rounded-full mt-2 flex-shrink-0", templateStyles.accent.replace('text-', 'bg-'))}></div>
@@ -418,15 +437,17 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
               </div>
               <div className="flex items-center justify-center">
                 {slide.image && !imageLoadErrors[slideIndex] ? (
-                  <img 
-                    src={slide.image} 
-                    alt={slide.imageAlt || slide.title}
-                    className="max-w-full h-auto rounded-xl shadow-2xl object-cover"
-                    style={{ maxHeight: '500px' }}
-                    onError={() => handleImageError(slideIndex)}
-                  />
+                  <div className={cn("rounded-2xl overflow-hidden", templateStyles.shadow, "shadow-2xl")}>
+                    <img 
+                      src={slide.image} 
+                      alt={slide.imageAlt || slide.title}
+                      className="max-w-full h-auto object-cover"
+                      style={{ maxHeight: '500px' }}
+                      onError={() => handleImageError(slideIndex)}
+                    />
+                  </div>
                 ) : (
-                  <div className={cn("w-full h-80 rounded-xl flex items-center justify-center", templateStyles.border, "border-2 border-dashed bg-gray-50")}>
+                  <div className={cn("w-full h-80 rounded-2xl flex items-center justify-center", templateStyles.border, "border-2 border-dashed", templateStyles.cardBg)}>
                     <ImageIcon className="h-16 w-16 text-gray-400" />
                   </div>
                 )}
@@ -451,14 +472,14 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
               </div>
               <div className="flex-1 flex items-center justify-center">
                 {slide.charts ? (
-                  <div className="w-full max-w-4xl">
+                  <div className={cn("w-full max-w-4xl p-6 rounded-2xl", templateStyles.cardBg, templateStyles.shadow, "shadow-xl")}>
                     {slide.charts.title && (
                       <h3 className="text-xl font-semibold text-center mb-6">{slide.charts.title}</h3>
                     )}
                     {renderChart(slide.charts)}
                   </div>
                 ) : (
-                  <div className={cn("w-full h-80 rounded-xl flex items-center justify-center", templateStyles.border, "border-2 border-dashed")}>
+                  <div className={cn("w-full h-80 rounded-2xl flex items-center justify-center", templateStyles.border, "border-2 border-dashed", templateStyles.cardBg)}>
                     <span className="text-muted-foreground text-lg">Chart Visualization</span>
                   </div>
                 )}
@@ -481,7 +502,7 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
                   </p>
                 )}
                 {slide.bullets && (
-                  <ul className="space-y-4 text-lg sm:text-xl">
+                  <ul className="space-y-6 text-lg sm:text-xl">
                     {slide.bullets.map((bullet: string, i: number) => (
                       <li key={i} className="flex items-start gap-4 group">
                         <div className={cn("w-4 h-4 rounded-full mt-2 flex-shrink-0 group-hover:scale-110 transition-transform", templateStyles.accent.replace('text-', 'bg-'))}></div>
@@ -493,15 +514,17 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
               </div>
               <div className="flex items-center justify-center">
                 {slide.image && !imageLoadErrors[slideIndex] ? (
-                  <img 
-                    src={slide.image} 
-                    alt={slide.imageAlt || slide.title}
-                    className="max-w-full h-auto rounded-xl shadow-xl object-cover"
-                    style={{ maxHeight: '400px' }}
-                    onError={() => handleImageError(slideIndex)}
-                  />
+                  <div className={cn("rounded-2xl overflow-hidden", templateStyles.shadow, "shadow-xl")}>
+                    <img 
+                      src={slide.image} 
+                      alt={slide.imageAlt || slide.title}
+                      className="max-w-full h-auto object-cover"
+                      style={{ maxHeight: '400px' }}
+                      onError={() => handleImageError(slideIndex)}
+                    />
+                  </div>
                 ) : (
-                  <div className={cn("w-full h-64 rounded-xl flex items-center justify-center", templateStyles.border, "border-2 border-dashed bg-gray-50")}>
+                  <div className={cn("w-full h-64 rounded-2xl flex items-center justify-center", templateStyles.border, "border-2 border-dashed", templateStyles.cardBg)}>
                     <ImageIcon className="h-12 w-12 text-gray-400" />
                   </div>
                 )}
