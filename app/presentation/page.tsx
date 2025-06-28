@@ -1,6 +1,6 @@
 import { SiteHeader } from "@/components/site-header";
 import { PresentationGenerator } from "@/components/presentation/presentation-generator";
-import { Sparkles, Presentation as LayoutPresentation, Zap, Star, Wand2, Slides } from "lucide-react";
+import { Sparkles, Presentation as LayoutPresentation, Zap, Star, Wand2, Sliders as Slides } from "lucide-react";
 
 export default function PresentationPage() {
   return (
