@@ -3,7 +3,8 @@ export const dynamic = 'force-dynamic';
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { createRoute } from "@/lib/supabase/server";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 const handler = NextAuth({
   providers: [
@@ -18,7 +19,8 @@ const handler = NextAuth({
           throw new Error("Missing credentials");
         }
 
-        const supabase = createRoute();
+        // Create Supabase client within the request context
+        const supabase = createRouteHandlerClient({ cookies: () => cookies() });
         
         // Get user from Supabase
         const { data: user, error } = await supabase
