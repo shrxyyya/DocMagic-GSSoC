@@ -61,6 +61,9 @@ const config: Config = {
           '5': 'hsl(var(--chart-5))',
         },
       },
+      screens: {
+        'xs': '475px',
+      },
       keyframes: {
         'accordion-down': {
           from: {
