@@ -15,9 +15,10 @@ import {
 } from "@/components/ui/select";
 import { LetterPreview } from "@/components/letter/letter-preview";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Sparkles, Mail as MailIcon, Download, User, MapPin, FileText, Wand2, Copy, Check } from "lucide-react";
+import { Loader2, Sparkles, Mail as MailIcon, Download, User, MapPin, FileText, Wand2, Copy, Check, Send } from "lucide-react";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 
 export function LetterGenerator() {
   const [prompt, setPrompt] = useState("");
@@ -30,6 +31,12 @@ export function LetterGenerator() {
   const [letterData, setLetterData] = useState<any>(null);
   const [isCopying, setIsCopying] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [showEmailDialog, setShowEmailDialog] = useState(false);
+  const [emailTo, setEmailTo] = useState("");
+  const [emailSubject, setEmailSubject] = useState("");
+  const [emailContent, setEmailContent] = useState("");
+  const [fromEmail, setFromEmail] = useState("");
   const { toast } = useToast();
   
   const generateLetter = async () => {
@@ -199,6 +206,69 @@ ${letterData.content || ''}
     }
   };
 
+  const openSendEmailDialog = () => {
+    if (!letterData) return;
+    
+    // Pre-fill the email form
+    setEmailTo(letterData.to.name ? `${letterData.to.name} <${letterData.to.email || ''}>` : '');
+    setEmailSubject(letterData.subject || `${letterType.charAt(0).toUpperCase() + letterType.slice(1)} Letter`);
+    setEmailContent('');
+    
+    setShowEmailDialog(true);
+  };
+
+  const sendEmail = async () => {
+    if (!letterData || !emailTo) return;
+    
+    setIsSending(true);
+    
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: emailTo,
+          subject: emailSubject,
+          content: emailContent,
+          fromName: fromName,
+          fromEmail: fromEmail,
+          letterContent: letterData
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to send email');
+      }
+
+      const data = await response.json();
+      
+      toast({
+        title: "Email sent successfully! ✨",
+        description: "Your letter has been emailed to the recipient",
+      });
+      
+      // Close the dialog
+      setShowEmailDialog(false);
+      
+      // If there's a preview URL (for test emails), show it
+      if (data.previewUrl) {
+        window.open(data.previewUrl, '_blank');
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to send email. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
@@ -305,6 +375,25 @@ ${letterData.content || ''}
                 />
               </div>
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="fromEmail" className="text-sm font-medium flex items-center gap-2">
+                <MailIcon className="h-4 w-4 text-muted-foreground" />
+                Your Email (For Sending)
+              </Label>
+              <Input 
+                id="fromEmail" 
+                type="email"
+                placeholder="your.email@example.com (Optional)" 
+                value={fromEmail} 
+                onChange={(e) => setFromEmail(e.target.value)}
+                className="glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20"
+                disabled={isGenerating}
+              />
+              <p className="text-xs text-muted-foreground">
+                Only needed if you plan to send the letter via email
+              </p>
+            </div>
             
             {/* Prompt */}
             <div className="space-y-2">
@@ -354,7 +443,7 @@ ${letterData.content || ''}
             <div className="glass-effect p-4 rounded-xl border border-yellow-400/20">
               <h3 className="text-lg font-medium mb-3 flex items-center gap-2">
                 <Download className="h-4 w-4 text-yellow-500" />
-                Download Options
+                Letter Options
               </h3>
               <div className="flex flex-wrap gap-2">
                 <Button 
@@ -382,6 +471,14 @@ ${letterData.content || ''}
                     <Copy className="mr-2 h-4 w-4" />
                   )}
                   Copy to Clipboard
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="glass-effect border-yellow-400/30 hover:border-yellow-400/60"
+                  onClick={openSendEmailDialog}
+                >
+                  <Send className="mr-2 h-4 w-4" />
+                  Send via Email
                 </Button>
               </div>
             </div>
@@ -434,6 +531,80 @@ ${letterData.content || ''}
           )}
         </div>
       </div>
+
+      {/* Email Sending Dialog */}
+      <Dialog open={showEmailDialog} onOpenChange={setShowEmailDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Send Letter via Email</DialogTitle>
+            <DialogDescription>
+              Fill in the details to send your letter directly to the recipient.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="emailTo" className="text-sm font-medium">
+                Recipient Email
+              </Label>
+              <Input
+                id="emailTo"
+                placeholder="recipient@example.com"
+                value={emailTo}
+                onChange={(e) => setEmailTo(e.target.value)}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="emailSubject" className="text-sm font-medium">
+                Subject
+              </Label>
+              <Input
+                id="emailSubject"
+                placeholder="Letter Subject"
+                value={emailSubject}
+                onChange={(e) => setEmailSubject(e.target.value)}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="emailContent" className="text-sm font-medium">
+                Additional Message (Optional)
+              </Label>
+              <Textarea
+                id="emailContent"
+                placeholder="Add a personal note to accompany your letter..."
+                value={emailContent}
+                onChange={(e) => setEmailContent(e.target.value)}
+                className="min-h-[100px]"
+              />
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEmailDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={sendEmail} 
+              disabled={isSending || !emailTo}
+              className="bolt-gradient text-white"
+            >
+              {isSending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Send className="mr-2 h-4 w-4" />
+                  Send Email
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
