@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
-import { createRoute } from "@/lib/supabase/server";
+import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: Request) {
-  const supabase = createRoute();
-  
   try {
     const { name, email, password } = await request.json();
 
@@ -13,6 +11,19 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    // Create Supabase client within the request handler
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return NextResponse.json(
+        { error: "Missing Supabase configuration" },
+        { status: 500 }
+      );
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     const { data: existingUser } = await supabase
       .from('users')

@@ -4,6 +4,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
+import { createClient } from '@supabase/supabase-js';
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -18,12 +19,15 @@ const authOptions: NextAuthOptions = {
           throw new Error("Missing credentials");
         }
 
-        // Import these inside the function to ensure they're called within request context
-        const { createRouteHandlerClient } = await import("@supabase/auth-helpers-nextjs");
-        const { cookies } = await import("next/headers");
+        // Create Supabase client with service role key for server-side operations
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-        // Create Supabase client within the request context
-        const supabase = createRouteHandlerClient({ cookies });
+        if (!supabaseUrl || !supabaseServiceKey) {
+          throw new Error("Missing Supabase configuration");
+        }
+
+        const supabase = createClient(supabaseUrl, supabaseServiceKey);
         
         // Get user from Supabase
         const { data: user, error } = await supabase
