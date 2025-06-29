@@ -1,18 +1,24 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Validate API key
+// Get API key with fallback for build time
 const GOOGLE_API_KEY = process.env.GEMINI_API_KEY;
-if (!GOOGLE_API_KEY) {
-  throw new Error("GEMINI_API_KEY environment variable is not set.");
-}
 
-// Initialize with error handling
-let genAI: GoogleGenerativeAI;
-try {
-  genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
-} catch (error) {
-  console.error("Failed to initialize Google Generative AI:", error);
-  throw new Error("Failed to initialize Google Generative AI.");
+// Initialize with lazy loading to avoid build-time errors
+let genAI: GoogleGenerativeAI | null = null;
+
+function getGenAI(): GoogleGenerativeAI {
+  if (!genAI) {
+    if (!GOOGLE_API_KEY) {
+      throw new Error("GEMINI_API_KEY environment variable is not set.");
+    }
+    try {
+      genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
+    } catch (error) {
+      console.error("Failed to initialize Google Generative AI:", error);
+      throw new Error("Failed to initialize Google Generative AI.");
+    }
+  }
+  return genAI;
 }
 
 function extractJsonFromMarkdown(text: string): string {
@@ -22,7 +28,7 @@ function extractJsonFromMarkdown(text: string): string {
 
 async function validateApiConnection() {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = getGenAI().getGenerativeModel({ model: "gemini-2.0-flash" });
     await model.generateContent("test");
     return true;
   } catch (error) {
@@ -43,7 +49,7 @@ export async function generateResume({
 }) {
   try {
     await validateApiConnection();
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = getGenAI().getGenerativeModel({ model: "gemini-2.0-flash" });
     
     const systemPrompt = `Create a professional resume for ${name} (${email}) based on: "${prompt}".
 
@@ -123,7 +129,7 @@ export async function generatePresentationOutline({
 }) {
   try {
     await validateApiConnection();
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = getGenAI().getGenerativeModel({ model: "gemini-2.0-flash" });
     
     const systemPrompt = `Create a PROFESSIONAL presentation outline for: "${prompt}" with ${pageCount} slides.
 
@@ -257,7 +263,7 @@ export async function generatePresentation({
 }) {
   try {
     await validateApiConnection();
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = getGenAI().getGenerativeModel({ model: "gemini-2.0-flash" });
     
     const systemPrompt = `Generate a PROFESSIONAL presentation with GUARANTEED IMAGES AND CHARTS for every slide.
 
@@ -580,7 +586,7 @@ export async function generateGuidedResume({
 }) {
   try {
     await validateApiConnection();
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = getGenAI().getGenerativeModel({ model: "gemini-2.0-flash" });
     
     const systemPrompt = `Create a 100% ATS-OPTIMIZED professional resume based on the provided information.
 
@@ -704,7 +710,7 @@ export async function generateGuidedResume({
 export async function generateResumeStepGuidance(step: string, targetRole: string, existingData?: any) {
   try {
     await validateApiConnection();
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = getGenAI().getGenerativeModel({ model: "gemini-2.0-flash" });
     
     const systemPrompt = `Provide intelligent, personalized guidance for the "${step}" section of a resume targeting: "${targetRole}".
 
@@ -763,7 +769,7 @@ export async function generateLetter({
 }) {
   try {
     await validateApiConnection();
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = getGenAI().getGenerativeModel({ model: "gemini-2.0-flash" });
     
     const systemPrompt = `Create a professional ${letterType} letter from ${fromName} to ${toName} about: ${prompt}.
     
@@ -871,7 +877,7 @@ export async function generateATSScore({
 }) {
   try {
     await validateApiConnection();
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = getGenAI().getGenerativeModel({ model: "gemini-2.0-flash" });
     
     const systemPrompt = `Perform a comprehensive ATS analysis of the resume against the job description.
 
