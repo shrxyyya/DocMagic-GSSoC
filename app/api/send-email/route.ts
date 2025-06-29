@@ -34,6 +34,7 @@ export async function POST(request: Request) {
         <div style="margin-bottom: 20px;">
           ${fromName ? `<p style="margin-bottom: 5px;"><strong>${fromName}</strong></p>` : ''}
           ${fromEmail ? `<p style="margin-bottom: 5px;">${fromEmail}</p>` : ''}
+          ${letterContent.from?.address ? `<p style="margin-bottom: 5px;">${letterContent.from.address}</p>` : ''}
         </div>
         
         <div style="margin-bottom: 20px;">
