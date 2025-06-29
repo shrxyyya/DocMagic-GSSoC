@@ -51,9 +51,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Handle different auth events
         if (event === 'SIGNED_IN') {
           console.log('User signed in successfully');
+          router.refresh();
         } else if (event === 'SIGNED_OUT') {
           console.log('User signed out');
           router.push('/');
+          router.refresh();
         }
       }
     );
