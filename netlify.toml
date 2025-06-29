@@ -2,20 +2,14 @@
   command = "npm run build"
   publish = ".next"
 
-[build.environment]
-  # Environment - using Netlify's URL automatically
-  RUNTIME_ENV = "production"
-  NEXT_PUBLIC_SITE_URL = "https://${DEPLOY_PRIME_URL}"
-
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
 # Handle all routes properly for Next.js
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/.netlify/functions/server"
   status = 200
-  force = true
 
 # Add CORS headers for API routes
 [[headers]]
@@ -24,8 +18,3 @@
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type, Authorization"
-
-# Function configuration
-[functions]
-  directory = ".next/server"  # Points to Next.js server functions
-  node_bundler = "esbuild"
