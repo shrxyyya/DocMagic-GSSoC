@@ -2,45 +2,31 @@ import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createRoute } from "@/lib/supabase/server";
 
-const DOMAIN = process.env.NEXT_PUBLIC_APP_URL;
+const DOMAIN = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
-    // Get Supabase token from request cookies (adjust if you send it differently)
-    const cookie = req.headers.get("cookie") || "";
-    const accessToken = cookie
-      .split("; ")
-      .find((row) => row.startsWith("sb-access-token="))
-      ?.split("=")[1];
-
-    if (!accessToken) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
     const supabase = createRoute();
-
-    // Get user using Supabase auth token
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser(accessToken);
-
-    if (userError || !user?.email) {
+    
+    // Get the current user session
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session?.user?.email) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // Your existing logic with user.email
+    // Get user data from database
     const { data: userData, error: userDbError } = await supabase
       .from("users")
-      .select("*, subscription(*)")
-      .eq("email", user.email)
+      .select("*, subscription:subscriptions(*)")
+      .eq("email", session.user.email)
       .single();
 
     if (userDbError || !userData) {
       return new NextResponse("User not found", { status: 404 });
     }
 
-    if (userData.subscription) {
+    if (userData.subscription && userData.subscription.length > 0) {
       return new NextResponse("Already subscribed", { status: 400 });
     }
 

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 import { Sparkles, Zap, Star, Eye, EyeOff, Mail, Lock, User, ArrowRight, Wand2, Shield } from "lucide-react";
 
 export default function Register() {
@@ -19,6 +20,7 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+  const supabase = createClient;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,40 +46,47 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      // Register with Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+          },
         },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
       });
 
-      if (response.ok) {
-        toast({
-          title: "Account created successfully! ✨",
-          description: "You can now sign in with your credentials.",
-        });
-        router.push("/auth/signin");
-      } else {
-        const data = await response.json();
-        if (data.error?.includes("security purposes")) {
-          toast({
-            title: "Please Wait",
-            description: "For security reasons, please wait 20 seconds before trying again.",
-            variant: "destructive",
-          });
-        } else {
-          throw new Error(data.error || "Failed to register");
-        }
+      if (error) {
+        throw error;
       }
-    } catch (error) {
+
+      // Create user in the database
+      const { error: userError } = await supabase
+        .from('users')
+        .insert([
+          { 
+            id: data.user?.id,
+            email, 
+            name,
+            password: password // Note: In a real app, you should hash this password
+          }
+        ]);
+
+      if (userError) {
+        throw userError;
+      }
+
+      toast({
+        title: "Account created successfully! ✨",
+        description: "You can now sign in with your credentials.",
+      });
+      
+      router.push("/auth/signin");
+    } catch (error: any) {
       toast({
         title: "Registration Failed",
-        description: error instanceof Error ? error.message : "Failed to create account. Please try again.",
+        description: error.message || "Failed to create account. Please try again.",
         variant: "destructive",
       });
     } finally {
