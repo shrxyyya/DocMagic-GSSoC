@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createRoute } from "@/lib/supabase/server";
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST(req: Request) {
   const body = await req.text();
   const signature = headers().get("Stripe-Signature") as string;
