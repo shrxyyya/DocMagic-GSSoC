@@ -30,14 +30,6 @@ export default function SignIn() {
       });
 
       if (error) {
-        if (error.message.includes("Email not confirmed")) {
-          toast({
-            title: "Email Not Verified",
-            description: "Please check your email inbox and click the verification link before signing in.",
-            variant: "destructive",
-          });
-          return;
-        }
         throw error;
       }
 

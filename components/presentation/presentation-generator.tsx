@@ -184,7 +184,8 @@ export function PresentationGenerator() {
 
     try {
       // Dynamically create a new instance of PptxGen
-      const pptx = new (await import('pptxgenjs')).default();
+      const PptxGenJSModule = await import('pptxgenjs');
+      const pptx = new PptxGenJSModule.default();
       pptx.layout = 'LAYOUT_WIDE';
 
       slides.forEach((slide, index) => {

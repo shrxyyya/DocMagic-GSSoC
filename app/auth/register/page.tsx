@@ -68,8 +68,7 @@ export default function Register() {
           { 
             id: data.user?.id,
             email, 
-            name,
-            password: password // Note: In a real app, you should hash this password
+            name
           }
         ]);
 
