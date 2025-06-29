@@ -8,6 +8,10 @@
   NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4aWlldW56cmNkYnhxYWRhcGNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAzMTIsImV4cCI6MjA2NDQ2NjMxMn0.87x8KfKhfQoJlmbBg1I1zHwEMIE-Uvk-THCFmEn-n6E"
   GEMINI_API_KEY = "AIzaSyAnota1ZAmXv3LoAfmI0J5VQarPv4qMTMA"
   RUNTIME_ENV = "production"
+  NEXT_PUBLIC_APP_URL = "https://docmagic.netlify.app"
+  STRIPE_SECRET_KEY = "sk_test_your_key"
+  STRIPE_WEBHOOK_SECRET = "whsec_your_key"
+  STRIPE_PRICE_ID = "price_your_id"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

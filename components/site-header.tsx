@@ -20,15 +20,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
 
 export function SiteHeader() {
   const pathname = usePathname();
   const { user } = useAuth();
   const supabase = createClient;
+  const router = useRouter();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    window.location.href = '/';
+    router.push('/');
+    router.refresh();
   };
 
   return (
@@ -110,6 +113,9 @@ export function SiteHeader() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="glass-effect border-yellow-400/20">
+                <DropdownMenuItem asChild>
+                  <Link href="/settings">Settings</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleSignOut} className="hover:bg-red-50 hover:text-red-600">
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
