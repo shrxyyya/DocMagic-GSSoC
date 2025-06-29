@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createRoute } from "@/lib/supabase/server";
 
+export const dynamic = 'force-dynamic';
+
 const DOMAIN = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 export async function POST() {
