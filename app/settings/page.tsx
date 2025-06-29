@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import type { User } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/components/auth-provider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -11,32 +11,30 @@ import { Badge } from '@/components/ui/badge';
 import { Sparkles, Zap, Star, Crown, Shield, Settings, CreditCard, User as UserIcon, Mail, Calendar } from 'lucide-react';
 
 export default function SettingsPage() {
-  const supabase = createClientComponentClient();
+  const { user } = useAuth();
+  const supabase = createClient;
   const router = useRouter();
 
-  const [user, setUser] = useState<User | null>(null);
   const [subscribed, setSubscribed] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Fetch user and subscription status on mount
   useEffect(() => {
     async function fetchUserAndSubscription() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
       if (!user) {
         router.replace('/auth/signin');
         return;
       }
 
-      setUser(user);
-
       try {
-        const res = await fetch('/api/stripe/check-subscription');
-        if (res.ok) {
-          const data = await res.json();
-          setSubscribed(data.subscribed);
+        const { data, error } = await supabase
+          .from('users')
+          .select('*, subscription:subscriptions(*)')
+          .eq('id', user.id)
+          .single();
+
+        if (!error && data) {
+          setSubscribed(!!data.subscription && data.subscription.length > 0);
         } else {
           setSubscribed(false);
         }
@@ -48,7 +46,7 @@ export default function SettingsPage() {
     }
 
     fetchUserAndSubscription();
-  }, [router, supabase]);
+  }, [router, user]);
 
   // Call your backend to create a Stripe checkout session
   async function handleSubscribe() {

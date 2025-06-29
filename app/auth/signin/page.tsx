@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { createClient } from "@/lib/supabase/client";
 import { Sparkles, Zap, Star, Eye, EyeOff, Mail, Lock, ArrowRight, Wand2 } from "lucide-react";
 
 export default function SignIn() {
@@ -17,20 +17,20 @@ export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+  const supabase = createClient;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const result = await signIn("credentials", {
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        redirect: false,
       });
 
-      if (result?.error) {
-        if (result.error.includes("Email not confirmed")) {
+      if (error) {
+        if (error.message.includes("Email not confirmed")) {
           toast({
             title: "Email Not Verified",
             description: "Please check your email inbox and click the verification link before signing in.",
@@ -38,7 +38,7 @@ export default function SignIn() {
           });
           return;
         }
-        throw new Error(result.error);
+        throw error;
       }
 
       toast({

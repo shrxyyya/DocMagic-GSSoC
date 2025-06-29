@@ -1,19 +1,19 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-import { getServerSession } from "next-auth";
 import { createRoute } from "@/lib/supabase/server";
 
-const DOMAIN = process.env.NEXT_PUBLIC_APP_URL;
+const DOMAIN = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
-    const session = await getServerSession();
-
+    const supabase = createRoute();
+    
+    // Get the current user session
+    const { data: { session } } = await supabase.auth.getSession();
+    
     if (!session?.user?.email) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-
-    const supabase = createRoute();
     
     // Get user data with subscription
     const { data: userData, error: userError } = await supabase

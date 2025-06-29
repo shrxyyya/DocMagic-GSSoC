@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth'; // or your own auth method if not next-auth
 import { createRoute } from '@/lib/supabase/server';
 
 export async function GET() {
-  const session = await getServerSession();
-
+  const supabase = createRoute();
+  
+  // Get the current user session
+  const { data: { session } } = await supabase.auth.getSession();
+  
   if (!session?.user?.email) {
     return NextResponse.json({ subscribed: false }, { status: 200 });
   }
 
-  const supabase = createRoute();
   const { data: userData, error } = await supabase
     .from('users')
     .select('subscription:subscriptions(stripe_subscription_id)')
