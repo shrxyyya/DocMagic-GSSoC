@@ -15,7 +15,7 @@
   STRIPE_WEBHOOK_SECRET = "whsec_your_key"
   STRIPE_PRICE_ID = "price_your_id"
   
-  # Environment - using Netlify's URL automatically
+  # Environment - using fixed production URL
   RUNTIME_ENV = "production"
   NEXT_PUBLIC_APP_URL = "https://docmagic1.netlify.app"
   
