@@ -28,11 +28,20 @@ function extractJsonFromMarkdown(text: string): string {
 
 async function validateApiConnection() {
   try {
+    // Skip API validation during build time
+    if (process.env.NODE_ENV === 'production' && !process.env.RUNTIME_ENV) {
+      return true;
+    }
+    
     const model = getGenAI().getGenerativeModel({ model: "gemini-2.0-flash" });
     await model.generateContent("test");
     return true;
   } catch (error) {
     console.error("API Connection Test Failed:", error);
+    // Don't throw during build time
+    if (process.env.NODE_ENV === 'production' && !process.env.RUNTIME_ENV) {
+      return true;
+    }
     throw new Error("Unable to connect to Google Generative AI API.");
   }
 }
