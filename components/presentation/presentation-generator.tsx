@@ -14,7 +14,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, Sparkles, Presentation as LayoutPresentation, Lock, Download, Wand2, Sliders as Slides, Palette, Eye, ArrowRight, CheckCircle, Play, Brain, Zap, Star } from "lucide-react";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import pptxgen from 'pptxgenjs';
+import dynamic from 'next/dynamic';
+
+// Dynamically import pptxgen with no SSR to avoid build issues
+const PptxGenJS = dynamic(() => import('pptxgenjs'), { 
+  ssr: false,
+  loading: () => <p>Loading PowerPoint generator...</p>
+});
 
 type GenerationStep = 'input' | 'outline' | 'theme' | 'generated';
 
@@ -177,7 +183,8 @@ export function PresentationGenerator() {
     setIsExporting(true);
 
     try {
-      const pptx = new pptxgen();
+      // Dynamically create a new instance of PptxGen
+      const pptx = new (await import('pptxgenjs')).default();
       pptx.layout = 'LAYOUT_WIDE';
 
       slides.forEach((slide, index) => {
