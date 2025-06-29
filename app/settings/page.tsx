@@ -11,20 +11,25 @@ import { Badge } from '@/components/ui/badge';
 import { Sparkles, Zap, Star, Crown, Shield, Settings, CreditCard, User as UserIcon, Mail, Calendar } from 'lucide-react';
 
 export default function SettingsPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const supabase = createClient;
   const router = useRouter();
 
   const [subscribed, setSubscribed] = useState<boolean | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch user and subscription status on mount
+  // Redirect if not authenticated
   useEffect(() => {
-    async function fetchUserAndSubscription() {
-      if (!user) {
-        router.replace('/auth/signin');
-        return;
-      }
+    if (!loading && !user) {
+      router.replace('/auth/signin');
+      return;
+    }
+  }, [user, loading, router]);
+
+  // Fetch subscription status
+  useEffect(() => {
+    async function fetchSubscription() {
+      if (!user) return;
 
       try {
         const { data, error } = await supabase
@@ -42,15 +47,17 @@ export default function SettingsPage() {
         setSubscribed(false);
       }
 
-      setLoading(false);
+      setIsLoading(false);
     }
 
-    fetchUserAndSubscription();
-  }, [router, user]);
+    if (user) {
+      fetchSubscription();
+    }
+  }, [user, supabase]);
 
   // Call your backend to create a Stripe checkout session
   async function handleSubscribe() {
-    setLoading(true);
+    setIsLoading(true);
     const res = await fetch('/api/stripe/create-checkout', { method: 'POST' });
     if (res.ok) {
       const { url } = await res.json();
@@ -59,12 +66,12 @@ export default function SettingsPage() {
     } else {
       alert('Failed to create checkout session');
     }
-    setLoading(false);
+    setIsLoading(false);
   }
 
   // Call your backend to create a billing portal session
   async function handleManage() {
-    setLoading(true);
+    setIsLoading(true);
     const res = await fetch('/api/stripe/create-portal', { method: 'POST' });
     if (res.ok) {
       const { url } = await res.json();
@@ -73,10 +80,10 @@ export default function SettingsPage() {
     } else {
       alert('Failed to create billing portal session');
     }
-    setLoading(false);
+    setIsLoading(false);
   }
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
         {/* Background elements */}
@@ -92,6 +99,10 @@ export default function SettingsPage() {
         </div>
       </div>
     );
+  }
+
+  if (!user) {
+    return null; // Will redirect
   }
 
   return (
@@ -244,10 +255,10 @@ export default function SettingsPage() {
                   {subscribed ? (
                     <Button
                       onClick={handleManage}
-                      disabled={loading}
+                      disabled={isLoading}
                       className="bolt-gradient text-white font-semibold hover:scale-105 transition-all duration-300"
                     >
-                      {loading ? (
+                      {isLoading ? (
                         <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
                       ) : (
                         <Settings className="h-4 w-4 mr-2" />
@@ -257,10 +268,10 @@ export default function SettingsPage() {
                   ) : (
                     <Button
                       onClick={handleSubscribe}
-                      disabled={loading}
+                      disabled={isLoading}
                       className="bolt-gradient text-white font-semibold hover:scale-105 transition-all duration-300"
                     >
-                      {loading ? (
+                      {isLoading ? (
                         <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
                       ) : (
                         <Crown className="h-4 w-4 mr-2" />
