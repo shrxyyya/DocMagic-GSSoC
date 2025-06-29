@@ -25,6 +25,7 @@ export async function POST(request: Request) {
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+    // Check if user already exists
     const { data: existingUser } = await supabase
       .from('users')
       .select()
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
       );
     }
 
+    // Sign up with Supabase Auth
     const { data: { user }, error } = await supabase.auth.signUp({
       email,
       password,
