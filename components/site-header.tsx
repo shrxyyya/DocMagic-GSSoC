@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/components/auth-provider";
-import { createClient } from "@/lib/supabase/client";
 import {
   Sheet,
   SheetContent,
@@ -24,14 +23,12 @@ import { useRouter } from "next/navigation";
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const { user } = useAuth();
-  const supabase = createClient;
+  const { user, signOut } = useAuth();
   const router = useRouter();
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    await signOut();
     router.push('/');
-    router.refresh();
   };
 
   return (

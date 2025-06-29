@@ -24,7 +24,7 @@ export default function SignIn() {
     setIsLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -33,14 +33,18 @@ export default function SignIn() {
         throw error;
       }
 
-      toast({
-        title: "Welcome back! ✨",
-        description: "You've successfully signed in to DocMagic",
-      });
+      if (data.user) {
+        toast({
+          title: "Welcome back! ✨",
+          description: "You've successfully signed in to DocMagic",
+        });
 
-      router.push("/");
-      router.refresh();
+        // Redirect to home page
+        router.push("/");
+        router.refresh();
+      }
     } catch (error: any) {
+      console.error('Sign in error:', error);
       toast({
         title: "Sign In Failed",
         description: error.message || "Invalid credentials. Please try again.",

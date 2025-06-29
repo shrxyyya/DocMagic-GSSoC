@@ -61,28 +61,34 @@ export default function Register() {
         throw error;
       }
 
-      // Create user in the database
-      const { error: userError } = await supabase
-        .from('users')
-        .insert([
-          { 
-            id: data.user?.id,
-            email, 
-            name
-          }
-        ]);
+      if (data.user) {
+        // Insert user data into the users table
+        const { error: userError } = await supabase
+          .from('users')
+          .insert([
+            { 
+              id: data.user.id,
+              email, 
+              name
+            }
+          ]);
 
-      if (userError) {
-        throw userError;
+        if (userError) {
+          console.error('Error creating user record:', userError);
+          // Don't throw here as the auth user was created successfully
+        }
+
+        toast({
+          title: "Account created successfully! ✨",
+          description: "Welcome to DocMagic! You're now signed in.",
+        });
+        
+        // Redirect to home page
+        router.push("/");
+        router.refresh();
       }
-
-      toast({
-        title: "Account created successfully! ✨",
-        description: "You can now sign in with your credentials.",
-      });
-      
-      router.push("/auth/signin");
     } catch (error: any) {
+      console.error('Registration error:', error);
       toast({
         title: "Registration Failed",
         description: error.message || "Failed to create account. Please try again.",
