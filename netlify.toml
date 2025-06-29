@@ -3,22 +3,9 @@
   publish = ".next"
 
 [build.environment]
-  # Supabase config
-  NEXT_PUBLIC_SUPABASE_URL = "https://bxiieunzrcdbxqadapcl.supabase.co"
-  NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4aWlldW56cmNkYnhxYWRhcGNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAzMTIsImV4cCI6MjA2NDQ2NjMxMn0.87x8KfKhfQoJlmbBg1I1zHwEMIE-Uvk-THCFmEn-n6E"
-  
-  # API keys
-  GEMINI_API_KEY = "AIzaSyAnota1ZAmXv3LoAfmI0J5VQarPv4qMTMA"
-  
-  # Stripe config
-  STRIPE_SECRET_KEY = "sk_test_your_key"
-  STRIPE_WEBHOOK_SECRET = "whsec_your_key"
-  STRIPE_PRICE_ID = "price_your_id"
-  
   # Environment - using Netlify's URL automatically
   RUNTIME_ENV = "production"
   NEXT_PUBLIC_SITE_URL = "https://${DEPLOY_PRIME_URL}"
-  NEXT_PUBLIC_APP_URL = "https://incredible-dolphin-18d5c0.netlify.app"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -42,4 +29,3 @@
 [functions]
   directory = ".next/server"  # Points to Next.js server functions
   node_bundler = "esbuild"
-  timeout = 30  # Increased timeout for API routes
