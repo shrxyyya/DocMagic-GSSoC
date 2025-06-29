@@ -17,6 +17,7 @@
   
   # Environment - using Netlify's URL automatically
   RUNTIME_ENV = "production"
+  NEXT_PUBLIC_SITE_URL = "https://${DEPLOY_PRIME_URL}"
   NEXT_PUBLIC_APP_URL = "https://incredible-dolphin-18d5c0.netlify.app"
 
 [[plugins]]
