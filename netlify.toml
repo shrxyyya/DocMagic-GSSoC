@@ -1,22 +1,59 @@
 [build]
-  command = "npm run build"
-  publish = ".next"
+  command = "npm run build && npm run export"  # Added export step
+  publish = ".next/static"  # More specific publish directory
+  functions = "functions"  # Explicit functions directory
 
 [build.environment]
-  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+  # Supabase config (you already have these)
   NEXT_PUBLIC_SUPABASE_URL = "https://bxiieunzrcdbxqadapcl.supabase.co"
   NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4aWlldW56cmNkYnhxYWRhcGNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAzMTIsImV4cCI6MjA2NDQ2NjMxMn0.87x8KfKhfQoJlmbBg1I1zHwEMIE-Uvk-THCFmEn-n6E"
+  
+  # Authentication
+  NEXTAUTH_SECRET = "your_strong_secret_here"  # Crucial for NextAuth
+  NEXTAUTH_URL = "https://docmagic.netlify.app"  # Must match production URL
+  
+  # API keys
   GEMINI_API_KEY = "AIzaSyAnota1ZAmXv3LoAfmI0J5VQarPv4qMTMA"
-  RUNTIME_ENV = "production"
-  NEXT_PUBLIC_APP_URL = "https://docmagic.netlify.app"
+  
+  # Stripe config (consider moving sensitive keys to Netlify UI)
   STRIPE_SECRET_KEY = "sk_test_your_key"
   STRIPE_WEBHOOK_SECRET = "whsec_your_key"
   STRIPE_PRICE_ID = "price_your_id"
+  
+  # Environment
+  RUNTIME_ENV = "production"
+  NEXT_PUBLIC_APP_URL = "https://docmagic1.netlify.app"
+  
+  # Performance tuning
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+  NEXT_FORCE_NO_BUILD_CACHE = "true"  # Helps avoid caching issues
+
+[context.production.environment]
+  # Override any production-specific vars here
+  NODE_VERSION = "18"  # Specify Node version
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+    [plugins.inputs]
+    # Enable ISR (Incremental Static Regeneration)
+    enableISR = true
+    # Function configuration
+    functions = [
+      { path = "api/*", node_bundler = "esbuild" }
+    ]
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = true  # Important for SPA behavior
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security headers
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Required for Next.js API routes
+    Access-Control-Allow-Origin = "*"
