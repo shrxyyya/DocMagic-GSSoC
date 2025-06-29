@@ -31,6 +31,88 @@ async function validateApiConnection() {
   }
 }
 
+// Basic resume generator function
+export async function generateResume({ 
+  prompt, 
+  name, 
+  email 
+}: { 
+  prompt: string; 
+  name: string; 
+  email: string;
+}) {
+  try {
+    await validateApiConnection();
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    
+    const systemPrompt = `Create a professional resume for ${name} (${email}) based on: "${prompt}".
+
+    Return as JSON with this structure:
+    {
+      "name": "${name}",
+      "email": "${email}",
+      "phone": "",
+      "location": "",
+      "summary": "Professional summary based on the prompt",
+      "experience": [
+        {
+          "title": "Job title",
+          "company": "Company name",
+          "location": "City, State",
+          "date": "MM/YYYY - MM/YYYY",
+          "description": [
+            "• Achievement with quantified results",
+            "• Technical accomplishment with relevant skills",
+            "• Leadership or collaboration example"
+          ]
+        }
+      ],
+      "education": [
+        {
+          "degree": "Degree type and field",
+          "institution": "University/College name",
+          "location": "City, State",
+          "date": "MM/YYYY",
+          "gpa": "",
+          "honors": ""
+        }
+      ],
+      "skills": {
+        "technical": ["relevant technical skills"],
+        "programming": ["programming languages/frameworks"],
+        "tools": ["software and tools"],
+        "soft": ["communication, leadership, problem-solving"]
+      },
+      "projects": [
+        {
+          "name": "Project name",
+          "description": "Brief description with technologies used",
+          "technologies": ["tech stack"],
+          "link": ""
+        }
+      ],
+      "certifications": [
+        {
+          "name": "Certification name",
+          "issuer": "Issuing organization",
+          "date": "MM/YYYY",
+          "credential": ""
+        }
+      ]
+    }
+
+    Generate realistic and relevant content based on the prompt. Include quantifiable achievements and use professional language throughout.`;
+
+    const result = await model.generateContent(systemPrompt);
+    const response = await result.response;
+    const jsonText = extractJsonFromMarkdown(response.text());
+    return JSON.parse(jsonText);
+  } catch (error) {
+    console.error("Error generating resume:", error);
+    throw new Error(`Failed to generate resume: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
 // Enhanced presentation outline generator with GUARANTEED images and charts
 export async function generatePresentationOutline({ 
   prompt, 
