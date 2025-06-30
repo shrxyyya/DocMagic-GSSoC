@@ -87,11 +87,5 @@ Please be respectful and considerate to others. Harassment or inappropriate beha
 
 ---
 
-Thank you for contributing!
-
-Special thanks to [Xenonesis](https://github.com/Xenonesis) for:
-- Enhancing project documentation
-- Removing unnecessary files
-- Streamlining the codebase
-
+Thank you for contributing!  
 — Muneer Ali
