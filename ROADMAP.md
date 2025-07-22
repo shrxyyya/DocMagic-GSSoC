@@ -3,7 +3,7 @@
 <div align="center">
 
 ![Roadmap](https://img.shields.io/badge/Product-Roadmap-FF6B6B?style=for-the-badge)
-![Version](https://img.shields.io/badge/Current-v0.2.0-4ECDC4?style=for-the-badge)
+![Version](https://img.shields.io/badge/Current-v0.4.0-4ECDC4?style=for-the-badge)
 ![Future](https://img.shields.io/badge/Vision-2025-45B7D1?style=for-the-badge)
 
 </div>
@@ -12,9 +12,9 @@
 
 **"Democratize professional document creation through AI magic, making high-quality documents accessible to everyone, everywhere."**
 
-DocMagic aims to become the world's leading AI-powered document creation platform, transforming how professionals, students, and businesses create stunning documents in seconds.
+As a **100% open source project**, DocMagic aims to become the world's leading community-driven AI-powered document creation platform, transforming how professionals, students, and businesses create stunning documents in seconds. Built by the community, for the community.
 
-## 📊 Current Status (v0.2.0)
+## 📊 Current Status (v0.4.0)
 
 ### ✅ Completed Features
 
@@ -227,6 +227,12 @@ Join our beta testing community:
 Contributing to DocMagic:
 
 - 🔧 **Core Features** - Help build the platform
+- 🌍 **Open Source Community** - Join our global community of contributors
+- 📚 **Documentation** - Improve guides and tutorials
+- 🎨 **Design & UX** - Enhance user experience and accessibility
+- 🌐 **Internationalization** - Help translate DocMagic to new languages
+- 🧪 **Testing** - Write tests and improve code quality
+- 🐛 **Bug Hunting** - Find and fix issues
 - 📖 **Documentation** - Improve user guides
 - 🌐 **Translations** - Localization support
 - 🎨 **Templates** - Design new document templates
