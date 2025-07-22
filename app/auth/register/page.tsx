@@ -62,21 +62,9 @@ export default function Register() {
       }
 
       if (data.user) {
-        // Insert user data into the users table
-        const { error: userError } = await supabase
-          .from('users')
-          .insert([
-            { 
-              id: data.user.id,
-              email, 
-              name
-            }
-          ]);
-
-        if (userError) {
-          console.error('Error creating user record:', userError);
-          // Don't throw here as the auth user was created successfully
-        }
+        // The user is created in Supabase Auth.
+        // A trigger in the database should automatically create a corresponding user record in the public.users table.
+        // We no longer need to manually insert it from the client.
 
         toast({
           title: "Account created successfully! ✨",
@@ -88,10 +76,39 @@ export default function Register() {
         router.refresh();
       }
     } catch (error: any) {
+      // Enhanced error handling for Supabase registration
+      let userMessage = "Failed to create account. Please try again.";
+      if (error?.message) {
+        if (
+          error.message.includes("User already registered") ||
+          error.message.includes("User already exists") ||
+          error.message.includes("email address is already registered") ||
+          error.message.includes("duplicate key value violates unique constraint")
+        ) {
+          userMessage = "An account with this email already exists. Please sign in or use a different email.";
+        } else if (
+          error.message.includes("Invalid email") ||
+          error.message.includes("email is invalid")
+        ) {
+          userMessage = "Please enter a valid email address.";
+        } else if (
+          error.message.includes("Password should be at least") ||
+          error.message.includes("Password is too short")
+        ) {
+          userMessage = "Password is too short. Please use at least 6 characters.";
+        } else if (
+          error.message.includes("rate limit") ||
+          error.message.includes("Too many requests")
+        ) {
+          userMessage = "Too many attempts. Please wait a moment and try again.";
+        } else {
+          userMessage = error.message;
+        }
+      }
       console.error('Registration error:', error);
       toast({
         title: "Registration Failed",
-        description: error.message || "Failed to create account. Please try again.",
+        description: userMessage,
         variant: "destructive",
       });
     } finally {
