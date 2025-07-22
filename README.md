@@ -114,18 +114,24 @@ docmagic/
 └── tsconfig.json             # TypeScript configuration
 ```
 
+
 ## 🚀 Getting Started
+
+Follow these detailed steps to set up and run the **DocMagic** project locally on your machine.
 
 ### Prerequisites
 
-- Node.js 18+ and npm
-- Supabase account
-- Google Gemini API key
-- Stripe account (for payment processing)
+Ensure you have the following installed:
+- **Node.js**: Version 18 or higher (includes npm). Download from [nodejs.org](https://nodejs.org/).
+- **Git**: For cloning the repository. Install from [git-scm.com](https://git-scm.com/).
+- A **Supabase** account for database and authentication. Sign up at [supabase.com](https://supabase.com/).
+- A **Google Gemini API key** for AI-powered document generation. Obtain from [Google AI Studio](https://ai.google.dev/).
+- A **Stripe account** for payment processing (optional for local testing without payments). Sign up at [stripe.com](https://stripe.com/).
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the Repository**:
+   Clone the project to your local machine and navigate to the project directory:
    ```bash
    git clone https://github.com/yourusername/docmagic.git
    cd docmagic
@@ -135,8 +141,17 @@ docmagic/
    ```bash
    npm install
    ```
+3. Set Up Supabase:
+- Log in to your Supabase dashboard and create a new project.
+- In the Supabase project, go to Settings > API to find your NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.
+- Go to SQL Editor and run the SQL migrations found in the supabase/migrations/ directory to set up the database schema (Users, Subscriptions, Documents tables).
+- Enable Supabase Auth in the Supabase dashboard under Authentication > Settings and configure email authentication.
 
-3. Set up environment variables:
+4. Obtain Google Gemini API Key:
+- Visit Google AI Studio and create an API key for Gemini 2.0 Flash.
+-  Save the key as GEMINI_API_KEY for use in the environment variables.
+
+5. Set up environment variables:
    Create a `.env.local` file with:
    ```
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
@@ -148,12 +163,21 @@ docmagic/
    NEXT_PUBLIC_APP_URL=http://localhost:3000
    ```
 
-4. Run the development server:
+6. Run Database Migrations:
+   If you haven’t already applied migrations via the Supabase dashboard, you can use the Supabase CLI:
+
+   ```bash
+   npm install -g supabase
+   supabase init
+   supabase login
+   supabase db push
+   ```
+7. Run the development server:
    ```bash
    npm run dev
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+8. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🌐 Deployment
 
