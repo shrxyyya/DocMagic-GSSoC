@@ -1,7 +1,38 @@
 {
   "name": "docmagic",
-  "version": "0.3.0",
-  "private": true,
+  "version": "0.4.0",
+  "description": "🪄 Open source AI-powered document creation platform - Create professional resumes, presentations, CVs, and letters in seconds",
+  "keywords": [
+    "ai",
+    "document-generation",
+    "resume-builder",
+    "presentation-maker",
+    "cv-creator",
+    "open-source",
+    "nextjs",
+    "typescript",
+    "gemini-ai",
+    "supabase"
+  ],
+  "homepage": "https://docmagic1.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/docmagic-ai/docmagic.git"
+  },
+  "bugs": {
+    "url": "https://github.com/docmagic-ai/docmagic/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "DocMagic Contributors",
+    "url": "https://github.com/docmagic-ai/docmagic/graphs/contributors"
+  },
+  "contributors": [
+    {
+      "name": "Xenonesis",
+      "url": "https://github.com/xenonesis"
+    }
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,7 +40,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.3.0",
+    "@google/generative-ai": "^0.3.1",
     "@hookform/resolvers": "^3.9.0",
     "@netlify/plugin-nextjs": "^4.41.3",
     "@radix-ui/react-accordion": "^1.2.0",
@@ -39,9 +70,9 @@
     "@radix-ui/react-toggle": "^1.1.0",
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
-    "@stripe/stripe-js": "^3.0.0",
-    "@supabase/auth-helpers-nextjs": "^0.9.0",
-    "@supabase/supabase-js": "^2.39.7",
+    "@stripe/stripe-js": "^3.5.0",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
+    "@supabase/supabase-js": "^2.52.0",
     "autoprefixer": "^10.4.19",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
@@ -50,45 +81,43 @@
     "date-fns": "^3.6.0",
     "docx": "^8.5.0",
     "embla-carousel-react": "^8.3.0",
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
     "eslint-config-next": "^15.4.0",
-    "framer-motion": "^12.19.1",
+    "framer-motion": "^12.23.6",
     "html2canvas": "^1.4.1",
     "input-otp": "^1.2.4",
-    "jspdf": "^2.5.1",
+    "jspdf": "^2.5.2",
     "lucide-react": "^0.446.0",
     "mammoth": "^1.9.1",
     "next": "^15.4.0",
-    "next-themes": "^0.3.0",
+    "next-themes": "^0.4.6",
     "nodemailer": "^6.10.1",
-    "officeparser": "^5.1.1",
+    "officeparser": "^5.2.0",
     "pdf-parse": "^1.1.1",
-    "postcss": "^8.4.38",
     "pptxgenjs": "^3.12.0",
-    "react": "^18.3.0",
+    "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
-    "react-dom": "^18.3.0",
+    "react-dom": "^18.3.1",
     "react-dropzone": "^14.2.3",
-    "react-hook-form": "^7.53.0",
-    "react-resizable-panels": "^2.1.3",
-    "recharts": "^2.12.7",
-    "sonner": "^1.5.0",
-    "stripe": "^14.20.0",
-    "tailwind-merge": "^2.5.2",
-    "tailwindcss": "3.3.3",
+    "react-hook-form": "^7.60.0",
+    "react-resizable-panels": "^2.1.9",
+    "recharts": "^2.15.4",
+    "sonner": "^1.7.4",
+    "stripe": "^14.25.0",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
     "vaul": "^0.9.9",
-    "zod": "^3.23.8",
-    "zustand": "^4.5.2"
+    "zod": "^3.25.76",
+    "zustand": "^4.5.7"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/next": "^8.0.7",
     "@types/nodemailer": "^6.4.17",
-    "@types/react": "19.1.6",
+    "@types/react": "^19.1.8",
     "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
-    "tailwindcss": "^3.3.3"
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17"
   }
 }
