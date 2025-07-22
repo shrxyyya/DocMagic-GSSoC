@@ -3,9 +3,9 @@
 <div align="center">
 
 [![Next.js 15](https://img.shields.io/badge/Next.js-15.4.0-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![React 18](https://img.shields.io/badge/React-18.3.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.2.2-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.3.3-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![React 18](https://img.shields.io/badge/React-18.3.1-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.17-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
 [![Gemini AI](https://img.shields.io/badge/Gemini-AI-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
@@ -13,9 +13,11 @@
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-Animations-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![Open Source](https://img.shields.io/badge/Open%20Source-❤️-red?style=for-the-badge)](https://github.com/docmagic-ai/docmagic)
 [![Netlify Status](https://img.shields.io/badge/Netlify-Deployed-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://docmagic1.netlify.app)
-[![Version](https://img.shields.io/badge/Version-0.3.0-brightgreen?style=for-the-badge)](https://github.com/yourusername/docmagic/releases)
+[![Version](https://img.shields.io/badge/Version-0.4.0-brightgreen?style=for-the-badge)](https://github.com/docmagic-ai/docmagic/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](http://makeapullrequest.com)
+[![Contributors](https://img.shields.io/badge/Contributors-Welcome-orange?style=for-the-badge)](./CONTRIBUTING.md)
 
 <br />
 
@@ -23,7 +25,7 @@
 
 ### 🚀 **Transform Ideas into Professional Documents with AI Magic**
 
-**DocMagic** is a cutting-edge AI-powered document creation platform that revolutionizes how professionals create stunning documents. Simply describe what you need, and watch as our advanced AI transforms your ideas into polished resumes, captivating presentations, comprehensive CVs, and professional letters in seconds.
+**DocMagic** is a **100% open source**, cutting-edge AI-powered document creation platform that revolutionizes how professionals create stunning documents. Built by the community, for the community - simply describe what you need, and watch as our advanced AI transforms your ideas into polished resumes, captivating presentations, comprehensive CVs, and professional letters in seconds.
 
 <br />
 
@@ -34,6 +36,7 @@
 <br />
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_DocMagic-667eea?style=for-the-badge&logoColor=white)](https://docmagic1.netlify.app)
+[![Fork on GitHub](https://img.shields.io/badge/🍴_Fork-on_GitHub-black?style=for-the-badge&logo=github&logoColor=white)](https://github.com/docmagic-ai/docmagic/fork)
 [![Documentation](https://img.shields.io/badge/📚_Documentation-Read_Docs-4ECDC4?style=for-the-badge&logoColor=white)](./CONTRIBUTING.md)
 [![API Reference](https://img.shields.io/badge/🔗_API_Reference-Explore_API-FF6B6B?style=for-the-badge&logoColor=white)](./API.md)
 
@@ -192,39 +195,40 @@ DocMagic features a cutting-edge design system built around glass morphism princ
 ```typescript
 // Core Framework
 Next.js 15.4.0          // React framework with App Router
-React 18.3.0            // UI library with concurrent features
-TypeScript 5.2.2        // Type-safe development
+React 18.3.1            // UI library with concurrent features
+TypeScript 5.8.3        // Type-safe development
 
 // Styling & UI
-Tailwind CSS 3.3.3      // Utility-first CSS framework
+Tailwind CSS 3.4.17     // Utility-first CSS framework
 Radix UI                // Accessible component primitives
-Framer Motion 12.19.1   // Animation library
-next-themes 0.3.0       // Theme management
+Framer Motion 12.23.6   // Animation library
+next-themes 0.4.6       // Theme management
 
 // Forms & Validation
-React Hook Form 7.53.0  // Performant forms
-Zod 3.23.8             // Schema validation
+React Hook Form 7.60.0  // Performant forms
+Zod 3.25.76            // Schema validation
 ```
 
 ### 🔧 **Backend & Services**
 ```typescript
 // Database & Auth
 Supabase                // PostgreSQL database + Auth
-@supabase/auth-helpers-nextjs 0.9.0
+@supabase/auth-helpers-nextjs 0.10.0
+@supabase/supabase-js 2.52.0
 
 // AI & Generation
-Google Gemini AI 0.3.0  // Document generation
-@google/generative-ai   // Official Gemini SDK
+Google Gemini AI        // Document generation
+@google/generative-ai 0.3.1 // Official Gemini SDK
 
 // Payments
-Stripe 14.20.0          // Payment processing
-@stripe/stripe-js 3.0.0 // Client-side Stripe
+Stripe 14.25.0          // Payment processing
+@stripe/stripe-js 3.5.0 // Client-side Stripe
 
 // Document Processing
 mammoth 1.9.1           // DOCX parsing
 pdf-parse 1.1.1         // PDF parsing
 docx 8.5.0              // DOCX generation
-jspdf 2.5.1             // PDF generation
+jspdf 2.5.2             // PDF generation
 pptxgenjs 3.12.0        // PowerPoint generation
 ```
 
@@ -682,40 +686,68 @@ The application is deployed on Netlify. To deploy your own instance:
 |----------|--------|-------------|--------------|----------|
 | `/api/analyze/resume` | POST | Analyze resume for ATS | FormData with `file` and `jobDescription` | Analysis JSON |
 
-## 🤝 **Contributing**
+## 🤝 **Contributing to Open Source**
 
-We welcome contributions from the community! Here's how you can help:
+**DocMagic is proudly open source!** We believe in the power of community-driven development and welcome contributions from developers, designers, and users worldwide. Whether you're a seasoned developer or just starting your open source journey, there's a place for you in our community!
 
-### 🐛 **Bug Reports**
-- Use our [issue template](.github/ISSUE_TEMPLATE/bug_report.md)
-- Include steps to reproduce
-- Provide environment details
+### 🌟 **Ways to Contribute**
 
-### ✨ **Feature Requests**
-- Check existing [feature requests](https://github.com/yourusername/docmagic/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
-- Use our [feature template](.github/ISSUE_TEMPLATE/feature_request.md)
-- Explain the use case and benefits
+#### 🐛 **Bug Reports & Fixes**
+- Report bugs using our [issue template](https://github.com/docmagic-ai/docmagic/issues/new?template=bug_report.md)
+- Fix existing bugs and earn contributor recognition
+- Help improve stability and user experience
 
-### 🔧 **Pull Requests**
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes
-4. Add tests if applicable
-5. Run the test suite: `npm test`
-6. Commit your changes: `git commit -m 'Add amazing feature'`
-7. Push to the branch: `git push origin feature/amazing-feature`
-8. Open a Pull Request
+#### ✨ **Feature Development**
+- Check our [roadmap](./ROADMAP.md) for planned features
+- Propose new features via [GitHub Discussions](https://github.com/docmagic-ai/docmagic/discussions)
+- Implement features that benefit the entire community
+
+#### 📚 **Documentation & Community**
+- Improve documentation and tutorials
+- Help other users in discussions and issues
+- Create blog posts, videos, or tutorials about DocMagic
+- Translate the interface to new languages
+
+#### 🎨 **Design & UX**
+- Contribute to UI/UX improvements
+- Design new templates and themes
+- Improve accessibility features
+
+### 🚀 **Getting Started as a Contributor**
+
+1. **Fork the repository** on GitHub
+2. **Clone your fork**: `git clone https://github.com/yourusername/docmagic.git`
+3. **Set up development environment**: Follow our [setup guide](#-quick-start-guide)
+4. **Find an issue**: Check [good first issues](https://github.com/docmagic-ai/docmagic/labels/good%20first%20issue)
+5. **Create a branch**: `git checkout -b feature/your-feature-name`
+6. **Make your changes** and test thoroughly
+7. **Submit a pull request** with a clear description
+
+### 🏆 **Contributor Recognition**
+
+We celebrate our contributors! Every contribution gets:
+- 🎉 **Public recognition** in our README and releases
+- 🏅 **Contributor badge** on your GitHub profile
+- 📈 **Priority support** for your own issues
+- 🎁 **Exclusive swag** for significant contributions
+- 💼 **Portfolio showcase** opportunities
 
 For detailed guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-## 📜 **License**
+## 📜 **Open Source License**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**DocMagic is free and open source software** licensed under the MIT License. This means you can:
+
+- ✅ **Use** DocMagic for any purpose (personal, commercial, educational)
+- ✅ **Modify** the source code to fit your needs
+- ✅ **Distribute** your own versions
+- ✅ **Contribute** back to the community
+- ✅ **Fork** and create your own variants
 
 ```
 MIT License
 
-Copyright (c) 2025 DocMagic
+Copyright (c) 2025 DocMagic Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -727,6 +759,8 @@ furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 ```
+
+See the [LICENSE](LICENSE) file for the complete license text.
 
 ## 🌟 **Acknowledgments**
 
