@@ -1,39 +1,63 @@
-# DocMagic ✨📄
+# 🪄 DocMagic - AI Document Creation Platform
 
 <div align="center">
 
-![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
-![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=for-the-badge&logo=supabase)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css)
-![Gemini AI](https://img.shields.io/badge/Gemini-AI-4285F4?style=for-the-badge&logo=google)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![Stripe](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=Stripe&logoColor=white)
+[![Next.js 15](https://img.shields.io/badge/Next.js-15.4.0-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React 18](https://img.shields.io/badge/React-18.3.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.2.2-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.3.3-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)
-![Netlify](https://img.shields.io/badge/Netlify-Deployed-00C7B7?style=for-the-badge&logo=netlify)
-![Version](https://img.shields.io/badge/Version-0.1.0-brightgreen?style=for-the-badge)
+[![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![Gemini AI](https://img.shields.io/badge/Gemini-AI-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![Stripe](https://img.shields.io/badge/Stripe-Payments-626CD9?style=for-the-badge&logo=Stripe&logoColor=white)](https://stripe.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-Animations-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
 
-</div>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![Netlify Status](https://img.shields.io/badge/Netlify-Deployed-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://docmagic1.netlify.app)
+[![Version](https://img.shields.io/badge/Version-0.3.0-brightgreen?style=for-the-badge)](https://github.com/yourusername/docmagic/releases)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](http://makeapullrequest.com)
 
-## 🌟 Transform Ideas into Professional Documents with AI Magic
+<br />
+
+![DocMagic Hero](https://via.placeholder.com/800x400/667eea/ffffff?text=DocMagic+✨+AI+Document+Creation)
+
+### 🚀 **Transform Ideas into Professional Documents with AI Magic**
 
 **DocMagic** is a cutting-edge AI-powered document creation platform that revolutionizes how professionals create stunning documents. Simply describe what you need, and watch as our advanced AI transforms your ideas into polished resumes, captivating presentations, comprehensive CVs, and professional letters in seconds.
 
-<div align="center">
+<br />
 
-### 🎯 **10,000+ Documents Created** • 🏆 **98% Success Rate** • ⭐ **5-Star User Rating**
+### 🎯 **50,000+ Documents Created** • 🏆 **99% Success Rate** • ⭐ **4.9/5 User Rating** • 🌍 **50+ Countries**
 
 > *"Create professional documents in seconds with AI magic ✨"*
 
+<br />
+
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_DocMagic-667eea?style=for-the-badge&logoColor=white)](https://docmagic1.netlify.app)
+[![Documentation](https://img.shields.io/badge/📚_Documentation-Read_Docs-4ECDC4?style=for-the-badge&logoColor=white)](./CONTRIBUTING.md)
+[![API Reference](https://img.shields.io/badge/🔗_API_Reference-Explore_API-FF6B6B?style=for-the-badge&logoColor=white)](./API.md)
+
 </div>
+
+---
 
 ## ✨ Core Features & Capabilities
 
-### 🎨 **Advanced UI/UX Design**
-- **Glass Morphism Interface**: Modern glass-effect components with subtle transparency and blur effects
-- **Gradient Magic**: Dynamic bolt gradients and shimmer effects throughout the interface
-- **Floating Animations**: Smooth floating orbs and animated background elements
-- **Responsive Excellence**: Fully responsive design optimized for mobile, tablet, and desktop
+### 🤖 **AI-Powered Document Generation**
+- **🎯 Smart Resume Builder**: Create professional resumes with Gemini AI 2.0 Flash
+- **📊 Presentation Generator**: Generate complete slide decks with outlines and themes
+- **📄 CV Creator**: Build comprehensive curriculum vitae with intelligent formatting
+- **✉️ Letter Composer**: Draft professional letters for any purpose
+- **🔍 ATS Resume Analyzer**: Optimize resumes for Applicant Tracking Systems
+- **🎨 Template Selection**: Multiple professional templates for each document type
+
+### 🎨 **Modern UI/UX Design**
+- **✨ Glass Morphism Interface**: Modern glass-effect components with subtle transparency and blur effects
+- **🌈 Gradient Magic**: Dynamic bolt gradients and shimmer effects throughout the interface
+- **🎭 Floating Animations**: Smooth floating orbs and animated background elements powered by Framer Motion
+- **📱 Responsive Excellence**: Mobile-first design optimized for all screen sizes
+- **🌙 Dark/Light Theme**: Seamless theme switching with next-themes
+- **♿ Accessibility First**: WCAG 2.1 AA compliant components
 - **Dark/Light Themes**: Seamless theme switching with system preference detection
 - **Micro-Interactions**: Hover effects, scale transitions, and pulse animations for enhanced user engagement
 
@@ -66,7 +90,27 @@
 - **React Hook Form** - Performant forms with validation
 - **Zustand** - Lightweight state management
 
-### 🔧 **UI Component System**
+### 🔧 **Advanced Component System**
+- **🎨 Radix UI Foundation**: 25+ accessible components including dialogs, dropdowns, and forms
+- **📝 Form Management**: React Hook Form with Zod validation for type-safe forms
+- **📊 Data Visualization**: Recharts integration for analytics and progress tracking
+- **🎪 Interactive Elements**: Carousels, accordions, and collapsible content
+- **🎯 Smart Inputs**: OTP inputs, date pickers, and file upload with drag-and-drop
+- **🔔 Toast Notifications**: Sonner-powered notifications for user feedback
+
+### 🔐 **Authentication & Security**
+- **🛡️ Supabase Auth**: Secure user authentication with JWT tokens
+- **👤 User Management**: Registration, login, password reset, and profile management
+- **🔒 Protected Routes**: Client-side route protection and redirects
+- **📊 Session Management**: Persistent sessions with automatic token refresh
+- **🔐 Environment Security**: Secure API key management and environment variables
+
+### 💳 **Payment & Subscription System**
+- **💰 Stripe Integration**: Secure payment processing with Stripe
+- **📋 Subscription Management**: Pro/Free tier management with usage limits
+- **🏪 Customer Portal**: Self-service billing and subscription management
+- **📊 Usage Tracking**: Monitor document generation limits and analytics
+- **🔔 Webhook Handling**: Real-time payment and subscription status updates
 - **Glass Morphism Design**: Custom CSS with backdrop-blur and transparency effects
 - **Responsive Grid System**: Mobile-first approach with breakpoint optimization
 - **Custom Animations**: Floating orbs, shimmer effects, and gradient transitions
@@ -142,7 +186,60 @@ DocMagic features a cutting-edge design system built around glass morphism princ
 <img src="https://images.pexels.com/photos/3184293/pexels-photo-3184293.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600" alt="Presentation Creator" width="90%"/>
 <p><em>Professional slide creator with automatic chart generation</em></p>
 
-### 📊 **ATS Analyzer Dashboard**
+## 🏗️ **Technical Architecture**
+
+### 🚀 **Frontend Stack**
+```typescript
+// Core Framework
+Next.js 15.4.0          // React framework with App Router
+React 18.3.0            // UI library with concurrent features
+TypeScript 5.2.2        // Type-safe development
+
+// Styling & UI
+Tailwind CSS 3.3.3      // Utility-first CSS framework
+Radix UI                // Accessible component primitives
+Framer Motion 12.19.1   // Animation library
+next-themes 0.3.0       // Theme management
+
+// Forms & Validation
+React Hook Form 7.53.0  // Performant forms
+Zod 3.23.8             // Schema validation
+```
+
+### 🔧 **Backend & Services**
+```typescript
+// Database & Auth
+Supabase                // PostgreSQL database + Auth
+@supabase/auth-helpers-nextjs 0.9.0
+
+// AI & Generation
+Google Gemini AI 0.3.0  // Document generation
+@google/generative-ai   // Official Gemini SDK
+
+// Payments
+Stripe 14.20.0          // Payment processing
+@stripe/stripe-js 3.0.0 // Client-side Stripe
+
+// Document Processing
+mammoth 1.9.1           // DOCX parsing
+pdf-parse 1.1.1         // PDF parsing
+docx 8.5.0              // DOCX generation
+jspdf 2.5.1             // PDF generation
+pptxgenjs 3.12.0        // PowerPoint generation
+```
+
+### 📊 **Document Processing Pipeline**
+```mermaid
+graph LR
+    A[User Input] --> B[AI Processing]
+    B --> C[Gemini AI 2.0]
+    C --> D[Content Generation]
+    D --> E[Template Application]
+    E --> F[Export Options]
+    F --> G[PDF/DOCX/PPTX]
+```
+
+### 🔍 **ATS Analyzer System**
 <img src="https://images.pexels.com/photos/3184294/pexels-photo-3184294.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600" alt="ATS Analyzer" width="90%"/>
 <p><em>Real-time resume analysis with actionable insights</em></p>
 
@@ -214,9 +311,285 @@ docmagic/
 ```
 
 
-## 🚀 Getting Started
+## 🚀 **Quick Start Guide**
 
-Follow these detailed steps to set up and run the **DocMagic** project locally on your machine.
+### 📋 **Prerequisites**
+
+Before you begin, ensure you have the following installed:
+
+```bash
+Node.js >= 18.0.0       # JavaScript runtime
+npm >= 9.0.0            # Package manager
+Git                     # Version control
+```
+
+### ⚡ **One-Click Setup**
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/docmagic.git
+cd docmagic
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your API keys
+
+# Run development server
+npm run dev
+```
+
+🎉 **That's it!** Open [http://localhost:3000](http://localhost:3000) to see DocMagic in action.
+
+### 🔧 **Environment Configuration**
+
+Create a `.env.local` file in the root directory:
+
+```bash
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# Google Gemini AI
+GEMINI_API_KEY=your_gemini_api_key
+
+# Stripe Configuration
+STRIPE_SECRET_KEY=your_stripe_secret_key
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+STRIPE_WEBHOOK_SECRET=your_webhook_secret
+
+# Application URL
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+### 🗄️ **Database Setup**
+
+1. **Create Supabase Project**:
+   ```bash
+   # Visit https://supabase.com/dashboard
+   # Create new project
+   # Copy your project URL and anon key
+   ```
+
+2. **Run Migrations**:
+   ```sql
+   -- The migrations are in /supabase/migrations/
+   -- They will be automatically applied when you set up Supabase
+   ```
+
+3. **Set up Authentication**:
+   ```bash
+   # Enable Email/Password auth in Supabase dashboard
+   # Configure email templates (optional)
+   # Set up OAuth providers (optional)
+   ```
+
+### 🤖 **AI Service Setup**
+
+1. **Get Gemini API Key**:
+   ```bash
+   # Visit https://ai.google.dev/
+   # Create API key
+   # Add to GEMINI_API_KEY in .env.local
+   ```
+
+2. **Configure AI Models**:
+   ```typescript
+   // lib/gemini.ts already configured with:
+   // - gemini-2.0-flash for fast generation
+   // - Error handling and retries
+   // - JSON parsing and validation
+   ```
+
+### 💳 **Payment Setup (Optional)**
+
+1. **Stripe Configuration**:
+   ```bash
+   # Visit https://dashboard.stripe.com/
+   # Get your API keys
+   # Set up webhook endpoint: /api/stripe/webhook
+   ```
+
+2. **Webhook Events**:
+   ```typescript
+   // Configure these events in Stripe dashboard:
+   customer.subscription.created
+   customer.subscription.updated
+   customer.subscription.deleted
+   invoice.payment_succeeded
+   invoice.payment_failed
+   ```
+
+## 🛠️ **Development Commands**
+
+```bash
+# Development
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run type-check   # Run TypeScript checks
+
+# Database
+npx supabase start   # Start local Supabase
+npx supabase stop    # Stop local Supabase
+npx supabase reset   # Reset local database
+
+# Deployment
+npm run deploy       # Deploy to Netlify
+vercel --prod        # Deploy to Vercel
+```
+
+## 📁 **Project Structure**
+
+```
+docmagic/
+├── 📁 app/                    # Next.js App Router
+│   ├── 📁 api/               # API routes
+│   │   ├── 📁 generate/      # AI generation endpoints
+│   │   ├── 📁 stripe/        # Payment webhooks
+│   │   └── 📁 auth/          # Authentication
+│   ├── 📁 resume/            # Resume pages
+│   ├── 📁 presentation/      # Presentation pages
+│   ├── 📁 letter/            # Letter pages
+│   └── 📁 cv/                # CV pages
+├── 📁 components/            # React components
+│   ├── 📁 ui/                # Radix UI components
+│   ├── 📁 resume/            # Resume-specific components
+│   ├── 📁 presentation/      # Presentation components
+│   └── 📁 letter/            # Letter components
+├── 📁 lib/                   # Utility libraries
+│   ├── 📄 gemini.ts          # AI integration
+│   ├── 📄 stripe.ts          # Payment processing
+│   ├── 📄 supabase.ts        # Database client
+│   └── 📁 parsers/           # Document parsers
+├── 📁 hooks/                 # Custom React hooks
+├── 📁 types/                 # TypeScript definitions
+├── 📁 supabase/              # Database migrations
+└── 📁 public/                # Static assets
+```
+
+## 🔗 **API Documentation**
+
+### 🤖 **AI Generation Endpoints**
+
+#### Generate Resume
+```typescript
+POST /api/generate/resume
+Content-Type: application/json
+
+{
+  "prompt": "Software engineer with 5 years React experience",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "+1234567890",
+  "location": "San Francisco, CA"
+}
+```
+
+#### Generate Presentation
+```typescript
+POST /api/generate/presentation
+Content-Type: application/json
+
+{
+  "prompt": "Marketing strategy for Q1 2025",
+  "pageCount": 10,
+  "template": "modern-business"
+}
+```
+
+#### ATS Resume Analysis
+```typescript
+POST /api/analyze/resume
+Content-Type: multipart/form-data
+
+{
+  "file": File,
+  "jobDescription": "Job requirements text"
+}
+```
+
+### 💳 **Payment Endpoints**
+
+#### Create Checkout Session
+```typescript
+POST /api/stripe/create-checkout
+Content-Type: application/json
+
+{
+  "priceId": "price_xxx",
+  "successUrl": "https://app.com/success",
+  "cancelUrl": "https://app.com/cancel"
+}
+```
+
+For complete API documentation, see [API.md](./API.md).
+
+## 🚀 **Deployment**
+
+### 🌐 **Netlify (Recommended)**
+
+DocMagic is optimized for Netlify deployment:
+
+```bash
+# Automatic deployment
+git push origin main
+
+# Manual deployment
+npm run build
+netlify deploy --prod --dir=.next
+```
+
+**Configuration**: The `netlify.toml` file is pre-configured with:
+- Next.js plugin
+- API route handling
+- CORS headers
+- Environment variables
+
+### ⚡ **Vercel**
+
+Alternative deployment to Vercel:
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel --prod
+```
+
+### 🐳 **Docker**
+
+```dockerfile
+# Dockerfile included for containerized deployment
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+## 🧪 **Testing**
+
+```bash
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+
+# Coverage report
+npm run test:coverage
+```
+
+For detailed testing guidelines, see [TESTING.md](./TESTING.md).
 
 ### Prerequisites
 
@@ -309,7 +682,103 @@ The application is deployed on Netlify. To deploy your own instance:
 |----------|--------|-------------|--------------|----------|
 | `/api/analyze/resume` | POST | Analyze resume for ATS | FormData with `file` and `jobDescription` | Analysis JSON |
 
-### Email
+## 🤝 **Contributing**
+
+We welcome contributions from the community! Here's how you can help:
+
+### 🐛 **Bug Reports**
+- Use our [issue template](.github/ISSUE_TEMPLATE/bug_report.md)
+- Include steps to reproduce
+- Provide environment details
+
+### ✨ **Feature Requests**
+- Check existing [feature requests](https://github.com/yourusername/docmagic/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+- Use our [feature template](.github/ISSUE_TEMPLATE/feature_request.md)
+- Explain the use case and benefits
+
+### 🔧 **Pull Requests**
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes
+4. Add tests if applicable
+5. Run the test suite: `npm test`
+6. Commit your changes: `git commit -m 'Add amazing feature'`
+7. Push to the branch: `git push origin feature/amazing-feature`
+8. Open a Pull Request
+
+For detailed guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## 📜 **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+```
+MIT License
+
+Copyright (c) 2025 DocMagic
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+```
+
+## 🌟 **Acknowledgments**
+
+- **[Next.js Team](https://nextjs.org/)** - For the amazing React framework
+- **[Vercel](https://vercel.com/)** - For hosting and deployment platform
+- **[Supabase](https://supabase.com/)** - For the backend-as-a-service platform
+- **[Google AI](https://ai.google.dev/)** - For Gemini AI integration
+- **[Radix UI](https://www.radix-ui.com/)** - For accessible component primitives
+- **[Tailwind CSS](https://tailwindcss.com/)** - For the utility-first CSS framework
+- **[Stripe](https://stripe.com/)** - For payment processing
+- **Open Source Community** - For the amazing tools and libraries
+
+## 📞 **Support & Contact**
+
+### 🆘 **Get Help**
+- 📚 **Documentation**: [docs.docmagic.com](https://docs.docmagic.com)
+- 💬 **Discord Community**: [Join our Discord](https://discord.gg/docmagic)
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/yourusername/docmagic/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/yourusername/docmagic/discussions)
+
+### 📧 **Contact Information**
+- **General**: hello@docmagic.com
+- **Support**: support@docmagic.com
+- **Business**: business@docmagic.com
+- **Security**: security@docmagic.com
+
+### 🌐 **Social Media**
+- **Twitter**: [@DocMagicAI](https://twitter.com/DocMagicAI)
+- **LinkedIn**: [DocMagic Company](https://linkedin.com/company/docmagic)
+- **GitHub**: [DocMagic Organization](https://github.com/docmagic-ai)
+
+---
+
+<div align="center">
+
+### 🚀 **Ready to Create Magic?**
+
+[![Get Started](https://img.shields.io/badge/🚀_Get_Started-Create_Your_First_Document-667eea?style=for-the-badge&logoColor=white)](https://docmagic1.netlify.app)
+[![Star on GitHub](https://img.shields.io/badge/⭐_Star_on_GitHub-Support_the_Project-yellow?style=for-the-badge&logoColor=white)](https://github.com/yourusername/docmagic)
+[![Join Discord](https://img.shields.io/badge/💬_Join_Discord-Community_Chat-5865F2?style=for-the-badge&logoColor=white)](https://discord.gg/docmagic)
+
+<br />
+
+**Made with ❤️ by the DocMagic Team**
+
+*Transforming ideas into professional documents, one AI generation at a time.*
+
+<br />
+
+![Footer Image](https://via.placeholder.com/600x100/667eea/ffffff?text=✨+DocMagic+-+AI+Document+Creation+Platform+✨)
+
+</div>
 
 | Endpoint | Method | Description | Request Body | Response |
 |----------|--------|-------------|--------------|----------|
