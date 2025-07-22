@@ -1,91 +1,73 @@
 # Contributing to DocMagic
 
-Thank you for your interest in contributing to **DocMagic**! Your support and involvement help make this project better for everyone.
+Thank you for considering contributing to DocMagic! This document outlines the process for contributing to this project.
 
-Please follow these guidelines to make your contributions clear, consistent, and valuable.
+## Code of Conduct
 
----
+By participating in this project, you agree to abide by our code of conduct. Please be respectful and considerate of others.
 
-## 📝 How to Contribute
+## How to Contribute
 
-### 1. Fork the Repository
+### Reporting Bugs
 
-Click the **Fork** button at the top right of this repository, and clone your fork locally:
+If you find a bug, please create an issue with the following information:
+- A clear, descriptive title
+- Steps to reproduce the issue
+- Expected behavior
+- Actual behavior
+- Screenshots (if applicable)
+- Environment details (browser, OS, etc.)
 
-```bash
-git clone https://github.com/your-username/DocMagic.git
-cd DocMagic
-```
+### Suggesting Features
 
-### 2. Create a Branch
+We welcome feature suggestions! Please create an issue with:
+- A clear, descriptive title
+- Detailed description of the proposed feature
+- Any relevant examples or mockups
+- Explanation of why this feature would be useful
 
-Create a new branch for your feature or bugfix:
+### Pull Requests
 
-```bash
-git checkout -b feature/YourFeatureName
-```
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/your-feature-name`)
+3. Make your changes
+4. Run tests to ensure your changes don't break existing functionality
+5. Commit your changes (`git commit -m 'Add some feature'`)
+6. Push to the branch (`git push origin feature/your-feature-name`)
+7. Open a Pull Request
 
-### 3. Make Your Changes
+#### Pull Request Guidelines
 
-- Keep your code clear and well-documented.
-- Follow the style and conventions of the existing codebase.
-- Add or update tests if applicable.
+- Follow the coding style of the project
+- Include tests for new features
+- Update documentation as needed
+- Keep pull requests focused on a single concern
+- Link any related issues in the pull request description
 
-### 4. Commit Your Changes
+## Development Setup
 
-Write clear, concise commit messages:
+1. Clone the repository
+2. Install dependencies with `npm install`
+3. Run the development server with `npm run dev`
 
-```bash
-git commit -m "Add: short description of your change"
-```
+## Project Structure
 
-### 5. Push and Open a Pull Request
+- `/pages` - Next.js pages
+- `/components` - React components
+- `/public` - Static assets
+- `/styles` - CSS and styling files
+- `/lib` - Utility functions and shared code
 
-Push your branch to GitHub:
+## Versioning
 
-```bash
-git push origin feature/YourFeatureName
-```
+We use [SemVer](http://semver.org/) for versioning.
 
-Open a pull request (PR) against the `main` branch on [GitHub](https://github.com/Muneerali199/DocMagic/pulls).
+## License
 
----
+By contributing to this project, you agree that your contributions will be licensed under the project's license.
 
-## 🐞 Reporting Issues
+## Maintainers
 
-If you discover a bug or have a feature request:
+This project is maintained by Xenonesis.
 
-1. [Search existing issues](https://github.com/Muneerali199/DocMagic/issues) to avoid duplicates.
-2. [Open a new issue](https://github.com/Muneerali199/DocMagic/issues/new) with a descriptive title and detailed information.
-3. Include steps to reproduce, expected behavior, screenshots, and environment details if relevant.
-
----
-
-## 🧑‍💻 Code Style
-
-- Use **Prettier** and **ESLint** for formatting and linting.
-- Write descriptive variable and function names.
-- Keep functions and components small and focused.
-- Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages (e.g., `fix: correct typo`, `feat: add export to PDF`).
-
----
-
-## 📚 Resources
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Supabase Documentation](https://supabase.com/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [Gemini AI Documentation](https://ai.google.dev/)
-- [pptxgenjs Docs](https://gitbrent.github.io/PptxGenJS/)
-- [LaTeX.js Docs](https://github.com/michael-brade/LaTeX.js)
-
----
-
-## 🙏 Code of Conduct
-
-Please be respectful and considerate to others. Harassment or inappropriate behavior will not be tolerated.
-
----
-
-Thank you for contributing!  
-— Muneer Ali
+Thank you for your contributions!
