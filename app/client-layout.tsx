@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode, useEffect, useRef } from "react";
+import Lenis from "@studio-freight/lenis";
 
 import { AuthProvider } from "@/components/auth-provider";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -11,33 +12,27 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    // Temporarily disable locomotive scroll for better performance
-    // const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // const isMobile = window.innerWidth < 768;
-    
-    // if (!prefersReducedMotion && !isMobile) {
-    //   let scroll: any;
+    let lenis: Lenis | null = null;
+    let animationFrame: number;
 
-    //   const initScroll = async () => {
-    //     try {
-    //       const LocomotiveScroll = (await import("locomotive-scroll")).default;
-    //       scroll = new LocomotiveScroll({
-    //         el: scrollRef.current!,
-    //         smooth: true,
-    //         lerp: 0.05,
-    //         multiplier: 0.8,
-    //       });
-    //     } catch (error) {
-    //       console.warn('Locomotive scroll failed to load, using native scrolling');
-    //     }
-    //   };
+    if (typeof window !== "undefined") {
+      lenis = new Lenis({
+        wrapper: scrollRef.current || undefined,
+        smoothWheel: true,
+      });
 
-    //   initScroll();
+      const raf = (time: number) => {
+        lenis?.raf(time);
+        animationFrame = requestAnimationFrame(raf);
+      };
 
-    //   return () => {
-    //     if (scroll) scroll.destroy();
-    //   };
-    // }
+      animationFrame = requestAnimationFrame(raf);
+    }
+
+    return () => {
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+      lenis?.destroy();
+    };
   }, []);
 
   return (

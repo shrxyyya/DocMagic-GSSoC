@@ -7,6 +7,90 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6] - 2025-07-23
+
+### Added
+- AI-powered document summarization for all supported formats
+- Export to Markdown and LaTeX
+- New onboarding tutorial for first-time users
+
+### Enhanced
+- Improved accuracy of resume keyword suggestions
+- Enhanced accessibility for visually impaired users
+
+### Fixed
+- Resolved issues with PDF export on Safari
+
+## [1.5] - 2025-07-23
+
+### Added
+- Presentation outline auto-generation using AI
+- Support for importing DOCX templates
+- New "Recent Documents" dashboard widget
+
+### Enhanced
+- Improved guided resume builder performance
+- Enhanced error messages for failed document uploads
+
+### Fixed
+- Fixed bug with letter preview not updating in real time
+
+## [1.4] - 2025-07-23
+
+### Added
+- Multi-user collaboration on documents (beta)
+- Export presentations as PowerPoint (PPTX)
+- Custom branding for organization accounts
+
+### Enhanced
+- Improved mobile UI for document editing
+- Enhanced security for shared documents
+
+### Fixed
+- Fixed issue with document version history not displaying correctly
+
+## [1.3] - 2025-07-23
+
+### Added
+- In-app notifications for document status changes
+- Resume analytics dashboard
+- Support for importing LinkedIn profiles
+
+### Enhanced
+- Improved template customization options
+- Enhanced document search functionality
+
+### Fixed
+- Fixed bug with dark mode in presentation editor
+
+## [1.2] - 2025-07-23
+
+### Added
+- Bulk export of resumes and letters
+- Integration with Dropbox for document backup
+- New testimonial section on landing page
+
+### Enhanced
+- Improved onboarding flow for new users
+- Enhanced document preview rendering
+
+### Fixed
+- Fixed issue with subscription renewal notifications
+
+## [1.1] - 2025-07-23
+
+### Added
+- New resume templates: "Modern" and "Classic"
+- Live collaboration for letter editing
+- Export to plain text format
+
+### Enhanced
+- Improved performance of document card rendering
+- Enhanced feedback form with file upload support
+
+### Fixed
+- Fixed bug with guided resume generator navigation
+
 ## [1.0.0] - 2025-07-23
 
 ### Added
@@ -75,7 +159,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Credits
 - **Enhanced by**: [Xenonesis](https://github.com/Xenonesis)
 
-## [0.7.0] - 2025-07-28
+## [0.7.0] - 2025-07-23
 
 ### Added
 - **Advanced Resume Navigation System** - Complete navigation overhaul with step-by-step progress tracking
@@ -109,7 +193,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Credits
 - **Developed by**: [Xenonesis](https://github.com/Xenonesis)
 
-## [0.6.0] - 2025-07-28
+## [0.6.0] - 2025-07-23
 
 ### Added
 - **Enhanced Resume Navigation Component** - New React component for improved resume builder navigation
