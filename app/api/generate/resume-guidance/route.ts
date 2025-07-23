@@ -16,27 +16,8 @@ export async function POST(request: Request) {
       );
     }
 
-    try {
-      const guidance = await generateResumeStepGuidance(step, targetRole, existingData);
-      return NextResponse.json(guidance);
-    } catch (apiError: any) {
-      // Check if it's a service overload error
-      if (apiError?.message?.includes('503 Service Unavailable') || 
-          apiError?.message?.includes('overloaded')) {
-        // Return a more specific error for service overload
-        return NextResponse.json(
-          { 
-            error: 'AI service is currently overloaded', 
-            message: 'Please try again in a few moments',
-            retryable: true
-          },
-          { status: 503 }
-        );
-      }
-      
-      // Re-throw for general error handling
-      throw apiError;
-    }
+    const guidance = await generateResumeStepGuidance(step, targetRole, existingData);
+    return NextResponse.json(guidance);
   } catch (error) {
     console.error('Error generating resume guidance:', error);
     return NextResponse.json(

@@ -8,8 +8,8 @@ export default function ATSPage() {
       <main className="flex-1">
         <div className="container py-10">
           <h1 className="text-4xl font-bold mb-2">ATS Resume Checker</h1>
-<p className="text-lg text-muted-foreground mb-8">
-            Check your resume&apos;s ATS compatibility score and get personalized improvement suggestions
+          <p className="text-lg text-muted-foreground mb-8">
+            Check your resume's ATS compatibility score and get personalized improvement suggestions
           </p>
           <ATSAnalyzer />
         </div>
