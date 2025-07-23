@@ -16,13 +16,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create a properly typed object for generatePresentation
-    const presentationParams = { 
-      prompt, 
-      outlines: [],
-      // Additional parameters can be passed as needed
-    };
-    const slides = await generatePresentation(presentationParams);
+    const slides = await generatePresentation({ prompt, pageCount });
     return NextResponse.json(slides);
   } catch (error) {
     console.error('Error generating presentation:', error);

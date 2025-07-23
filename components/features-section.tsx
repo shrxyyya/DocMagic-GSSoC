@@ -25,7 +25,7 @@ export function FeaturesSection() {
           </h2>
           
           <p className="modern-body text-base sm:text-lg text-muted-foreground px-4 sm:px-0">
-            Simply describe what you need, and our AI will generate a polished document tailored to your specifications in seconds. It&apos;s like having a professional writer and designer at your fingertips.
+            Simply describe what you need, and our AI will generate a polished document tailored to your specifications in seconds. It's like having a professional writer and designer at your fingertips.
           </p>
         </div>
         

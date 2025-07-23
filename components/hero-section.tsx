@@ -6,14 +6,8 @@ export function HeroSection() {
   return (
     <div className="relative overflow-hidden bg-background py-16 sm:py-24 lg:py-32">
       {/* Enhanced animated background elements */}
-      <div className="absolute inset-0 mesh-gradient opacity-40"></div>
-      <div className="absolute inset-0 mesh-gradient-alt opacity-20"></div>
-      
-      {/* Animated colorful floating orbs */}
-      <div className="floating-orb w-48 h-48 sm:w-72 sm:h-72 sunset-gradient opacity-25 top-10 -left-24 sm:-left-36 animate-float-gentle will-change-transform"></div>
-      <div className="floating-orb w-64 h-64 sm:w-96 sm:h-96 ocean-gradient opacity-20 -top-20 -right-32 sm:-right-48 animate-glow-pulse will-change-transform"></div>
-      <div className="floating-orb w-40 h-40 sm:w-64 sm:h-64 forest-gradient opacity-30 bottom-10 left-1/4 sm:left-1/3 animate-float-gentle will-change-transform" style={{animationDelay: '2s'}}></div>
-      <div className="floating-orb w-32 h-32 sm:w-48 sm:h-48 cosmic-gradient opacity-25 top-1/3 right-1/4 animate-glow-pulse will-change-transform" style={{animationDelay: '1s'}}></div>
+      <div className="absolute inset-0 aurora-borealis opacity-20"></div>
+      <div className="absolute inset-0 mesh-gradient-alt opacity-10"></div>
       
       {/* Grid pattern overlay */}
       <div 
@@ -26,7 +20,7 @@ export function HeroSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="mx-auto max-w-4xl text-center">
           {/* Enhanced Animated Badge */}
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full gradient-border mb-6 sm:mb-8 shimmer relative animate-bounce-in will-change-transform">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full gradient-border mb-6 sm:mb-8 subtle-shimmer relative animate-fade-in-down will-change-transform">
             <div className="relative z-10 flex items-center gap-2">
               <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500 animate-text-glow" style={{animation: 'sparkle 2s ease-in-out infinite'}} />
               <span className="text-xs sm:text-sm font-medium bolt-gradient-text">AI-Powered Document Magic</span>
@@ -35,7 +29,7 @@ export function HeroSection() {
           </div>
           
           {/* Animated modern main heading */}
-          <h1 className="modern-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-6 sm:mb-8 animate-slide-in-left will-change-transform">
+          <h1 className="modern-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-6 sm:mb-8 animate-fade-in-down delay-100 will-change-transform text-shadow-professional">
             Create professional documents with{" "}
             <span className="bolt-gradient-text relative inline-block">
               AI Magic
@@ -46,7 +40,7 @@ export function HeroSection() {
           </h1>
           
           {/* Animated Modern Professional Subtitle */}
-          <p className="modern-body mt-4 sm:mt-6 text-base sm:text-lg lg:text-xl text-muted-foreground max-w-xl sm:max-w-2xl mx-auto px-4 sm:px-0 animate-slide-in-right delay-200 will-change-opacity">
+          <p className="modern-body mt-4 sm:mt-6 text-base sm:text-lg lg:text-xl text-muted-foreground max-w-xl sm:max-w-2xl mx-auto px-4 sm:px-0 animate-fade-in-up delay-200 will-change-opacity">
             Transform your ideas into polished{" "}
             <span className="font-semibold hover:text-amber-600 transition-colors" style={{color: '#f59e0b'}}>resumes</span>,{" "}
             <span className="font-semibold hover:text-blue-600 transition-colors" style={{color: '#2563eb'}}>presentations</span>,{" "}
@@ -56,7 +50,7 @@ export function HeroSection() {
           </p>
           
           {/* Animated CTA Buttons */}
-          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-x-6 px-4 sm:px-0 animate-scale-in delay-400 will-change-transform">
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-x-6 px-4 sm:px-0 animate-fade-in-up delay-300 will-change-transform">
             <Button 
               asChild 
               size="lg" 
@@ -85,16 +79,16 @@ export function HeroSection() {
           
           {/* Animated Professional Stats */}
           <div className="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-0">
-            <div className="card-coral hover-coral p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 sunset-glow animate-scale-in delay-600 will-change-transform">
-              <div className="bolt-gradient-text text-2xl sm:text-3xl font-bold animate-text-glow">10K+</div>
+            <div className="card-coral hover-glow-coral p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 sunset-glow animate-fade-in-up delay-400 will-change-transform">
+              <div className="bolt-gradient-text text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">10K+</div>
               <div className="text-muted-foreground text-sm sm:text-base">Documents Created</div>
             </div>
-            <div className="card-sky hover-sky p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 bolt-glow animate-scale-in delay-700 will-change-transform">
-              <div className="bolt-gradient-text text-2xl sm:text-3xl font-bold animate-text-glow">98%</div>
+            <div className="card-sky hover-glow-sky p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 bolt-glow animate-fade-in-up delay-500 will-change-transform">
+              <div className="bolt-gradient-text text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">98%</div>
               <div className="text-muted-foreground text-sm sm:text-base">Success Rate</div>
             </div>
-            <div className="card-mint hover-mint p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 ocean-glow animate-scale-in delay-800 will-change-transform">
-              <div className="bolt-gradient-text text-2xl sm:text-3xl font-bold animate-text-glow">5★</div>
+            <div className="card-mint hover-glow-mint p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 ocean-glow animate-fade-in-up delay-600 will-change-transform">
+              <div className="bolt-gradient-text text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">5★</div>
               <div className="text-muted-foreground text-sm sm:text-base">User Rating</div>
             </div>
           </div>

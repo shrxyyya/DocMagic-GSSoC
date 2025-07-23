@@ -278,7 +278,7 @@ export default function Register() {
                 </div>
                 {confirmPassword && password !== confirmPassword && (
                   <p className="text-xs text-red-500 flex items-center gap-1">
-<span>Passwords don&apos;t match</span>
+                    <span>Passwords don't match</span>
                   </p>
                 )}
               </div>

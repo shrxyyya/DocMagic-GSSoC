@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, Quote, Maximize2, Minimize2, Play, Pause, RotateCcw, Image as ImageIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import Image from "next/image";
 import {
   BarChart,
   Bar,
@@ -403,18 +402,12 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
                 <ImageIcon className="h-16 w-16 text-gray-400" />
               </div>
             )}
-            {slide.image && (
-              <div className="hidden">
-                <Image 
-                  src={slide.image} 
-                  alt={slide.imageAlt || slide.title}
-                  width={1}
-                  height={1}
-                  onError={() => handleImageError(slideIndex)}
-                  unoptimized
-                />
-              </div>
-            )}
+            <img 
+              src={slide.image} 
+              alt={slide.imageAlt || slide.title}
+              className="hidden"
+              onError={() => handleImageError(slideIndex)}
+            />
           </div>
         );
 
@@ -444,17 +437,14 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
               </div>
               <div className="flex items-center justify-center">
                 {slide.image && !imageLoadErrors[slideIndex] ? (
-                  <div className={cn("rounded-2xl overflow-hidden", templateStyles.shadow, "shadow-2xl relative")}>
-                    <div style={{ position: 'relative', width: '100%', height: '500px', maxHeight: '500px' }}>
-                      <Image 
-                        src={slide.image} 
-                        alt={slide.imageAlt || slide.title}
-                        fill
-                        style={{ objectFit: 'cover' }}
-                        onError={() => handleImageError(slideIndex)}
-                        unoptimized
-                      />
-                    </div>
+                  <div className={cn("rounded-2xl overflow-hidden", templateStyles.shadow, "shadow-2xl")}>
+                    <img 
+                      src={slide.image} 
+                      alt={slide.imageAlt || slide.title}
+                      className="max-w-full h-auto object-cover"
+                      style={{ maxHeight: '500px' }}
+                      onError={() => handleImageError(slideIndex)}
+                    />
                   </div>
                 ) : (
                   <div className={cn("w-full h-80 rounded-2xl flex items-center justify-center", templateStyles.border, "border-2 border-dashed", templateStyles.cardBg)}>
@@ -506,7 +496,7 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
                 <h2 className={cn("text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 leading-tight", templateStyles.accent)}>
                   {slide.title}
                 </h2>
-                  {slide.content && (
+                {slide.content && (
                   <p className="text-lg sm:text-xl mb-8 leading-relaxed opacity-90">
                     {slide.content}
                   </p>
@@ -524,17 +514,14 @@ export function PresentationPreview({ slides, template }: PresentationPreviewPro
               </div>
               <div className="flex items-center justify-center">
                 {slide.image && !imageLoadErrors[slideIndex] ? (
-                  <div className={cn("rounded-2xl overflow-hidden", templateStyles.shadow, "shadow-xl relative")}>
-                    <div style={{ position: 'relative', width: '100%', height: '400px', maxHeight: '400px' }}>
-                      <Image 
-                        src={slide.image} 
-                        alt={slide.imageAlt || slide.title}
-                        fill
-                        style={{ objectFit: 'cover' }}
-                        onError={() => handleImageError(slideIndex)}
-                        unoptimized
-                      />
-                    </div>
+                  <div className={cn("rounded-2xl overflow-hidden", templateStyles.shadow, "shadow-xl")}>
+                    <img 
+                      src={slide.image} 
+                      alt={slide.imageAlt || slide.title}
+                      className="max-w-full h-auto object-cover"
+                      style={{ maxHeight: '400px' }}
+                      onError={() => handleImageError(slideIndex)}
+                    />
                   </div>
                 ) : (
                   <div className={cn("w-full h-64 rounded-2xl flex items-center justify-center", templateStyles.border, "border-2 border-dashed", templateStyles.cardBg)}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -109,9 +109,6 @@ export function GuidedResumeGenerator({ onResumeGenerated }: GuidedResumeGenerat
     portfolio: ""
   });
 
-  // Define the state outside the render function
-  const [newSkill, setNewSkill] = useState({ technical: "", programming: "", tools: "", soft: "" });
-
   const steps: { id: ResumeStep; title: string; icon: any; description: string }[] = [
     { id: 'personal', title: 'Personal Info', icon: User, description: 'Basic contact information' },
     { id: 'summary', title: 'Professional Summary', icon: FileText, description: 'Your professional overview' },
@@ -126,23 +123,14 @@ export function GuidedResumeGenerator({ onResumeGenerated }: GuidedResumeGenerat
 
   const currentStepIndex = steps.findIndex(step => step.id === currentStep);
 
-  // Memoize getCurrentStepData to avoid dependency issues
-  const getCurrentStepData = useCallback(() => {
-    switch (currentStep) {
-      case 'personal': return personalInfo;
-      case 'summary': return professionalSummary;
-      case 'experience': return workExperience;
-      case 'education': return education;
-      case 'skills': return skills;
-      case 'projects': return projects;
-      case 'certifications': return certifications;
-      case 'links': return links;
-      default: return null;
+  // Load step guidance when step changes
+  useEffect(() => {
+    if (targetRole && currentStep !== 'review') {
+      loadStepGuidance();
     }
-  }, [currentStep, personalInfo, professionalSummary, workExperience, education, skills, projects, certifications, links]);
+  }, [currentStep, targetRole]);
 
-  // Memoize loadStepGuidance to avoid dependency issues
-  const loadStepGuidance = useCallback(async () => {
+  const loadStepGuidance = async () => {
     if (!targetRole) return;
 
     try {
@@ -159,41 +147,25 @@ export function GuidedResumeGenerator({ onResumeGenerated }: GuidedResumeGenerat
       if (response.ok) {
         const guidance = await response.json();
         setStepGuidance(guidance);
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        
-        // Handle 503 Service Unavailable specifically
-        if (response.status === 503) {
-          console.log('AI service is currently overloaded, will retry automatically');
-          
-          // If the error is retryable, try again after a delay
-          if (errorData.retryable) {
-            setTimeout(() => loadStepGuidance(), 3000); // Retry after 3 seconds
-          }
-        } else {
-          toast({
-            title: "Guidance Error",
-            description: errorData.error || "Failed to load guidance. Please try again.",
-            variant: "destructive"
-          });
-        }
       }
     } catch (error) {
       console.error('Failed to load step guidance:', error);
-      toast({
-        title: "Connection Error",
-        description: "Failed to connect to the guidance service. Please check your connection.",
-        variant: "destructive"
-      });
     }
-  }, [currentStep, targetRole, toast, getCurrentStepData]);
+  };
 
-  // Load step guidance when step changes
-  useEffect(() => {
-    if (targetRole && currentStep !== 'review') {
-      loadStepGuidance();
+  const getCurrentStepData = () => {
+    switch (currentStep) {
+      case 'personal': return personalInfo;
+      case 'summary': return professionalSummary;
+      case 'experience': return workExperience;
+      case 'education': return education;
+      case 'skills': return skills;
+      case 'projects': return projects;
+      case 'certifications': return certifications;
+      case 'links': return links;
+      default: return null;
     }
-  }, [currentStep, targetRole, loadStepGuidance]);
+  };
 
   const nextStep = () => {
     if (currentStepIndex < steps.length - 1) {
@@ -237,43 +209,24 @@ export function GuidedResumeGenerator({ onResumeGenerated }: GuidedResumeGenerat
         })
       });
 
-      if (response.ok) {
-        const resume = await response.json();
-        
-        if (onResumeGenerated) {
-          onResumeGenerated(resume);
-        }
-
-        toast({
-          title: "🎯 ATS-Optimized Resume Generated!",
-          description: `Your resume is optimized for ${targetRole} with ${resume.atsScore}% ATS compatibility`,
-        });
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        
-        // Handle 503 Service Unavailable specifically
-        if (response.status === 503 && errorData.retryable) {
-          toast({
-            title: "AI Service Busy",
-            description: "The AI service is currently overloaded. Please try again in a few moments.",
-            variant: "destructive"
-          });
-          
-          // Optional: Implement automatic retry after a delay
-          // setTimeout(() => generateResume(), 5000);
-        } else {
-          toast({
-            title: "Error",
-            description: errorData.message || "Failed to generate resume. Please try again.",
-            variant: "destructive"
-          });
-        }
+      if (!response.ok) {
+        throw new Error('Failed to generate resume');
       }
-    } catch (error) {
-      console.error("Resume generation error:", error);
+
+      const resume = await response.json();
+      
+      if (onResumeGenerated) {
+        onResumeGenerated(resume);
+      }
+
       toast({
-        title: "Connection Error",
-        description: "Failed to connect to the resume generation service. Please check your connection and try again.",
+        title: "🎯 ATS-Optimized Resume Generated!",
+        description: `Your resume is optimized for ${targetRole} with ${resume.atsScore}% ATS compatibility`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to generate resume. Please try again.",
         variant: "destructive"
       });
     } finally {
@@ -683,7 +636,7 @@ export function GuidedResumeGenerator({ onResumeGenerated }: GuidedResumeGenerat
                 <Input
                   value={edu.honors}
                   onChange={(e) => updateArrayItem(setEducation, index, 'honors', e.target.value)}
-                  placeholder="Magna Cum Laude, Dean&apos;s List"
+                  placeholder="Magna Cum Laude, Dean's List"
                   className="glass-effect"
                 />
               </div>
@@ -706,6 +659,8 @@ export function GuidedResumeGenerator({ onResumeGenerated }: GuidedResumeGenerat
   );
 
   const renderSkillsStep = () => {
+    const [newSkill, setNewSkill] = useState({ technical: "", programming: "", tools: "", soft: "" });
+
     return (
       <div className="space-y-6">
         {Object.entries(skills).map(([category, skillList]) => (

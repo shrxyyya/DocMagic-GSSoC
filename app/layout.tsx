@@ -1,13 +1,16 @@
-// ✅ SERVER component (no "use client")
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "@/components/auth-provider";
+import ClientRedirects from "@/components/ClientRedirects"; // Add this import
 
 const inter = Inter({ subsets: ["latin"] });
-const poppins = Poppins({
+const poppins = Poppins({ 
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-poppins",
+  variable: "--font-poppins"
 });
 
 export const metadata: Metadata = {
@@ -42,11 +45,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} ${poppins.variable}`}>
-        {/* 👇 Move client logic into a separate file */}
-        <ClientLayout>{children}</ClientLayout>
+        <AuthProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <ClientRedirects /> {/* Add this line */}
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
 }
-
-import ClientLayout from "./client-layout";
