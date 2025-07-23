@@ -15,12 +15,12 @@ import { Loader2, Sparkles, Presentation as LayoutPresentation, Lock, Download, 
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import dynamic from 'next/dynamic';
+import { FeedbackForm } from "@/components/feedback-form";
 
 // Dynamically import pptxgen with no SSR to avoid build issues
-const PptxGenJS = dynamic(() => import('pptxgenjs'), { 
-  ssr: false,
-  loading: () => <p>Loading PowerPoint generator...</p>
-});
+// Import pptxgenjs dynamically
+// We're not actually using this as a React component, just importing the library
+// So we'll use a different approach for importing it
 
 type GenerationStep = 'input' | 'outline' | 'theme' | 'generated';
 
@@ -183,8 +183,9 @@ export function PresentationGenerator() {
     setIsExporting(true);
 
     try {
-      // Dynamically create a new instance of PptxGen
+      // Dynamically import the library only when needed
       const PptxGenJSModule = await import('pptxgenjs');
+      // Create a new instance using the imported module
       const pptx = new PptxGenJSModule.default();
       pptx.layout = 'LAYOUT_WIDE';
 
@@ -348,7 +349,7 @@ export function PresentationGenerator() {
                 <Sparkles className="h-4 w-4 text-blue-500" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold mb-3 bolt-gradient-text">
-                What's your presentation about?
+                What&apos;s your presentation about?
               </h2>
               <p className="text-muted-foreground">
                 Our AI will create a professional presentation with Canva-style design, 
@@ -639,6 +640,13 @@ export function PresentationGenerator() {
               </Button>
             </div>
           </div>
+          
+          {/* Feedback Form */}
+          {slides.length > 0 && (
+            <div className="mt-6">
+              <FeedbackForm documentType="presentation" />
+            </div>
+          )}
         </div>
       )}
     </div>

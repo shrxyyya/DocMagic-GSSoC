@@ -8,11 +8,6 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOi
 export const createClient = createClientComponentClient<Database>({
   supabaseUrl,
   supabaseKey: supabaseAnonKey,
-  options: {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true
-    }
-  }
+  // Remove options that are not supported
+  // Auth options are now configured differently in the latest version
 });
