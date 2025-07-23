@@ -106,7 +106,7 @@ export function FeedbackForm({ documentType, documentId }: FeedbackFormProps) {
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-md" hideCloseButton>
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 justify-center text-center text-2xl sm:text-3xl font-bold">
               <Star className="h-5 w-5 text-yellow-500" />

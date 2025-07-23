@@ -127,7 +127,7 @@ export default function AboutPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="professional-text text-base sm:text-lg leading-relaxed">
-                      To become the world's leading community-driven AI-powered document creation platform, 
+                      To become the world&apos;s leading community-driven AI-powered document creation platform, 
                       transforming how professionals, students, and businesses create stunning documents in seconds.
                     </p>
                   </CardContent>
@@ -290,7 +290,7 @@ export default function AboutPage() {
                   Design <span className="bolt-gradient-text">Philosophy</span>
                 </h2>
                 <p className="modern-body text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-                  "Magical Professionalism" - combining cutting-edge visual effects with professional usability.
+                  &quot;Magical Professionalism&quot; - combining cutting-edge visual effects with professional usability.
                 </p>
               </div>
               
@@ -469,7 +469,7 @@ export default function AboutPage() {
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-16">
                 <h2 className="modern-title text-3xl sm:text-4xl lg:text-5xl mb-6">
-                  What's <span className="bolt-gradient-text">Next</span>
+                  What&apos;s <span className="bolt-gradient-text">Next</span>
                 </h2>
                 <p className="modern-body text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
                   Exciting features and improvements coming to DocMagic in 2025.
@@ -667,7 +667,7 @@ const designPrinciples = [
   },
   {
     title: "Performance-Focused",
-    description: "Beautiful animations and effects that don't compromise on speed or usability",
+    description: "Beautiful animations and effects that don&apos;t compromise on speed or usability",
     icon: <Zap className="h-6 w-6 text-white" />,
     cardClass: "card-coral hover-coral",
     gradientClass: "sunset-gradient"

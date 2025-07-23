@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7] - 2025-07-23
+
+### Added
+- Next.js Image component integration for improved performance
+- Enhanced TypeScript type definitions for better type safety
+
+### Enhanced
+- Improved ESLint configuration for better code quality
+- Updated Supabase client and server implementations
+- Optimized presentation generator with better image handling
+
+### Fixed
+- Fixed TypeScript errors in API routes
+- Resolved ESLint warnings for accessibility
+- Fixed image component alt attributes for better accessibility
+- Corrected theme provider implementation
+- Fixed dynamic imports in presentation generator
+
 ## [1.6] - 2025-07-23
 
 ### Added

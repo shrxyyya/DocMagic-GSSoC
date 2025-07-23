@@ -26,6 +26,39 @@ function extractJsonFromMarkdown(text: string): string {
   return jsonMatch ? jsonMatch[1].trim() : text.trim();
 }
 
+// Retry function with exponential backoff
+async function retryWithBackoff(fn: () => Promise<any>, maxRetries = 3, initialDelay = 1000) {
+  let retries = 0;
+  let delay = initialDelay;
+  
+  while (retries < maxRetries) {
+    try {
+      return await fn();
+    } catch (error: any) {
+      // Check if it's a 503 Service Unavailable error
+      const is503Error = error?.message?.includes('503 Service Unavailable') || 
+                         error?.message?.includes('overloaded');
+      
+      // If it's not a 503 error or we've used all retries, throw the error
+      if (!is503Error || retries >= maxRetries - 1) {
+        throw error;
+      }
+      
+      // Log retry attempt
+      console.log(`API request failed with 503 error. Retrying in ${delay}ms... (Attempt ${retries + 1}/${maxRetries})`);
+      
+      // Wait for the delay period
+      await new Promise(resolve => setTimeout(resolve, delay));
+      
+      // Increase retries and apply exponential backoff
+      retries++;
+      delay *= 2; // Exponential backoff
+    }
+  }
+  
+  throw new Error('Maximum retries reached');
+}
+
 async function validateApiConnection() {
   try {
     // Skip API validation during build time
@@ -34,7 +67,7 @@ async function validateApiConnection() {
     }
     
     const model = getGenAI().getGenerativeModel({ model: "gemini-2.0-flash" });
-    await model.generateContent("test");
+    await retryWithBackoff(() => model.generateContent("test"));
     return true;
   } catch (error) {
     console.error("API Connection Test Failed:", error);
@@ -118,8 +151,14 @@ export async function generateResume({
 
     Generate realistic and relevant content based on the prompt. Include quantifiable achievements and use professional language throughout.`;
 
-    const result = await model.generateContent(systemPrompt);
-    const response = await result.response;
+    // Use retry mechanism for API calls
+    const generateContent = async () => {
+      const result = await model.generateContent(systemPrompt);
+      const response = await result.response;
+      return response;
+    };
+    
+    const response = await retryWithBackoff(generateContent, 3, 1000);
     const jsonText = extractJsonFromMarkdown(response.text());
     return JSON.parse(jsonText);
   } catch (error) {
@@ -705,8 +744,14 @@ export async function generateGuidedResume({
 
     MAKE THE RESUME 100% ATS-COMPATIBLE AND KEYWORD-OPTIMIZED FOR MAXIMUM SCORING.`;
 
-    const result = await model.generateContent(systemPrompt);
-    const response = await result.response;
+    // Use retry mechanism for API calls
+    const generateContent = async () => {
+      const result = await model.generateContent(systemPrompt);
+      const response = await result.response;
+      return response;
+    };
+    
+    const response = await retryWithBackoff(generateContent, 3, 1000);
     const jsonText = extractJsonFromMarkdown(response.text());
     return JSON.parse(jsonText);
   } catch (error) {
@@ -750,8 +795,14 @@ export async function generateResumeStepGuidance(step: string, targetRole: strin
 
     Make guidance specific to ${targetRole} and include ATS optimization tips.`;
 
-    const result = await model.generateContent(systemPrompt);
-    const response = await result.response;
+    // Use retry mechanism for API calls
+    const generateContent = async () => {
+      const result = await model.generateContent(systemPrompt);
+      const response = await result.response;
+      return response;
+    };
+    
+    const response = await retryWithBackoff(generateContent, 3, 1000);
     const jsonText = extractJsonFromMarkdown(response.text());
     return JSON.parse(jsonText);
   } catch (error) {

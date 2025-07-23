@@ -50,16 +50,17 @@ export const getPerformanceMode = () => {
 
 // Performance optimization hooks
 export const usePerformanceMode = () => {
-  if (typeof window === 'undefined') return 'normal';
-  
-  const [mode, setMode] = React.useState<'reduced' | 'low' | 'normal'>('normal');
+  const [mode, setMode] = React.useState<'reduced' | 'low' | 'normal'>(() => {
+    if (typeof window === 'undefined') return 'normal';
+    return getPerformanceMode();
+  });
   
   React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const updateMode = () => {
       setMode(getPerformanceMode());
     };
-    
-    updateMode();
     
     // Listen for changes
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');

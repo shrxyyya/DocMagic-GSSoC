@@ -47,7 +47,7 @@ export function TestimonialsSection() {
                 
                 <CardContent className="relative flex-1">
                   <Quote className="absolute -top-2 -left-2 h-8 w-8 text-blue-400/20" />
-                  <p className="professional-text relative z-10 italic text-base leading-relaxed">"{testimonial.content}"</p>
+                  <p className="professional-text relative z-10 italic text-base leading-relaxed">&quot;{testimonial.content}&quot;</p>
                 </CardContent>
                 
                 <CardFooter className="pt-4">

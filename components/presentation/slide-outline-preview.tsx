@@ -2,11 +2,12 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import NextImage from "next/image";
 import { 
   FileText, 
   List, 
   BarChart3, 
-  Image, 
+  Image as ImageIcon, 
   Users, 
   Zap,
   Sparkles,
@@ -48,7 +49,7 @@ export function SlideOutlinePreview({ outlines }: SlideOutlinePreviewProps) {
       case 'chart':
         return <BarChart3 className="h-4 w-4" />;
       case 'split':
-        return <Image className="h-4 w-4" />;
+        return <ImageIcon className="h-4 w-4" aria-hidden="true" />;
       case 'process':
         return <ArrowRight className="h-4 w-4" />;
       default:
@@ -266,11 +267,15 @@ export function SlideOutlinePreview({ outlines }: SlideOutlinePreviewProps) {
                 <div className="mt-4 h-24 rounded-lg bg-gradient-to-br from-muted/50 to-muted/80 border border-border/50 flex items-center justify-center group-hover:from-yellow-50 group-hover:to-blue-50 transition-all relative overflow-hidden">
                   {/* Show actual image preview if available */}
                   {outline.imageUrl && (
-                    <img 
-                      src={outline.imageUrl} 
-                      alt={outline.title}
-                      className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity rounded-lg"
-                    />
+                    <div className="absolute inset-0">
+                      <NextImage 
+                        src={outline.imageUrl} 
+                        alt={`Preview for ${outline.title}`}
+                        fill
+                        className="object-cover opacity-30 group-hover:opacity-50 transition-opacity rounded-lg"
+                        unoptimized
+                      />
+                    </div>
                   )}
                   <div className="flex items-center gap-2 text-muted-foreground group-hover:text-foreground transition-colors relative z-10">
                     {getSlideIcon(outline.type)}

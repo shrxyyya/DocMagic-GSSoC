@@ -8,13 +8,9 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOi
 
 export const createServer = () => {
   try {
-    const cookieStore = cookies();
+    // Create a client with just the cookies option
     return createServerComponentClient<Database>({ 
-      cookies: () => cookieStore,
-      options: {
-        supabaseUrl,
-        supabaseKey: supabaseAnonKey
-      }
+      cookies: () => cookies() 
     });
   } catch (error) {
     console.error('Error creating server client:', error);
@@ -39,13 +35,9 @@ export const createServer = () => {
 
 export const createRoute = () => {
   try {
-    const cookieStore = cookies();
+    // Create a client with just the cookies option
     return createRouteHandlerClient<Database>({ 
-      cookies: () => cookieStore,
-      options: {
-        supabaseUrl,
-        supabaseKey: supabaseAnonKey
-      }
+      cookies: () => cookies() 
     });
   } catch (error) {
     console.error('Error creating route handler client:', error);

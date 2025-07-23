@@ -187,8 +187,8 @@ export default function SignIn() {
             {/* Footer */}
             <div className="mt-6 sm:mt-8 text-center">
               <div className="glass-effect p-4 rounded-xl">
-                <p className="text-sm text-muted-foreground mb-2">
-                  Don't have an account?
+<p className="text-sm text-muted-foreground mb-2">
+                  Don&apos;t have an account?
                 </p>
                 <Link
                   href="/auth/register"

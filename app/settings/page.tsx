@@ -35,11 +35,11 @@ export default function SettingsPage() {
         const { data, error } = await supabase
           .from('users')
           .select('*, subscription:subscriptions(*)')
-          .eq('id', user.id)
+          .eq('id', user.id as string)
           .single();
 
         if (!error && data) {
-          setSubscribed(!!data.subscription && data.subscription.length > 0);
+          setSubscribed(!!data.subscription && (data.subscription as any[]).length > 0);
         } else {
           setSubscribed(false);
         }
