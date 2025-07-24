@@ -712,28 +712,28 @@ const communityLinks = [
   {
     name: "GitHub",
     description: "Source code & issues",
-    href: "https://github.com/docmagic-ai/docmagic",
+    href: "https://github.com/Muneerali199/DocMagic",
     icon: <Github className="h-6 w-6 text-white" />,
     gradientClass: "sunset-gradient"
   },
   {
     name: "Discord",
     description: "Community chat",
-    href: "https://discord.gg/docmagic",
+    href: "https://discord/docmagic",
     icon: <Users className="h-6 w-6 text-white" />,
     gradientClass: "ocean-gradient"
   },
   {
     name: "Documentation",
     description: "Guides & tutorials",
-    href: "/docs",
+    href: "https://github.com/Muneerali199/DocMagic/blob/main/README.md",
     icon: <BookOpen className="h-6 w-6 text-white" />,
     gradientClass: "forest-gradient"
   },
   {
     name: "Support",
     description: "Get help & feedback",
-    href: "mailto:support@docmagic.com",
+    href: " INFO@DOCMAGIC.COM",
     icon: <Coffee className="h-6 w-6 text-white" />,
     gradientClass: "cosmic-gradient"
   }
