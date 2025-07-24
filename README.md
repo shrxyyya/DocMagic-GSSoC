@@ -1,11 +1,35 @@
 # 🪄 DocMagic - AI Document Creation Platform
 
-# DocMagic
+## 📦 DocMagic
 
-[![Build Status](https://github.com/Muneerali199/DocMagic/actions/workflows/ci.yml/badge.svg)](https://github.com/Muneerali199/DocMagic/actions)
-[![License](https://img.shields.io/github/license/Muneerali199/DocMagic)](https://github.com/Muneerali199/DocMagic/blob/main/LICENSE)
-[![Dependencies](https://img.shields.io/librariesio/github/Muneerali199/DocMagic)](https://libraries.io/github/Muneerali199/DocMagic)
+<h2>📦 DocMagic</h2>
 
+<p>
+  <a href="https://github.com/Muneerali199/DocMagic/actions/workflows/ci.yml" title="Build Status">
+    🔧 Build Status
+  </a><br/>
+  <a href="https://github.com/Muneerali199/DocMagic/actions">
+    <img src="https://github.com/Muneerali199/DocMagic/actions/workflows/ci.yml/badge.svg" alt="Build Status Badge">
+  </a>
+</p>
+
+<p>
+  <a href="https://github.com/Muneerali199/DocMagic/blob/main/LICENSE" title="License Information">
+    📜 License
+  </a><br/>
+  <a href="https://github.com/Muneerali199/DocMagic/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/Muneerali199/DocMagic" alt="License Badge">
+  </a>
+</p>
+
+<p>
+  <a href="https://libraries.io/github/Muneerali199/DocMagic" title="Dependency Status">
+    📦 Dependencies
+  </a><br/>
+  <a href="https://libraries.io/github/Muneerali199/DocMagic">
+    <img src="https://img.shields.io/librariesio/github/Muneerali199/DocMagic" alt="Dependencies Badge">
+  </a>
+</p>
 ## 📦 Overview
 DocMagic is a TypeScript-based documentation utility built with Next.js and Tailwind CSS. It helps teams manage, preview, and share docs with ease.
 
