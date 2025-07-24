@@ -68,7 +68,8 @@ export function HeroSection() {
               asChild 
               variant="outline" 
               size="lg" 
-              className="gradient-border px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:scale-105 transition-all duration-300 w-full sm:w-auto relative"
+              className="gradient-border px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto relative"
+              style={{animation: 'gradient-shift 3s ease infinite'}}
             >
               <Link href="#how-it-works" className="flex items-center justify-center gap-2">
                 <Star className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
