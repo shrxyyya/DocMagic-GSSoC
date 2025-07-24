@@ -1,5 +1,27 @@
 # 🪄 DocMagic - AI Document Creation Platform
 
+# DocMagic
+
+[![Build Status](https://github.com/Muneerali199/DocMagic/actions/workflows/ci.yml/badge.svg)](https://github.com/Muneerali199/DocMagic/actions)
+[![License](https://img.shields.io/github/license/Muneerali199/DocMagic)](https://github.com/Muneerali199/DocMagic/blob/main/LICENSE)
+[![Dependencies](https://img.shields.io/librariesio/github/Muneerali199/DocMagic)](https://libraries.io/github/Muneerali199/DocMagic)
+
+## 📦 Overview
+DocMagic is a TypeScript-based documentation utility built with Next.js and Tailwind CSS. It helps teams manage, preview, and share docs with ease.
+
+## 🚀 Features
+- Modular component structure
+- Custom hooks for dynamic behavior
+- Tailwind-powered styling
+- Type-safe architecture with clear folder separation
+
+## 🛠️ Getting Started
+```bash
+git clone https://github.com/Muneerali199/DocMagic.git
+cd DocMagic
+npm install
+npm run dev
+
 <div align="center">
 
 [![Next.js 15](https://img.shields.io/badge/Next.js-15.4.0-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
