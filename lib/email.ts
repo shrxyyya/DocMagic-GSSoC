@@ -56,5 +56,8 @@ export async function sendWelcomeEmail(to: string, name?: string) {
   });
 
   const previewUrl = process.env.EMAIL_HOST ? null : nodemailer.getTestMessageUrl(info);
+  if (previewUrl) {
+    console.log(`Welcome email preview URL: ${previewUrl}`);
+  }
   return { info, previewUrl };
 } 

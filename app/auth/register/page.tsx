@@ -20,7 +20,6 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
-  const supabase = createClient;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,35 +45,25 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      // Register with Supabase Auth
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            name,
-          },
-        },
+      // Call our internal API route to register the user
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
       });
 
-      if (error) {
-        throw error;
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.error || "Failed to create account");
       }
 
-      if (data.user) {
-        // The user is created in Supabase Auth.
-        // A trigger in the database should automatically create a corresponding user record in the public.users table.
-        // We no longer need to manually insert it from the client.
-
-        toast({
-          title: "Account created successfully! ✨",
-          description: "Welcome to DocMagic! You're now signed in.",
-        });
-        
-        // Redirect to home page
-        router.push("/");
-        router.refresh();
-      }
+      toast({
+        title: "Account created successfully! ✨",
+        description: "Welcome to DocMagic! You're now signed in.",
+      });
+      router.push("/");
+      router.refresh();
     } catch (error: any) {
       // Enhanced error handling for Supabase registration
       let userMessage = "Failed to create account. Please try again.";

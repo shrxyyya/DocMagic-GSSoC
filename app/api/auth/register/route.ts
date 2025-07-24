@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from '@supabase/supabase-js';
+import { createRoute } from '@/lib/supabase/server';
 import { sendWelcomeEmail } from "@/lib/email";
 
 export const dynamic = 'force-dynamic';
@@ -16,18 +16,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create Supabase client within the request handler
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseAnonKey) {
-      return NextResponse.json(
-        { error: "Missing Supabase configuration" },
-        { status: 500 }
-      );
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    const supabase = createRoute();
 
     // Check if user already exists
     const { data: existingUser } = await supabase
@@ -44,7 +33,7 @@ export async function POST(request: Request) {
     }
 
     // Sign up with Supabase Auth
-    const { data: { user }, error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -58,17 +47,19 @@ export async function POST(request: Request) {
       throw error;
     }
 
-    // Send welcome email (non-blocking - we won't fail the signup if email sending fails)
-    if (user?.email) {
-      sendWelcomeEmail(user.email, name).catch((emailErr) => {
-        console.error("Failed to send welcome email:", emailErr);
-      });
+    if (!data.user) {
+      throw new Error('User creation failed');
     }
 
+    // Send welcome email (non-blocking - we won't fail the signup if email sending fails)
+    sendWelcomeEmail(data.user.email, name).catch((emailErr) => {
+      console.error("Failed to send welcome email:", emailErr);
+    });
+
     return NextResponse.json({
-      id: user?.id,
+      id: data.user.id,
       name,
-      email: user?.email,
+      email: data.user.email,
     });
   } catch (error: any) {
     console.error("Registration error:", error);
