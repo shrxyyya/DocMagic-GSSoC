@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from '@supabase/supabase-js';
+import { sendWelcomeEmail } from "@/lib/email";
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -55,6 +56,13 @@ export async function POST(request: Request) {
 
     if (error) {
       throw error;
+    }
+
+    // Send welcome email (non-blocking - we won't fail the signup if email sending fails)
+    if (user?.email) {
+      sendWelcomeEmail(user.email, name).catch((emailErr) => {
+        console.error("Failed to send welcome email:", emailErr);
+      });
     }
 
     return NextResponse.json({
