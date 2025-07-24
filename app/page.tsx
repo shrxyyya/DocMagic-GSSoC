@@ -211,13 +211,13 @@ export default function Home() {
               </p>
               
               <div className="flex justify-center sm:justify-start space-x-4">
-                <a href="#" className="text-muted-foreground hover:bolt-gradient-text transition-all duration-300 hover:scale-110 glass-effect p-2 rounded-full">
+                <a href="https://x.com/docmagictech" className="text-muted-foreground hover:bolt-gradient-text transition-all duration-300 hover:scale-110 glass-effect p-2 rounded-full">
                   <Twitter className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
-                <a href="#" className="text-muted-foreground hover:bolt-gradient-text transition-all duration-300 hover:scale-110 glass-effect p-2 rounded-full">
+                <a href="https://www.linkedin.com/company/docmagic/" className="text-muted-foreground hover:bolt-gradient-text transition-all duration-300 hover:scale-110 glass-effect p-2 rounded-full">
                   <Linkedin className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
-                <a href="#" className="text-muted-foreground hover:bolt-gradient-text transition-all duration-300 hover:scale-110 glass-effect p-2 rounded-full">
+                <a href="https://github.com/Muneerali199/DocMagic" className="text-muted-foreground hover:bolt-gradient-text transition-all duration-300 hover:scale-110 glass-effect p-2 rounded-full">
                   <Github className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
               </div>
