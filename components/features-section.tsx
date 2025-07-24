@@ -45,8 +45,8 @@ export function FeaturesSection() {
               const animationDelay = `delay-${(index + 1) * 100}`;
               
               return (
-                <div key={feature.name} className={`flex flex-col group px-4 sm:px-0 p-6 rounded-2xl transition-all duration-500 hover:scale-105 ${theme.cardClass} hover:${theme.glowClass} animate-slide-in-left ${animationDelay} will-change-transform`}>
-                  <dt className="flex items-center gap-x-3 text-base font-semibold leading-7">
+                <div key={feature.name} className={`flex flex-col group px-4 sm:px-6 p-8 rounded-2xl transition-all duration-500 hover:scale-105 ${theme.cardClass} hover:${theme.glowClass} animate-slide-in-left ${animationDelay} will-change-transform`}>
+                  <dt className="flex items-center gap-x-3   text-base font-semibold leading-7">
                     <div className={`h-10 w-10 sm:h-12 sm:w-12 flex-none rounded-xl ${theme.gradientClass} flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 relative`}>
                       {feature.icon}
                       <div className={`absolute inset-0 ${theme.gradientClass} rounded-xl opacity-0 group-hover:opacity-50 blur-md transition-opacity duration-300`}></div>
