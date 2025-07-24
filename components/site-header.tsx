@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { File as FileIcon, FileText, Presentation as LayoutPresentation, Mail as MailIcon, Menu, LogOut, Sparkles, Zap } from "lucide-react";
+import { File as FileIcon, FileText, Presentation as LayoutPresentation, Mail as MailIcon, Menu, LogOut, Sparkles, Zap, DollarSign } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -160,5 +160,10 @@ const navItems = [
     href: "/about",
     label: "About", 
     icon: <Sparkles className="h-4 w-4" />
+  },
+  {
+    href: "/pricing",
+    label: "Pricing", 
+    icon: <DollarSign className="h-4 w-4" />
   }
 ];
