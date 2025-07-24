@@ -249,7 +249,7 @@ export default function Home() {
               <ul className="space-y-3">
                 <li className="flex items-center justify-center sm:justify-start space-x-2 group/item">
                   <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground group-hover/item:text-blue-500 transition-colors" />
-                  <a href="#" className="text-sm sm:text-base text-muted-foreground hover:bolt-gradient-text transition-all duration-300">Documentation</a>
+                  <a href="/documentation" className="text-sm sm:text-base text-muted-foreground hover:bolt-gradient-text transition-all duration-300">Documentation</a>
                 </li>
                 <li className="flex items-center justify-center sm:justify-start space-x-2 group/item">
                   <HelpCircle className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground group-hover/item:text-yellow-500 transition-colors" />
@@ -263,21 +263,21 @@ export default function Home() {
             </div>
 
             {/* Company Column - Enhanced */}
-            <div className="space-y-6 text-center sm:text-left group">
-              <div className="flex items-center justify-center sm:justify-start gap-2">
-                <Globe className="h-4 w-4 text-purple-500" />
-                <h3 className="text-sm sm:text-base font-semibold bolt-gradient-text">COMPANY</h3>
-              </div>
-              <ul className="space-y-3">
-                {companyLinks.map((link, index) => (
-                  <li key={index}>
-                    <a href="#" className="text-sm sm:text-base text-muted-foreground hover:bolt-gradient-text transition-all duration-300 hover:translate-x-1 inline-block">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="space-y-6 text-center sm:text-left group">               
+  <div className="flex items-center justify-center sm:justify-start gap-2">                 
+    <Globe className="h-4 w-4 text-purple-500" />                 
+    <h3 className="text-sm sm:text-base font-semibold bolt-gradient-text">COMPANY</h3>               
+  </div>               
+  <ul className="space-y-3">                 
+    {companyLinks.map((link, index) => (                   
+      <li key={index}>                     
+        <a href={link.href} className="text-sm sm:text-base text-muted-foreground hover:bolt-gradient-text transition-all duration-300 hover:translate-x-1 inline-block">                       
+          {link.name}                     
+        </a>                   
+      </li>                 
+    ))}               
+  </ul>             
+</div>
           </div>
 
           {/* Professional bottom section */}
@@ -334,4 +334,9 @@ export default function Home() {
 }
 
 const productLinks = ["Features", "Pricing", "Templates", "Integrations"];
-const companyLinks = ["About Us", "Careers", "Blog", "Contact"];
+const companyLinks = [
+  { name: "About Us", href: "/about" },
+  { name: "Careers", href: "/careers" },
+  { name: "Blog", href: "/blog" },
+  { name: "Contact", href: "/contact" }
+];
