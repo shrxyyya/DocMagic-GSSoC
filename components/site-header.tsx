@@ -352,6 +352,11 @@ const navItems = [
     tooltip: "Write professional letters and cover letters",
   },
   {
+    href: "/templates",
+    label: "Templates",
+    icon: <FileText className="h-4 w-4" />
+  },
+  {
     href: "/about",
     label: "About",
     icon: <Sparkles className="h-4 w-4" />,
