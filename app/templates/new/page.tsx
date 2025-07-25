@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { CreateTemplateForm } from "@/components/templates/create-template-form";
 
 // Define metadata for the page
 export const metadata: Metadata = {
   title: "New Template",
   description: "Create a new template",
 };
+
+// Client component
+import { CreateTemplateForm } from "@/components/templates/create-template-form";
 
 // Define the page component
 export default function NewTemplatePage() {

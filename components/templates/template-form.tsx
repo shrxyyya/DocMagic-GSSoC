@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -24,7 +23,11 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
+import { TemplateFormValues } from "@/types/template";
 
+import { z } from 'zod';
+
+// Define the form schema
 export const formSchema = z.object({
   title: z.string().min(3, {
     message: "Title must be at least 3 characters.",
@@ -36,8 +39,6 @@ export const formSchema = z.object({
   content: z.record(z.any()).optional(),
   isPublic: z.boolean().default(false),
 });
-
-export type TemplateFormValues = z.infer<typeof formSchema>;
 
 interface TemplateFormProps {
   defaultValues?: Partial<TemplateFormValues>;

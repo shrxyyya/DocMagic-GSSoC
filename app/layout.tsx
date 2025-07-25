@@ -1,12 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import { Inter, Poppins } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
-import { AuthProvider } from "@/components/auth-provider";
-import ClientRedirects from "@/components/ClientRedirects";
-import { QueryProvider } from "@/providers/query-provider";
-import { DevTools } from "@/components/dev-tools";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({ 
@@ -23,16 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} ${poppins.variable}`}>
-        <QueryProvider>
-          <AuthProvider>
-            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-              <ClientRedirects />
-              {children}
-              <Toaster />
-              <DevTools />
-            </ThemeProvider>
-          </AuthProvider>
-        </QueryProvider>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

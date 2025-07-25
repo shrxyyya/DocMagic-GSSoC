@@ -57,15 +57,12 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
     "types/**/*.d.ts",
-    "types/**/*.ts"
-  ],
-  "typeRoots": [
-    "./node_modules/@types",
-    "./types"
+    "types/**/*.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next"
   ]
 }

@@ -1,8 +1,11 @@
+'use client';
+
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
 import { TemplateForm } from "@/components/templates/template-form";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import { useState, useEffect } from "react";
+import { Template, TemplateFormValues } from "@/types/template";
 
 interface EditTemplatePageProps {
   params: {
@@ -10,39 +13,18 @@ interface EditTemplatePageProps {
   };
 }
 
-export async function generateMetadata({ params }: EditTemplatePageProps): Promise<Metadata> {
-  return {
-    title: `Edit Template | DocMagic`,
-    description: "Edit your document template",
-  };
-}
-
-export default async function EditTemplatePage({ params }: EditTemplatePageProps) {
-  const { id } = params;
-  const router = useRouter();
+export default function EditTemplatePage({ params }: EditTemplatePageProps) {
   const { toast } = useToast();
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [template, setTemplate] = useState<Template | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch the template data
-  const fetchTemplate = async () => {
+  const handleSubmit = async (values: TemplateFormValues) => {
     try {
-      const response = await fetch(`/api/templates/${id}`);
-      if (!response.ok) {
-        if (response.status === 404) {
-          notFound();
-        }
-        throw new Error('Failed to fetch template');
-      }
-      return response.json();
-    } catch (error) {
-      console.error('Error fetching template:', error);
-      throw error;
-    }
-  };
-
-  const handleSubmit = async (values: any) => {
-    try {
-      const response = await fetch(`/api/templates/${id}`, {
-        method: 'PUT',
+      setIsSubmitting(true);
+      const response = await fetch(`/api/templates/${params.id}`, {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -54,18 +36,57 @@ export default async function EditTemplatePage({ params }: EditTemplatePageProps
       }
 
       toast({
-        title: "Template updated",
-        description: "Your template has been updated successfully.",
+        title: 'Success',
+        description: 'Template updated successfully!',
       });
-      
-      router.refresh();
+
+      router.push('/templates');
     } catch (error) {
       console.error('Error updating template:', error);
-      throw error;
+      toast({
+        title: 'Error',
+        description: 'Failed to update template. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const template = await fetchTemplate();
+  useEffect(() => {
+    const fetchTemplate = async () => {
+      try {
+        const response = await fetch(`/api/templates/${params.id}`);
+        if (!response.ok) {
+          if (response.status === 404) {
+            notFound();
+          }
+          throw new Error('Failed to fetch template');
+        }
+        const data = await response.json();
+        setTemplate(data);
+      } catch (error) {
+        console.error('Error fetching template:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load template. Please try again.',
+          variant: 'destructive',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTemplate();
+  }, [params.id]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!template) {
+    notFound();
+  }
 
   return (
     <div className="container py-8">
@@ -83,11 +104,11 @@ export default async function EditTemplatePage({ params }: EditTemplatePageProps
               title: template.title,
               description: template.description,
               type: template.type,
-              isPublic: template.is_public,
+              isPublic: template.isPublic || (template as any).is_public || false, // Handle both isPublic and is_public
               content: template.content,
             }}
             onSubmit={handleSubmit}
-            isSubmitting={false}
+            isSubmitting={isSubmitting}
             submitButtonText="Save Changes"
           />
         </div>
@@ -95,3 +116,4 @@ export default async function EditTemplatePage({ params }: EditTemplatePageProps
     </div>
   );
 }
+

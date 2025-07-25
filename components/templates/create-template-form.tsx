@@ -5,8 +5,8 @@ import { useToast } from '@/components/ui/use-toast';
 import { TemplateForm } from './template-form';
 import { useState } from 'react';
 
-// Import the form schema and types from template-form
-import { formSchema, TemplateFormValues } from './template-form';
+import { formSchema } from './template-form';
+import { TemplateFormValues } from '@/types/template';
 
 export function CreateTemplateForm() {
   const router = useRouter();

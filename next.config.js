@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // Enable React Strict Mode
-    reactStrictMode: true,
+    // Disable React Strict Mode to prevent double-rendering in development
+    reactStrictMode: false,
     
     // Image optimization
     images: {
