@@ -35,15 +35,15 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full nav-professional px-4 sm:px-6 lg:px-10">
-      <div className="container flex h-14 sm:h-16 items-center justify-between">
-        <div className="flex items-center gap-4 sm:gap-6 md:gap-10">
-          <Link href="/" className="flex items-center space-x-2 group">
+    <header className="sticky top-0 z-40 w-full nav-professional px-2 xs:px-3 sm:px-6 lg:px-10">
+      <div className="container flex h-14 sm:h-16 items-center justify-between px-0">
+        <div className="flex items-center gap-2 xs:gap-3 sm:gap-6 md:gap-10 min-w-0">
+          <Link href="/" className="flex items-center space-x-2 group min-w-0">
             <div className="relative">
               <FileText className="h-6 w-6 sm:h-7 sm:w-7 bolt-gradient-text group-hover:scale-110 transition-transform duration-300" />
               <Sparkles className="absolute -top-1 -right-1 h-2 w-2 sm:h-3 sm:w-3 text-yellow-500 animate-pulse" />
             </div>
-            <span className="font-bold text-lg sm:text-xl bolt-gradient-text hidden xs:block">DocMagic</span>
+            <span className="font-bold text-lg sm:text-xl bolt-gradient-text hidden xs:block truncate max-w-[80px] sm:max-w-none">DocMagic</span>
           </Link>
           
           <Sheet>
@@ -53,7 +53,7 @@ export function SiteHeader() {
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="professional-card border-r w-[280px] sm:w-[320px]">
+            <SheetContent side="left" className="professional-card border-r w-[80vw] max-w-xs sm:w-[320px]">
               <SheetHeader>
                 <SheetTitle>DocMagic Navigation</SheetTitle>
                 <SheetDescription>Access all sections of the application</SheetDescription>
@@ -85,13 +85,13 @@ export function SiteHeader() {
             </SheetContent>
           </Sheet>
           
-          <nav className="hidden md:flex items-center gap-4 lg:gap-6">
+          <nav className="hidden md:flex items-center gap-2 xs:gap-3 lg:gap-6 min-w-0">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "text-sm font-medium transition-all duration-300 hover:bolt-gradient-text hover:scale-105 flex items-center gap-1",
+                  "text-xs xs:text-sm font-medium transition-all duration-300 hover:bolt-gradient-text hover:scale-105 flex items-center gap-1 truncate max-w-[70px] xs:max-w-none",
                   pathname === item.href ? "bolt-gradient-text" : "text-muted-foreground"
                 )}
               >
@@ -102,7 +102,7 @@ export function SiteHeader() {
           </nav>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 xs:gap-2">
           <ThemeToggle />
           {user ? (
             <DropdownMenu>
@@ -127,7 +127,7 @@ export function SiteHeader() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button asChild className="bolt-gradient text-white font-semibold hover:scale-105 transition-all duration-300 text-xs sm:text-sm px-3 sm:px-4 h-8 sm:h-9">
+            <Button asChild className="bolt-gradient text-white font-semibold hover:scale-105 transition-all duration-300 text-xs xs:text-sm px-2 xs:px-3 sm:px-4 h-8 sm:h-9">
               <Link href="/auth/signin" className="flex items-center gap-1">
                 <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span className="hidden xs:inline">Sign In</span>

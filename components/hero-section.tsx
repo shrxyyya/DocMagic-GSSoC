@@ -5,7 +5,7 @@ import { Sparkles, ArrowRight, Zap, Star, Wand2 } from "lucide-react";
 
 export function HeroSection() {
   return (
- <div className="relative overflow-hidden bg-background py-16 sm:py-24 lg:py-32">
+<div className="relative overflow-hidden bg-background py-10 xs:py-14 sm:py-24 lg:py-32">
       {/* Enhanced animated background elements */}
       <div className="absolute inset-0  "></div>
       <div className="absolute inset-0 mesh-gradient-alt opacity-10"></div>
@@ -23,7 +23,7 @@ export function HeroSection() {
         }}
       />
       
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="mx-auto max-w-7xl px-2 xs:px-3 sm:px-6 lg:px-8 relative z-10">
         <div className="mx-auto max-w-4xl text-center">
           {/* Supporting Tagline for clarity */}
           <div className="mb-2 sm:mb-4 animate-fade-in-down will-change-transform">
@@ -42,7 +42,7 @@ export function HeroSection() {
           </div>
 
           {/* Animated modern main heading */}
-          <h1 className="modern-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-6 sm:mb-8 animate-fade-in-down delay-100 will-change-transform text-shadow-professional">
+          <h1 className="modern-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-6 sm:mb-8 animate-fade-in-down delay-100 will-change-transform text-shadow-professional">
             Create professional documents with{" "}
             <span className="bolt-gradient-text relative inline-block">
               AI Magic
@@ -63,49 +63,48 @@ export function HeroSection() {
           </p>
           
           {/* Animated CTA Buttons */}
-          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-x-6 px-4 sm:px-0 animate-fade-in-up delay-300 will-change-transform">
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 xs:gap-4 sm:gap-x-6 px-2 xs:px-4 sm:px-0 animate-fade-in-up delay-300 will-change-transform w-full">
             <Button
               asChild
               size="lg"
-              className="bolt-gradient text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:scale-105 focus:ring-4 focus:ring-amber-400 focus:outline-none transition-all duration-300 bolt-glow w-full sm:w-auto relative overflow-hidden shadow-lg"
+              className="bolt-gradient text-white font-semibold px-4 xs:px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:scale-105 focus:ring-4 focus:ring-amber-400 focus:outline-none transition-all duration-300 bolt-glow w-full sm:w-auto relative overflow-hidden shadow-lg text-xs xs:text-sm sm:text-base"
               style={{animation: 'gradient-shift 4s ease infinite'}}
               aria-label="Start Creating Magic"
             >
               <Link href="#document-types" className="flex items-center justify-center gap-2" tabIndex={0}>
                 <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-                <span className="text-sm sm:text-base">Start Creating Magic</span>
+                <span className="text-xs xs:text-sm sm:text-base">Start Creating Magic</span>
                 <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
               </Link>
             </Button>
-
             <Button
               asChild
               variant="outline"
               size="lg"
-              className="gradient-border px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto relative focus:ring-4 focus:ring-blue-300 focus:outline-none shadow"
+              className="gradient-border px-4 xs:px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto relative focus:ring-4 focus:ring-blue-300 focus:outline-none shadow text-xs xs:text-sm sm:text-base"
               style={{animation: 'gradient-shift 3s ease infinite'}}
               aria-label="See How It Works"
             >
               <Link href="#how-it-works" className="flex items-center justify-center gap-2" tabIndex={0}>
                 <Star className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" aria-hidden="true" />
-                <span className="text-sm sm:text-base">See How It Works</span>
+                <span className="text-xs xs:text-sm sm:text-base">See How It Works</span>
               </Link>
             </Button>
           </div>
           
           {/* Animated Professional Stats */}
-          <div className="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-0">
-            <div className="card-coral hover-glow-coral p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 sunset-glow animate-fade-in-up delay-400 will-change-transform">
-              <div className="bolt-gradient-text text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">10K+</div>
-              <div className="text-muted-foreground text-sm sm:text-base">Documents Created</div>
+          <div className="mt-10 xs:mt-12 sm:mt-16 grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-4 xs:gap-6 sm:gap-8 px-2 xs:px-4 sm:px-0">
+            <div className="card-coral hover-glow-coral p-3 xs:p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 sunset-glow animate-fade-in-up delay-400 will-change-transform">
+              <div className="bolt-gradient-text text-xl xs:text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">10K+</div>
+              <div className="text-muted-foreground text-xs xs:text-sm sm:text-base">Documents Created</div>
             </div>
-            <div className="card-sky hover-glow-sky p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 bolt-glow animate-fade-in-up delay-500 will-change-transform">
-              <div className="bolt-gradient-text text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">98%</div>
-              <div className="text-muted-foreground text-sm sm:text-base">Success Rate</div>
+            <div className="card-sky hover-glow-sky p-3 xs:p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 bolt-glow animate-fade-in-up delay-500 will-change-transform">
+              <div className="bolt-gradient-text text-xl xs:text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">98%</div>
+              <div className="text-muted-foreground text-xs xs:text-sm sm:text-base">Success Rate</div>
             </div>
-            <div className="card-mint hover-glow-mint p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 ocean-glow animate-fade-in-up delay-600 will-change-transform">
-              <div className="bolt-gradient-text text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">5★</div>
-              <div className="text-muted-foreground text-sm sm:text-base">User Rating</div>
+            <div className="card-mint hover-glow-mint p-3 xs:p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 ocean-glow animate-fade-in-up delay-600 will-change-transform">
+              <div className="bolt-gradient-text text-xl xs:text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">5★</div>
+              <div className="text-muted-foreground text-xs xs:text-sm sm:text-base">User Rating</div>
             </div>
           </div>
         </div>
