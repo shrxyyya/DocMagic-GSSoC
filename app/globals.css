@@ -1019,10 +1019,12 @@ img {
     animation-duration: 3s;
   }
 }
+
 .typed-text {
-  @apply text-[2.1rem] leading-tight tracking-tight;
- 
+  @apply text-[1.5rem] sm:text-[1.75rem] md:text-[2.1rem] lg:text-[2.5rem] leading-tight tracking-tight;
 }
+ 
+
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   .floating-orb,
