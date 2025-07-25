@@ -5,12 +5,15 @@ import { useToast } from '@/components/ui/use-toast';
 import { TemplateForm } from './template-form';
 import { useState } from 'react';
 
+// Import the form schema and types from template-form
+import { formSchema, TemplateFormValues } from './template-form';
+
 export function CreateTemplateForm() {
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async (values: TemplateFormValues) => {
     try {
       setIsSubmitting(true);
       const response = await fetch('/api/templates', {
@@ -46,10 +49,20 @@ export function CreateTemplateForm() {
   };
 
   return (
-    <TemplateForm 
-      onSubmit={handleSubmit}
-      isSubmitting={isSubmitting}
-      submitButtonText="Create Template"
-    />
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <h2 className="text-2xl font-semibold">Create New Template</h2>
+        <p className="text-sm text-muted-foreground">
+          Fill in the details below to create a new template
+        </p>
+      </div>
+      
+      <TemplateForm 
+        onSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
+        submitButtonText={isSubmitting ? 'Creating...' : 'Create Template'}
+        submitButtonVariant="default"
+      />
+    </div>
   );
 }

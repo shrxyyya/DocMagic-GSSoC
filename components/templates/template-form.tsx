@@ -25,7 +25,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
 
-const formSchema = z.object({
+export const formSchema = z.object({
   title: z.string().min(3, {
     message: "Title must be at least 3 characters.",
   }),
@@ -37,7 +37,7 @@ const formSchema = z.object({
   isPublic: z.boolean().default(false),
 });
 
-type TemplateFormValues = z.infer<typeof formSchema>;
+export type TemplateFormValues = z.infer<typeof formSchema>;
 
 interface TemplateFormProps {
   defaultValues?: Partial<TemplateFormValues>;

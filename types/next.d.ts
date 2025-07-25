@@ -1,12 +1,31 @@
-/// <reference types="next" />
-/// <reference types="next/image-types/global" />
+// Type definitions for Next.js
 
-declare module 'next/server' {
-  export * from 'next/dist/server/web/spec-extension/response';
-  export * from 'next/dist/server/web/spec-extension/request';
-  export * from 'next/dist/server/web/spec-extension/adapters/next-request';
-  export * from 'next/dist/server/web/spec-extension/adapters/next-response';
-  export * from 'next/dist/server/web/spec-extension/adapters/headers';
-  export * from 'next/dist/server/web/spec-extension/adapters/request';
-  export * from 'next/dist/server/web/spec-extension/adapters/response';
+// JSX types for React
+declare namespace JSX {
+  interface IntrinsicElements {
+    [elemName: string]: any;
+  }
+}
+
+// Global type declarations
+interface Window {
+  // Next.js data
+  __NEXT_DATA__: any;
+}
+
+// Next.js specific types
+declare module 'next' {
+  // Define ReactNode type locally to avoid import
+  type ReactNode = any;
+  
+  interface Metadata {
+    title?: string;
+    description?: string;
+    // Add other metadata properties as needed
+  }
+  
+  interface PageProps {
+    params?: { [key: string]: string | string[] };
+    searchParams?: { [key: string]: string | string[] | undefined };
+  }
 }
