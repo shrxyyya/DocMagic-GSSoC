@@ -1019,7 +1019,10 @@ img {
     animation-duration: 3s;
   }
 }
-
+.typed-text {
+  @apply text-[2.1rem] leading-tight tracking-tight;
+ 
+}
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   .floating-orb,

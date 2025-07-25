@@ -1,8 +1,9 @@
+'use client';
 import { Button } from "@/components/ui/button";
 import { StatCounter } from "./ui/stat-counter";
 import Link from "next/link";
 import { Sparkles, ArrowRight, Zap, Star, Wand2 } from "lucide-react";
-
+import {TypedEffect} from '@/components/ui/typewriter';
 export function HeroSection() {
   return (
 <div className="relative overflow-hidden bg-background py-10 xs:py-14 sm:py-24 lg:py-32">
@@ -41,17 +42,32 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Animated modern main heading */}
-          <h1 className="modern-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-6 sm:mb-8 animate-fade-in-down delay-100 will-change-transform text-shadow-professional">
-            Create professional documents with{" "}
-            <span className="bolt-gradient-text relative inline-block">
-              AI Magic
-              <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2">
-                <Wand2 className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-yellow-500 animate-bounce" aria-hidden="true" />
-              </div>
-            </span>
-          </h1>
-          
+       {/* Animated modern main heading */}
+  <h1
+  className="modern-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-6 sm:mb-8 animate-fade-in-down delay-100 will-change-transform text-shadow-professional"
+>
+  Create professional<br />
+
+  {/* TypedEffect with fixed width + AI Agent */}
+  <span className="inline-flex items-center gap-2 leading-none min-h-[1.2em]">
+    {/* Animated gradient typed word with stable width */}
+    <span
+      className=" typed-text bolt-gradient-text bg-clip-text text-transparent font-bold inline-block min-w-[8ch] w-[10ch]"
+    >
+      <TypedEffect />
+    </span>
+        with
+    {/* Fixed AI Agent label */}
+    <span className=" bolt-gradient-text  font-semibold not-italic">AI Agent</span>
+
+    {/* Wand icon with bounce */}
+    <Wand2
+      className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-yellow-500 animate-bounce"
+      aria-hidden="true"
+    />
+  </span>
+</h1>
+
           {/* Animated Modern Professional Subtitle */}
           <p className="modern-body mt-4 sm:mt-6 text-base sm:text-lg lg:text-xl text-muted-foreground max-w-xl sm:max-w-2xl mx-auto px-4 sm:px-0 animate-fade-in-up delay-200 will-change-opacity">
             Transform your ideas into polished{" "}
