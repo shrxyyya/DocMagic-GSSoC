@@ -783,6 +783,108 @@ copies or substantial portions of the Software.
 
 See the [LICENSE](LICENSE) file for the complete license text.
 
+## **🔧 Troubleshooting**
+Encountering setup or runtime issues? Here are some common problems and how to fix them quickly:
+
+**🚫 1. Environment Variables Not Loaded**
+Symptoms: Blank pages, failed API calls, authentication not working.
+Fix:
+
+  - Make sure .env.local exists in the root directory.
+
+  - Confirm you’ve filled in all required variables (e.g. NEXT_PUBLIC_SUPABASE_URL, GEMINI_API_KEY, STRIPE_SECRET_KEY, etc.).
+
+  - Restart your dev server after updating .env.local.
+
+**🔐 2. Supabase Auth Not Working**
+Symptoms: Login/Signup not working, "invalid credentials" error.
+Fix:
+
+  - Ensure Supabase email/password auth is enabled in your project dashboard.
+
+  - Double-check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.
+
+  - Check browser console for CORS or network errors.
+
+**🧠 3. Gemini AI API Errors**
+Symptoms: Resume/Letter/Presentation generation fails or gives 500 error.
+Fix:
+
+  - Ensure your GEMINI_API_KEY is correct and has usage quota.
+
+  - Check the Gemini model being used (gemini-2.0-flash).
+
+  - Review logs in lib/gemini.ts for response or validation errors.
+
+**💳 4. Stripe Integration Issues** 
+Symptoms: Subscription not created, payment failed, webhook not triggering.
+Fix:
+
+  - Verify all Stripe keys are added correctly in .env.local.
+
+  - Ensure your webhook endpoint /api/stripe/webhook is configured in the Stripe dashboard.
+
+  - Use Stripe CLI (stripe listen) for local testing.
+
+**📄 5. Document Generation Fails or Times Out**
+Symptoms: Resume/Presentation not rendering or returning empty content.
+Fix:
+
+  - Check if Gemini AI prompt structure is valid (non-empty fields).
+
+  - Ensure your system has internet access (required to call external APIs).
+
+  - Inspect console and network tab for failed API calls.
+
+**🧪 6. Tests Not Running or Failing Unexpectedly**
+Symptoms: npm run test crashes or gives missing module errors.
+Fix:
+
+  - Ensure all dependencies are installed via npm install.
+
+  - Try running npm run type-check to validate your types.
+
+  - If using Supabase locally, ensure it's running: npx supabase start.
+
+**🌐 7. "Failed to fetch" or 500 Errors in API Routes**
+Symptoms: API routes return 404 or 500 errors.
+Fix:
+
+  - Make sure you're using npm run dev to run the Next.js server (not just npm start).
+
+  - Ensure folder structure inside app/api/ is correct and follows Next.js App Router format.
+
+  - Check logs in the terminal for specific stack traces.
+
+**📦 8. Netlify/Vercel Deployment Errors**
+Symptoms: Build fails, blank screen after deployment.
+Fix:
+
+  - Confirm NEXT_PUBLIC_APP_URL and other env vars are set in Netlify/Vercel dashboard.
+
+  - Set build command as npm run build and publish directory to .next.
+
+  - Make sure next.config.js has output: "standalone" if using serverless deploys.
+
+**🐳 9. Docker Build Fails**
+Symptoms: Errors during npm ci or npm run build inside Docker container.
+Fix:
+
+  - Use the production image by copying only essential files before install.
+
+  - Ensure you are using Node 18+ in your Dockerfile.
+
+  - Clear Docker cache and rebuild:
+        docker system prune -a  
+        docker build --no-cache -t docmagic .
+    
+**Still Need Help?**
+Check GitHub Issues
+
+Ask in our Discord Community
+
+Contact us at support@docmagic.com
+
 ## 🌟 **Acknowledgments**
 
 - **[Next.js Team](https://nextjs.org/)** - For the amazing React framework
