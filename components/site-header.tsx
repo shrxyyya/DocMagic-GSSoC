@@ -157,6 +157,11 @@ const navItems = [
     icon: <MailIcon className="h-4 w-4" />
   },
   {
+    href: "/templates",
+    label: "Templates",
+    icon: <FileText className="h-4 w-4" />
+  },
+  {
     href: "/about",
     label: "About", 
     icon: <Sparkles className="h-4 w-4" />
