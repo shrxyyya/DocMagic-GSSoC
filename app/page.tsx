@@ -25,6 +25,7 @@ import {
   Globe,
   Coffee
 } from "lucide-react";
+import ScrollToTop from "@/components/scroll-to-top";
 
 export default function Home() {
   return (
@@ -176,6 +177,8 @@ export default function Home() {
         
         <FeaturesSection />
         <TestimonialsSection />
+        <ScrollToTop /> 
+        {/* added ScrollToTop component */}
       </main>
 
       {/* Professional Footer */}
