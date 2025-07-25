@@ -63,6 +63,7 @@ export function HeroSection() {
       with&nbsp;<span className="bolt-gradient-text">AI Agent</span>
     </span>
 
+
     {/* Bounce wand locked to label */}
     <span className="relative z-10">
       <Wand2
