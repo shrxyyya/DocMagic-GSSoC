@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-
+import { StatCounter } from "./ui/stat-counter";
 import Link from "next/link";
 import { Sparkles, ArrowRight, Zap, Star, Wand2 } from "lucide-react";
 
@@ -95,15 +95,18 @@ export function HeroSection() {
           {/* Animated Professional Stats */}
           <div className="mt-10 xs:mt-12 sm:mt-16 grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-4 xs:gap-6 sm:gap-8 px-2 xs:px-4 sm:px-0">
             <div className="card-coral hover-glow-coral p-3 xs:p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 sunset-glow animate-fade-in-up delay-400 will-change-transform">
-              <div className="bolt-gradient-text text-xl xs:text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">10K+</div>
+              <div className="bolt-gradient-text text-xl xs:text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional"><StatCounter target={10000} suffix="+" />
+</div>
               <div className="text-muted-foreground text-xs xs:text-sm sm:text-base">Documents Created</div>
             </div>
             <div className="card-sky hover-glow-sky p-3 xs:p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 bolt-glow animate-fade-in-up delay-500 will-change-transform">
-              <div className="bolt-gradient-text text-xl xs:text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">98%</div>
+              <div className="bolt-gradient-text text-xl xs:text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional"><StatCounter target={98} suffix="%" />
+</div>
               <div className="text-muted-foreground text-xs xs:text-sm sm:text-base">Success Rate</div>
             </div>
             <div className="card-mint hover-glow-mint p-3 xs:p-4 sm:p-6 rounded-2xl hover:scale-105 transition-all duration-300 ocean-glow animate-fade-in-up delay-600 will-change-transform">
-              <div className="bolt-gradient-text text-xl xs:text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional">5★</div>
+              <div className="bolt-gradient-text text-xl xs:text-2xl sm:text-3xl font-bold animate-text-glow text-shadow-professional"><StatCounter target={5} suffix="★" />
+</div>
               <div className="text-muted-foreground text-xs xs:text-sm sm:text-base">User Rating</div>
             </div>
           </div>
