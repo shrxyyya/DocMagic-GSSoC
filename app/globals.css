@@ -1020,9 +1020,11 @@ img {
   }
 }
 
+
 .typed-text {
-  @apply text-[1.5rem] sm:text-[1.75rem] md:text-[2.1rem] lg:text-[2.5rem] leading-tight tracking-tight;
+  @apply text-2xl sm:text-4xl md:text-5xl lg:text-7xl leading-tight tracking-tight;
 }
+
  
 
 /* Accessibility improvements */

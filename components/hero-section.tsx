@@ -42,29 +42,34 @@ export function HeroSection() {
             </div>
           </div>
 
-       {/* Animated modern main heading */}
-  <h1
-  className="modern-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-6 sm:mb-8 animate-fade-in-down delay-100 will-change-transform text-shadow-professional"
+<h1
+  className="modern-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-6 sm:mb-8 animate-fade-in-down delay-100 will-change-transform text-shadow-professional text-balance"
 >
-  Create professional<br />
-
-  {/* TypedEffect with fixed width + AI Agent */}
-  <span className="inline-flex items-center gap-2 leading-none min-h-[1.2em]">
-    {/* Animated gradient typed word with stable width */}
+  Create professional
+  <br />
+  <span
+    className="inline-flex flex-wrap md:flex-nowrap items-center gap-2 leading-tight min-h-[1.2em]"
+    style={{ position: "relative" }}
+  >
+    {/* Typed gradient word */}
     <span
-      className=" typed-text bolt-gradient-text bg-clip-text text-transparent font-bold inline-block min-w-[8ch] w-[10ch]"
+      className="typed-text bolt-gradient-text bg-clip-text text-transparent font-bold inline-block min-w-[8ch] w-[10ch]"
     >
       <TypedEffect />
     </span>
-        with
-    {/* Fixed AI Agent label */}
-    <span className=" bolt-gradient-text  font-semibold not-italic">AI Agent</span>
 
-    {/* Wand icon with bounce */}
-    <Wand2
-      className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-yellow-500 animate-bounce"
-      aria-hidden="true"
-    />
+    {/* Stable label */}
+    <span className="text-inherit font-semibold whitespace-nowrap relative z-10">
+      with&nbsp;<span className="bolt-gradient-text">AI Agent</span>
+    </span>
+
+    {/* Bounce wand locked to label */}
+    <span className="relative z-10">
+      <Wand2
+        className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-yellow-500 animate-bounce"
+        aria-hidden="true"
+      />
+    </span>
   </span>
 </h1>
 
