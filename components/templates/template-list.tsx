@@ -15,18 +15,20 @@ interface TemplateListProps {
   title?: string;
   showCreateButton?: boolean;
   limit?: number;
+  initialTemplates?: Template[];
 }
 
 export function TemplateList({ 
   type, 
   title = "Templates",
   showCreateButton = true,
-  limit 
+  limit,
+  initialTemplates = []
 }: TemplateListProps) {
   const router = useRouter();
   const { toast } = useToast();
   
-  const { data: templates, isLoading, error, refetch } = useQuery<Template[]>({
+  const { data: templates = initialTemplates, isLoading, error, refetch } = useQuery<Template[]>({
     queryKey: ["templates", type],
     queryFn: async () => {
       const params = new URLSearchParams();
@@ -39,6 +41,9 @@ export function TemplateList({
       }
       return response.json();
     },
+    initialData: initialTemplates,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   const handleDelete = async (id: string) => {
@@ -129,19 +134,28 @@ export function TemplateList({
         </div>
       ) : templates && templates.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {templates.map((template) => (
-            <TemplateCard
-              key={template.id}
-              id={template.id}
-              title={template.title}
-              description={template.description || ''}
-              type={template.type}
-              isPublic={template.is_public}
-              isOwner={true} // This should be determined by the current user
-              onDelete={handleDelete}
-              onTogglePublic={handleTogglePublic}
-            />
-          ))}
+          {templates.map((template) => {
+            // Ensure type is one of the allowed values, default to 'document' if not valid
+            const validTypes = ['resume', 'presentation', 'letter', 'cv'] as const;
+            type ValidTemplateType = typeof validTypes[number];
+            const templateType = validTypes.includes(template.type as ValidTemplateType)
+              ? template.type as ValidTemplateType
+              : 'resume'; // Default to 'resume' if type is not valid
+              
+            return (
+              <TemplateCard
+                key={template.id}
+                id={template.id}
+                title={template.title}
+                description={template.description || ''}
+                type={templateType}
+                isPublic={template.is_public}
+                isOwner={true} // This should be determined by the current user
+                onDelete={handleDelete}
+                onTogglePublic={handleTogglePublic}
+              />
+            );
+          })}
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">

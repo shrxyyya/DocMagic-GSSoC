@@ -1,7 +1,4 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
-import { Database } from '@/types/supabase';
+import { createRoute } from '@/lib/supabase/server';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -9,13 +6,16 @@ export async function GET(request: Request) {
   const limit = searchParams.get('limit');
   const includePublic = searchParams.get('includePublic') === 'true';
   
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRoute();
   
   try {
     // Get current user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), { 
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     // Base query for user's templates
@@ -48,17 +48,21 @@ export async function GET(request: Request) {
 
       // Combine user's templates with public templates
       const allTemplates = [...(userTemplates || []), ...(publicTemplates || [])];
-      return NextResponse.json(allTemplates);
+      return new Response(JSON.stringify(allTemplates), {
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     // Just return user's templates
     const { data: templates, error: templatesError } = await query;
     if (templatesError) throw templatesError;
 
-    return NextResponse.json(templates || []);
+    return new Response(JSON.stringify(templates || []), {
+      headers: { 'Content-Type': 'application/json' }
+    });
   } catch (error) {
     console.error('Error fetching templates:', error);
-    return new NextResponse(
+    return new Response(
       JSON.stringify({ error: 'Failed to fetch templates' }), 
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
@@ -66,12 +70,15 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRoute();
   
   try {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), { 
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     const body = await request.json();
@@ -79,7 +86,7 @@ export async function POST(request: Request) {
 
     // Validate required fields
     if (!title || !type) {
-      return new NextResponse(
+      return new Response(
         JSON.stringify({ error: 'Title and type are required' }), 
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
@@ -101,12 +108,21 @@ export async function POST(request: Request) {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error creating template:', error);
+      return new Response(
+        JSON.stringify({ error: 'Failed to create template' }), 
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
-    return NextResponse.json(template, { status: 201 });
+    return new Response(JSON.stringify(template), {
+      status: 201,
+      headers: { 'Content-Type': 'application/json' }
+    });
   } catch (error) {
     console.error('Error creating template:', error);
-    return new NextResponse(
+    return new Response(
       JSON.stringify({ error: 'Failed to create template' }), 
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );

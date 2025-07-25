@@ -4,7 +4,9 @@ import { Inter, Poppins } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/components/auth-provider";
-import ClientRedirects from "@/components/ClientRedirects"; // Add this import
+import ClientRedirects from "@/components/ClientRedirects";
+import { QueryProvider } from "@/providers/query-provider";
+import { DevTools } from "@/components/dev-tools";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({ 
@@ -45,13 +47,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} ${poppins.variable}`}>
-        <AuthProvider>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-            <ClientRedirects /> {/* Add this line */}
-            {children}
-            <Toaster />
-          </ThemeProvider>
-        </AuthProvider>
+        <QueryProvider>
+          <AuthProvider>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+              <ClientRedirects />
+              {children}
+              <Toaster />
+              <DevTools />
+            </ThemeProvider>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );
