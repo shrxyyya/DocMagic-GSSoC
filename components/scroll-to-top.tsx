@@ -1,9 +1,10 @@
-import React from 'react'
+"use client";
+import { useEffect, useState } from "react";
 import { FaAnglesUp } from "react-icons/fa6";
 
 export default function ScrollToTop() {
-  const [isVisible, setIsVisible] = React.useState(false);
-  React.useEffect(() => {
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 300) {
         setIsVisible(true);
