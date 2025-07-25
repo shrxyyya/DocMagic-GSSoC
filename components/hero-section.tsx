@@ -1,14 +1,20 @@
 import { Button } from "@/components/ui/button";
+
 import Link from "next/link";
 import { Sparkles, ArrowRight, Zap, Star, Wand2 } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <div className="relative overflow-hidden bg-background py-10 xs:py-14 sm:py-24 lg:py-32">
+<div className="relative overflow-hidden bg-background py-10 xs:py-14 sm:py-24 lg:py-32">
       {/* Enhanced animated background elements */}
-      <div className="absolute inset-0 aurora-borealis opacity-20"></div>
+      <div className="absolute inset-0  "></div>
       <div className="absolute inset-0 mesh-gradient-alt opacity-10"></div>
-      
+{/* Left edge orb — peeking in from the side */}
+<div className="floating-orb w-40 h-40 bolt-gradient opacity-25 top-3/2 -left-12 translate-y-[-50%] z-10" />
+
+{/* Right edge orb — peeking in symmetrically */}
+<div className="floating-orb w-40 h-40 bolt-gradient opacity-25 top-1/2 -right-12 translate-y-[-50%] z-10" />
+
       {/* Grid pattern overlay */}
       <div 
         className="absolute inset-0 opacity-[0.02]"
@@ -21,20 +27,20 @@ export function HeroSection() {
         <div className="mx-auto max-w-4xl text-center">
           {/* Supporting Tagline for clarity */}
           <div className="mb-2 sm:mb-4 animate-fade-in-down will-change-transform">
-            <span className="text-xs sm:text-base font-semibold uppercase tracking-widest text-amber-600 bg-amber-50 px-2 py-1 rounded shadow-sm">
+            <span className="text-xs sm:text-base font-semibold uppercase tracking-widest text-amber-600 bg-amber-200 px-2 py-1 rounded shadow-sm">
               Your AI Assistant for Effortless Documents
             </span>
           </div>
 
           {/* Enhanced Animated Badge */}
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full gradient-border mb-6 sm:mb-8 subtle-shimmer relative animate-fade-in-down will-change-transform" aria-label="AI-Powered Document Magic">
+          <div className="inline-flex items-center  badge-bg gap-2 px-3 sm:px-4 py-2 rounded-full gradient-border mb-6 sm:mb-8 subtle-shimmer relative animate-fade-in-down will-change-transform" aria-label="AI-Powered Document Magic">
             <div className="relative z-10 flex items-center gap-2">
               <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500 animate-text-glow" aria-hidden="true" style={{animation: 'sparkle 2s ease-in-out infinite'}} />
               <span className="text-xs sm:text-sm font-medium bolt-gradient-text">AI-Powered Document Magic</span>
               <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500" aria-hidden="true" style={{animation: 'color-dance 3s ease-in-out infinite'}} />
             </div>
           </div>
-          
+
           {/* Animated modern main heading */}
           <h1 className="modern-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-6 sm:mb-8 animate-fade-in-down delay-100 will-change-transform text-shadow-professional">
             Create professional documents with{" "}
