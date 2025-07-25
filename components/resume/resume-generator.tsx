@@ -86,20 +86,23 @@ export function ResumeGenerator() {
   };
 
   return (
-    <div className={`space-y-6 transition-all duration-300 ${isFullView ? 'p-0' : ''}`}>
+    <div className={`space-y-6 transition-all duration-300 ${isFullView ? 'p-0' : 'px-2 sm:px-0'}`}>
       <Tabs defaultValue="guided" className="w-full">
         <div className={`flex justify-center mb-6 ${isFullView ? 'hidden' : ''}`}>
-          <TabsList className="glass-effect border border-yellow-400/20 p-1 h-auto">
+          <TabsList 
+            className="glass-effect border border-yellow-400/20 p-1 h-auto flex overflow-x-auto scrollbar-hide gap-1 sm:gap-2 md:gap-4 w-full max-w-full"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
             <TabsTrigger 
               value="guided" 
-              className="data-[state=active]:bolt-gradient data-[state=active]:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2"
+              className="data-[state=active]:bolt-gradient data-[state=active]:text-white font-semibold px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg transition-all duration-300 flex items-center gap-1 sm:gap-2 text-sm sm:text-base min-w-[140px] justify-center"
             >
               <Brain className="h-4 w-4" />
               ATS-Optimized Builder
             </TabsTrigger>
             <TabsTrigger 
               value="quick" 
-              className="data-[state=active]:bolt-gradient data-[state=active]:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2"
+              className="data-[state=active]:bolt-gradient data-[state=active]:text-white font-semibold px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg transition-all duration-300 flex items-center gap-1 sm:gap-2 text-sm sm:text-base min-w-[120px] justify-center"
             >
               <Sparkles className="h-4 w-4" />
               Quick Create
@@ -107,7 +110,7 @@ export function ResumeGenerator() {
             <TabsTrigger 
               value="templates" 
               disabled={isGenerating}
-              className="data-[state=active]:bolt-gradient data-[state=active]:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2"
+              className="data-[state=active]:bolt-gradient data-[state=active]:text-white font-semibold px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg transition-all duration-300 flex items-center gap-1 sm:gap-2 text-sm sm:text-base min-w-[110px] justify-center"
             >
               <Palette className="h-4 w-4" />
               Templates
@@ -235,7 +238,7 @@ export function ResumeGenerator() {
                     placeholder="John Doe" 
                     value={name} 
                     onChange={(e) => setName(e.target.value)}
-                    className="glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20"
+                    className="glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20 w-full text-base px-3 py-2"
                     disabled={isGenerating}
                   />
                 </div>
@@ -251,7 +254,7 @@ export function ResumeGenerator() {
                     placeholder="john@example.com" 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)}
-                    className="glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20"
+                    className="glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20 w-full text-base px-3 py-2"
                     disabled={isGenerating}
                   />
                 </div>
@@ -265,7 +268,7 @@ export function ResumeGenerator() {
                   <Textarea
                     id="prompt"
                     placeholder="E.g., Senior React Developer resume for Google, highlighting frontend performance optimization and component architecture"
-                    className="min-h-[120px] text-base glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20 resize-none"
+                    className="min-h-[120px] text-base glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20 resize-none w-full px-3 py-2"
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                     disabled={isGenerating}
@@ -276,7 +279,7 @@ export function ResumeGenerator() {
                 <Button 
                   onClick={generateResume} 
                   disabled={isGenerating || !prompt.trim() || !name.trim() || !email.trim()} 
-                  className="w-full bolt-gradient text-white font-semibold py-3 rounded-xl hover:scale-105 transition-all duration-300 bolt-glow relative overflow-hidden"
+                  className="w-full bolt-gradient text-white font-semibold py-3 rounded-xl hover:scale-105 transition-all duration-300 bolt-glow relative overflow-hidden text-base"
                 >
                   <div className="flex items-center justify-center gap-2 relative z-10">
                     {isGenerating ? (
@@ -307,16 +310,16 @@ export function ResumeGenerator() {
                     Download Options
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60">
+                    <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60 w-full sm:w-auto">
                       <Download className="mr-2 h-4 w-4" />
                       Download PDF
                     </Button>
-                    <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60">
+                    <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60 w-full sm:w-auto">
                       <Download className="mr-2 h-4 w-4" />
                       Download DOCX
                     </Button>
                     {isPro && (
-                      <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60">
+                      <Button variant="outline" className="glass-effect border-yellow-400/30 hover:border-yellow-400/60 w-full sm:w-auto">
                         Share Link
                       </Button>
                     )}
@@ -327,7 +330,7 @@ export function ResumeGenerator() {
 
             {/* Right Side - Preview */}
             <div className={`space-y-4 ${isFullView ? 'w-full' : ''}`}>
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
                 <div className="text-center lg:text-left">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-effect mb-3">
                     <FileIcon className="h-3 w-3 text-blue-500" />
@@ -341,7 +344,7 @@ export function ResumeGenerator() {
                     variant="outline"
                     size="sm"
                     onClick={() => setIsFullView(!isFullView)}
-                    className="glass-effect border-yellow-400/30 hover:border-yellow-400/60"
+                    className="glass-effect border-yellow-400/30 hover:border-yellow-400/60 mt-2 sm:mt-0"
                   >
                     {isFullView ? (
                       <>
