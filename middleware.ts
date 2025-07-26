@@ -33,20 +33,33 @@ const securityHeaders = {
   ].join('; '),
 };
 
+// Public paths that don't require authentication
+const publicPaths = [
+  '/',
+  '/auth/register',
+  '/auth/login',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/verify',
+  '/api/auth',
+  '/api/health',
+];
+
+// Auth paths that should redirect to dashboard if already authenticated
+const authPaths = [
+  '/auth/login',
+  '/auth/register',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/verify',
+];
+
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  // Skip middleware for auth routes
-  if (request.nextUrl.pathname.startsWith('/auth')) {
-    const response = new Response(null, { status: 200 });
-    // Apply security headers to auth routes as well
-    Object.entries(securityHeaders).forEach(([key, value]) => {
-      response.headers.set(key, value);
-    });
-    return response;
-  }
-
+  // Create a response object
   const response = createResponse();
   
+  // Initialize Supabase client
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -56,42 +69,60 @@ export async function middleware(request: NextRequest) {
           return request.cookies.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
-          // Set cookie in the response
+          // In middleware, we don't actually set cookies here
+          // They'll be set by the client
           response.cookies.set(name, value, options);
         },
         remove(name: string, options: CookieOptions) {
-          // Remove cookie by setting maxAge to 0
           response.cookies.set(name, '', { ...options, maxAge: 0 });
         },
       },
     }
   );
 
-  // Refresh session if expired
+  // Get the current session
   const { data: { session } } = await supabase.auth.getSession();
   
-  // If user is not signed in, redirect to login
-  if (!session) {
-    const url = new URL('/auth/login', request.url);
-    url.searchParams.set('redirectedFrom', request.nextUrl.pathname);
-    // Create a redirect response
-    const redirectResponse = new Response(null, {
-      status: 302,
-      headers: {
-        Location: url.toString(),
-        ...securityHeaders,
-      },
-    });
-    return redirectResponse;
+  // Handle authentication flow
+  if (session) {
+    // If user is signed in and trying to access auth pages, redirect to dashboard
+    if (authPaths.some(path => request.nextUrl.pathname.startsWith(path)) || 
+        request.nextUrl.pathname === '/') {
+      return new Response(null, {
+        status: 307,
+        headers: {
+          Location: '/dashboard',
+          ...securityHeaders,
+        },
+      });
+    }
+  } else {
+    // If user is not signed in and trying to access a protected route, redirect to login
+    const isPublicPath = publicPaths.some(path => 
+      request.nextUrl.pathname === path || 
+      request.nextUrl.pathname.startsWith(`${path}/`)
+    );
+
+    if (!isPublicPath) {
+      const loginUrl = new URL('/auth/login', request.url);
+      loginUrl.searchParams.set('redirectedFrom', request.nextUrl.pathname);
+      return new Response(null, {
+        status: 307,
+        headers: {
+          Location: loginUrl.toString(),
+          ...securityHeaders,
+        },
+      });
+    }
   }
 
   // Apply security headers to all responses
-  const finalResponse = new Response(response.body, response);
+  const responseHeaders = new Headers(response.headers);
   Object.entries(securityHeaders).forEach(([key, value]) => {
-    finalResponse.headers.set(key, value);
+    responseHeaders.set(key, value);
   });
-  
-  return finalResponse;
+
+  return response;
 }
 
 export const config = {
