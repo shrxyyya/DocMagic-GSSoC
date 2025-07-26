@@ -41,36 +41,47 @@ export function HeroSection() {
               <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500" aria-hidden="true" style={{animation: 'color-dance 3s ease-in-out infinite'}} />
             </div>
           </div>
-
 <h1
   className="modern-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-6 sm:mb-8 animate-fade-in-down delay-100 will-change-transform text-shadow-professional text-balance"
 >
   Create professional
   <br />
   <span
-    className="inline-flex flex-wrap md:flex-nowrap items-center gap-2 leading-tight min-h-[1.2em]"
-    style={{ position: "relative" }}
+    className="inline-flex items-center flex-wrap md:flex-nowrap leading-tight gap-x-2"
+    style={{ minHeight: "1.2em" }}
   >
-    {/* Typed gradient word */}
+    {/* Typed word container with stable layout */}
     <span
-      className="typed-text bolt-gradient-text bg-clip-text text-transparent font-bold inline-block min-w-[8ch] w-[10ch]"
+      className="typed-text bolt-gradient-text bg-clip-text text-transparent font-bold inline-block"
+      style={{
+        display: "inline-block",
+        minWidth: "4ch", // prevents layout jump
+        maxWidth: "12ch",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+      }}
     >
       <TypedEffect />
     </span>
-
-    {/* Stable label */}
-    <span className="text-inherit font-semibold whitespace-nowrap relative z-10">
-      with&nbsp;<span className="bolt-gradient-text">AI Agent</span>
-    </span>
-
-
-    {/* Bounce wand locked to label */}
+with
+    {/* Truly fixed label */}
+    <span
+      className="text-inherit font-semibold whitespace-nowrap bolt-gradient-text"
+      style={{
+        flexShrink: 0,      // prevents resizing
+        whiteSpace: "nowrap",
+        transform: "translateX(0)", // prevents subtle shifts
+      }}
+    >
+      AI Agent </span>
+        {/* Bounce wand locked to label */}
     <span className="relative z-10">
       <Wand2
         className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-yellow-500 animate-bounce"
         aria-hidden="true"
       />
-    </span>
+   </span>
   </span>
 </h1>
 

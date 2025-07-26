@@ -9,7 +9,7 @@ export function TypedEffect() {
       {/* Gradient container */}
       <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent font-bold">
         <Typewriter
-          words={['Resume', 'Presentation', 'Letter ']}
+          words={['  Resume ', 'Presentation ', ' Letter ']}
           loop
           typeSpeed={80}
           deleteSpeed={40}
