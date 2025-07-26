@@ -1,112 +1,16 @@
-"use client";
+import { Suspense } from 'react';
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { SignUpForm } from '@/components/auth/signup-form';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Sparkles, Shield, Wand2 } from 'lucide-react';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
-import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
-import { Sparkles, Zap, Star, Eye, EyeOff, Mail, Lock, User, ArrowRight, Wand2, Shield } from "lucide-react";
+export const metadata: Metadata = {
+  title: 'Create an account',
+  description: 'Create a new account to get started',
+};
 
-export default function Register() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const { toast } = useToast();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (password !== confirmPassword) {
-      toast({
-        title: "Passwords don't match",
-        description: "Please make sure both passwords are identical.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (password.length < 6) {
-      toast({
-        title: "Password too short",
-        description: "Password must be at least 6 characters long.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      // Call our internal API route to register the user
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.error || "Failed to create account");
-      }
-
-      toast({
-        title: "Account created successfully! ✨",
-        description: "Welcome to DocMagic! You're now signed in.",
-      });
-      router.push("/");
-      router.refresh();
-    } catch (error: any) {
-      // Enhanced error handling for Supabase registration
-      let userMessage = "Failed to create account. Please try again.";
-      if (error?.message) {
-        if (
-          error.message.includes("User already registered") ||
-          error.message.includes("User already exists") ||
-          error.message.includes("email address is already registered") ||
-          error.message.includes("duplicate key value violates unique constraint")
-        ) {
-          userMessage = "An account with this email already exists. Please sign in or use a different email.";
-        } else if (
-          error.message.includes("Invalid email") ||
-          error.message.includes("email is invalid")
-        ) {
-          userMessage = "Please enter a valid email address.";
-        } else if (
-          error.message.includes("Password should be at least") ||
-          error.message.includes("Password is too short")
-        ) {
-          userMessage = "Password is too short. Please use at least 6 characters.";
-        } else if (
-          error.message.includes("rate limit") ||
-          error.message.includes("Too many requests")
-        ) {
-          userMessage = "Too many attempts. Please wait a moment and try again.";
-        } else {
-          userMessage = error.message;
-        }
-      }
-      console.error('Registration error:', error);
-      toast({
-        title: "Registration Failed",
-        description: userMessage,
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const isFormValid = name.trim() && email.trim() && password.trim() && confirmPassword.trim() && password === confirmPassword && password.length >= 6;
-
+export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden py-8">
       {/* Background elements matching landing page */}
@@ -136,7 +40,7 @@ export default function Register() {
             <Sparkles className="h-5 w-5 text-yellow-500 animate-pulse" />
           </div>
           <div className="absolute bottom-4 left-4">
-            <Star className="h-4 w-4 text-blue-500 animate-spin" style={{animationDuration: '3s'}} />
+            <Wand2 className="h-4 w-4 text-blue-500" />
           </div>
           
           <div className="relative z-10">
@@ -158,174 +62,36 @@ export default function Register() {
               </p>
             </div>
             
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-              {/* Name field */}
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm font-medium flex items-center gap-2">
-                  <User className="h-4 w-4 text-muted-foreground" />
-                  Full Name
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="name"
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Enter your full name"
-                    required
-                    className="glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20 pl-4 pr-4 py-3 text-sm sm:text-base"
-                    disabled={isLoading}
-                  />
-                  <div className="absolute inset-0 rounded-md border border-yellow-400/20 pointer-events-none"></div>
-                </div>
-              </div>
-
-              {/* Email field */}
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-muted-foreground" />
-                  Email Address
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    required
-                    className="glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20 pl-4 pr-4 py-3 text-sm sm:text-base"
-                    disabled={isLoading}
-                  />
-                  <div className="absolute inset-0 rounded-md border border-yellow-400/20 pointer-events-none"></div>
-                </div>
-              </div>
-
-              {/* Password field */}
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium flex items-center gap-2">
-                  <Lock className="h-4 w-4 text-muted-foreground" />
-                  Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Create a password (min. 6 characters)"
-                    required
-                    className="glass-effect border-yellow-400/30 focus:border-yellow-400/60 focus:ring-yellow-400/20 pl-4 pr-12 py-3 text-sm sm:text-base"
-                    disabled={isLoading}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    disabled={isLoading}
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                  <div className="absolute inset-0 rounded-md border border-yellow-400/20 pointer-events-none"></div>
-                </div>
-              </div>
-
-              {/* Confirm Password field */}
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-sm font-medium flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-muted-foreground" />
-                  Confirm Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm your password"
-                    required
-                    className={`glass-effect focus:ring-yellow-400/20 pl-4 pr-12 py-3 text-sm sm:text-base ${
-                      confirmPassword && password !== confirmPassword 
-                        ? "border-red-400/60 focus:border-red-400/80" 
-                        : "border-yellow-400/30 focus:border-yellow-400/60"
-                    }`}
-                    disabled={isLoading}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    disabled={isLoading}
-                  >
-                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                  <div className={`absolute inset-0 rounded-md border pointer-events-none ${
-                    confirmPassword && password !== confirmPassword 
-                      ? "border-red-400/20" 
-                      : "border-yellow-400/20"
-                  }`}></div>
-                </div>
-                {confirmPassword && password !== confirmPassword && (
-                  <p className="text-xs text-red-500 flex items-center gap-1">
-                    <span>Passwords don't match</span>
-                  </p>
-                )}
-              </div>
-
-              {/* Submit button */}
-              <Button
-                type="submit"
-                disabled={isLoading || !isFormValid}
-                className="w-full bolt-gradient text-white font-semibold py-3 sm:py-4 rounded-xl hover:scale-105 transition-all duration-300 bolt-glow relative overflow-hidden"
-              >
-                <div className="flex items-center justify-center gap-2 relative z-10">
-                  {isLoading ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                      <span>Creating account...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="h-4 w-4" />
-                      <span>Create Account</span>
-                      <ArrowRight className="h-4 w-4" />
-                    </>
-                  )}
-                </div>
-                
-                {/* Button shimmer effect */}
-                {!isLoading && (
-                  <div className="absolute inset-0 shimmer opacity-30"></div>
-                )}
-              </Button>
-            </form>
-
-            {/* Footer */}
-            <div className="mt-6 sm:mt-8 text-center">
-              <div className="glass-effect p-4 rounded-xl">
-                <p className="text-sm text-muted-foreground mb-2">
-                  Already have an account?
-                </p>
-                <Link
-                  href="/auth/signin"
-                  className="inline-flex items-center gap-1 text-sm font-medium bolt-gradient-text hover:scale-105 transition-transform duration-200"
-                >
-                  <Zap className="h-3 w-3" />
-                  Sign In
-                  <Sparkles className="h-3 w-3" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Additional links */}
-            <div className="mt-4 text-center">
+            <Suspense fallback={<Skeleton className="h-[400px] w-full rounded-md" />}>
+              <SignUpForm />
+            </Suspense>
+            
+            <p className="mt-6 text-center text-sm text-muted-foreground">
+              Already have an account?{" "}
               <Link
-                href="/"
-                className="text-xs text-muted-foreground hover:bolt-gradient-text transition-colors"
+                href="/auth/login"
+                className="font-medium text-primary hover:underline"
               >
-                ← Back to Home
+                Sign in
               </Link>
-            </div>
+            </p>
+            <p className="text-center text-sm text-muted-foreground mt-4">
+              By signing up, you agree to our{" "}
+              <Link
+                href="/terms"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </p>
           </div>
         </div>
       </div>

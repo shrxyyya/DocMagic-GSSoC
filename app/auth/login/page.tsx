@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { LoginForm } from '@/components/auth/login-form';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const metadata: Metadata = {
   title: 'Login',
@@ -17,7 +19,9 @@ export default function LoginPage() {
         Enter your email and password to sign in to your account
       </p>
       
-      <LoginForm />
+      <Suspense fallback={<Skeleton className="h-[400px] w-full rounded-md" />}>
+        <LoginForm />
+      </Suspense>
       
       <p className="px-8 text-center text-sm text-muted-foreground">
         <Link
