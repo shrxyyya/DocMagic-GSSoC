@@ -1,27 +1,14 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
 import { SiteHeader } from "@/components/site-header";
 import { SponsorBanner } from "@/components/sponsor-banner";
 import { HeroSection } from "@/components/hero-section";
 import { FeaturesSection } from "@/components/features-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { DocumentCard } from "@/components/document-card";
-
-import { Loader2 } from 'lucide-react';
-import { 
-  File as FileIcon, 
-  FileText, 
-  Presentation as LayoutPresentation, 
-
 import { TooltipWithShortcut } from "@/components/ui/tooltip";
 import {
   File as FileIcon,
   FileText,
   Presentation as LayoutPresentation,
-
   Mail,
   Github,
   Twitter,
@@ -42,40 +29,6 @@ import {
 import ScrollToTop from "@/components/scroll-to-top";
 
 export default function Home() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
-  const supabase = createClient();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (error) throw error;
-        
-        if (session) {
-          setUser(session.user);
-          // Let middleware handle the redirect to dashboard
-          return;
-        }
-      } catch (error) {
-        console.error('Error checking auth:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, [router]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
   return (
     <div className="min-h-screen flex flex-col">
       <SponsorBanner />
