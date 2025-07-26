@@ -17,12 +17,8 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-
-import { useAuth } from "@/contexts/auth-context";
-
 import { useAuth } from "@/components/auth-provider";
 import { TooltipWithShortcut } from "@/components/ui/tooltip";
-
 import {
   Sheet,
   SheetContent,
