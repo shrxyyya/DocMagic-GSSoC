@@ -13,8 +13,6 @@
     "esModuleInterop": true,
     "module": "esnext",
 
-    "moduleResolution": "node",
-
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "bundler",
 
