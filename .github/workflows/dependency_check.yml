@@ -7,10 +7,12 @@ on:
     branches:
       - main
       - test-dependency-updates
+      - test-dependabot-auto-merge
   pull_request:
     branches:
       - main
       - test-dependency-updates
+      - test-dependabot-auto-merge
   workflow_dispatch:   
 
 jobs:
