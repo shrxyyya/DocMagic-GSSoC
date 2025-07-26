@@ -30,15 +30,14 @@
       "url": "https://github.com/xenonesis"
     }
   ],
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest",
-    "test:watch": "vitest --watch",
-    "type-check": "tsc --noEmit"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@google/generative-ai": "^0.3.1",
@@ -121,6 +120,10 @@
     "zustand": "^4.5.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -131,12 +134,12 @@
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@vitejs/plugin-react": "^4.7.0",
-    "@vitest/ui": "^3.2.4",
     "autoprefixer": "^10.4.19",
+    "babel-jest": "^30.0.5",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
     "jsdom": "^26.1.0",
     "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17",
-    "vitest": "^3.2.4"
+    "tailwindcss": "^3.4.17"
   }
 }

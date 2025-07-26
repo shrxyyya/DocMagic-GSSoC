@@ -1,5 +1,6 @@
+import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'  // ← added vi
+import { describe, it, expect, jest } from '@jest/globals'
 import { Button } from '../../components/ui/button'
 
 describe('Button Component', () => {
@@ -15,7 +16,7 @@ describe('Button Component', () => {
   })
 
   it('handles click events', () => {
-    const handleClick = vi.fn() // ← now works
+    const handleClick = jest.fn()
     render(<Button onClick={handleClick}>Click me</Button>)
     
     const button = screen.getByRole('button')
