@@ -1,0 +1,49 @@
+name: Dependency Check and CI
+
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-dependencies:
+    runs-on: ubuntu-latest
+
+    strategy:
+        matrix:
+          node-version: [18.x, 19.x, 20.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for outdated dependencies and fail if found
+        run: |
+          if [ "$(npm outdated | wc -l)" -gt 1 ]; then
+            echo "Outdated dependencies found."
+            exit 1
+          else
+            echo "All dependencies are up to date."
+          fi
+
+
+      - name: Run tests
+        run: npm test
+        continue-on-error: true
+
+      - name: Audit dependencies for vulnerabilities
+        run: npm audit --audit-level=moderate
