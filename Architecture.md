@@ -79,8 +79,6 @@ The technology stack for DocMagic was carefully selected to prioritize performan
 
 - **Docker:** While not the primary deployment method, Docker could be used for creating a consistent local development environment, though the README.md emphasizes Netlify/Vercel for production.
 
----
-
 ## 3. Data & Control Flow 🔁
 
 The process of generating documentation is a well-defined sequence of events:
@@ -97,8 +95,6 @@ The process of generating documentation is a well-defined sequence of events:
 
 - **Real-time Updates:** The UI is updated in real-time to reflect the generated content and the current state of the application.
 
----
-
 ## 4. Key Architectural Decisions 🤔
 
 - **Serverless Architecture with Supabase:** This was a strategic choice to reduce backend management overhead, simplify development, and leverage Supabase's robust, scalable infrastructure for authentication, database, and storage.
@@ -108,8 +104,6 @@ The process of generating documentation is a well-defined sequence of events:
 - **Direct Client-to-AI Service Communication:** The architecture favors direct, secure communication from the Next.js frontend (or its server-side components) to the Google Gemini API. This simplifies the data flow and reduces the need for an intermediary backend server.
 
 - **Component-based UI with Shadcn/ui:** This approach strikes a perfect balance between using pre-built components and maintaining full control over the application's look and feel.
-
----
 
 ## 5. Security Considerations 🔒
 
@@ -121,8 +115,6 @@ The process of generating documentation is a well-defined sequence of events:
 
 - **Secure Communication:** All communication between the client, Supabase, and external APIs is encrypted using HTTPS.
 
----
-
 ## 6. Error Handling and Resilience ⚙️
 
 - **API Errors:** The application includes logic to gracefully handle potential errors from the Google Gemini API and other external services. This includes displaying user-friendly error messages and implementing retry mechanisms where appropriate.
@@ -130,8 +122,6 @@ The process of generating documentation is a well-defined sequence of events:
 - **Data Validation:** Zod is used for schema validation, ensuring that data sent to and received from APIs and the database is in the correct format.
 
 - **UI Feedback:** The application provides clear feedback to the user in case of errors, such as toast notifications or inline error messages.
-
----
 
 ## 7. Scalability and Performance 🚀
 
