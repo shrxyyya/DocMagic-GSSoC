@@ -135,7 +135,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.7.0",
-    "@vitest/ui": "^1.6.1",
+    "@vitest/ui": "^3.2.4",
     "autoprefixer": "^10.4.19",
     "jsdom": "^26.1.0",
     "postcss": "^8.5.6",
