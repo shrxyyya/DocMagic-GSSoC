@@ -2,6 +2,7 @@ import "./globals.css";
 import type { ReactNode } from "react";
 import { Inter, Poppins } from "next/font/google";
 import { Providers } from "./providers";
+import { CursorProvider } from "@/components/cursor-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({ 
@@ -19,7 +20,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} ${poppins.variable}`}>
         <Providers>
-          {children}
+          <CursorProvider>
+            {children}
+          </CursorProvider>
         </Providers>
       </body>
     </html>
