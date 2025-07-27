@@ -217,8 +217,6 @@ We believe every contribution matters! Here's how you can help make DocMagic eve
 
 DocMagic leverages automated tools to keep its dependencies up-to-date, ensuring security, performance, and compatibility. This process is managed through **Dependabot** and **GitHub Actions**, providing a seamless workflow for maintaining the project’s ecosystem.
 
----
-
 ### 🛠️ Setup and Configuration
 
 #### ✅ Dependabot Configuration
@@ -232,8 +230,6 @@ The `.github/workflows/dependency_check.yml` workflow:
 - Runs **dependency audits**, **security checks**, and **build tests**
 - Triggers on a **weekly schedule** and for `push`/`pull_request` events on the `main` branch
 - Includes a `dependabot-auto-merge` job to **automatically approve and merge** Dependabot PRs after successful validation
-
----
 
 ### 🚀 How to Use
 
