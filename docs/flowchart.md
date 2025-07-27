@@ -1,38 +1,20 @@
-# 🌟 DocMagic Project Workflow
+# DocMagic Project Workflow
 
-This flowchart provides a clear visual representation of the DocMagic project's lifecycle — from initialization to maintenance.  
-It is a helpful guide for contributors and maintainers to understand the stages and their connections.
+This flowchart visually represents the stages and workflow of contributing to the DocMagic project
 
----
+# 📊 Project Workflow - DocMagic
+
 ```mermaid
 flowchart TD
-    %% Initialization Phase
-    subgraph Initialization [🚀 Initialization Phase]
-        A[📁 Project Setup] --> B[📋 Requirement Gathering]
-    end
-
-    %% Development Phase
-    subgraph Development [💻 Development Phase]
-        B --> C[🛠 Development]
-        C --> D[🔍 Code Review]
-        D --> E[🧪 Testing]
-    end
-
-    %% Deployment Phase
-    subgraph Deployment [🚢 Deployment Phase]
-        E --> F[🚀 Deployment]
-        F --> G[📈 Post-Deployment]
-    end
-
-    %% Maintenance Phase
-    subgraph Maintenance [🔧 Maintenance Phase]
-        G --> H[📡 Monitoring]
-        H --> I[🔁 Bug Fixes / Updates]
-        I --> C
-    end
-
-    %% Info Note (Plain Node - No class styling)
-    Z["📘 How to view or edit this diagram:\n- View on GitHub directly\n- Edit using https://mermaid.live"]
-
-
-    G --> Z
+    A[📂 Start Project] --> B[🛠️ Setup Repo]
+    B --> C[📑 Read Contribution Guidelines]
+    C --> D[🌱 Create a New Branch]
+    D --> E[💻 Work on the Issue]
+    E --> F[✅ Commit Changes]
+    F --> G[🚀 Push to GitHub]
+    G --> H[🔁 Create Pull Request]
+    H --> I[👀 Review by Maintainers]
+    I --> J{Merged or Rejected?}
+    J --✅ Merged--> K[🎉 Done]
+    J --❌ Rejected--> L[🔁 Make Changes & Resubmit]
+    L --> F
