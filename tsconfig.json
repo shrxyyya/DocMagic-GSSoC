@@ -49,7 +49,6 @@
     ],
     "types": [
       "node",
-      "jest",
       "next"
     ],
     "plugins": [
