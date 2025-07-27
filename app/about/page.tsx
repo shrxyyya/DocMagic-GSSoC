@@ -30,6 +30,7 @@ import {
   Brain,
   Wand2,
   ArrowRight
+  Workflow
 } from "lucide-react";
 
 export default function AboutPage() {
