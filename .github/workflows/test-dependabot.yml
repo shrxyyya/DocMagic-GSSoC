@@ -41,6 +41,9 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           
+          # Delete existing branch if it exists
+          git push origin :test-dependency-updates || echo "Branch deletion skipped (may not exist)"
+
           # Create a test branch
           git checkout -b test-dependency-updates
           
