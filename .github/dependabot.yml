@@ -9,7 +9,6 @@ updates:
     rebase-strategy: auto
     labels:
       - "dependencies"
-      - "automated"
     commit-message:
       prefix: "chore"
       include: "scope"
