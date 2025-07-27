@@ -7,22 +7,12 @@ export default {
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   transform: {
-    '^.+\\.(ts|tsx)$': [
-      'ts-jest',
-      {
-        useESM: true,
-        tsconfig: './tsconfig.json',
-        isolatedModules: true
-      }
-    ]
+    '^.+\\.tsx?$': ['ts-jest', {
+      tsconfig: 'tsconfig.json',
+      useESM: true,
+      isolatedModules: true, // Moved from deprecated globals
+    }],
   },
-  transformIgnorePatterns: [
-    '/node_modules/(?!react|react-dom|next|@testing-library)'
-  ],
+  transformIgnorePatterns: ['/node_modules/(?!react|react-dom|next|@testing-library)'],
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
-  globals: {
-    'ts-jest': {
-      useESM: true
-    }
-  }
 };
