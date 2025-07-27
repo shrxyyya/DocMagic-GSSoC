@@ -16,7 +16,7 @@ on:
   workflow_dispatch:  
 
 permissions:
-  pull-requests: write  # Grant write access to pull requests
+  pull-requests: write
   contents: read 
 
 jobs:
