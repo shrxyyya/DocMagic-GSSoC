@@ -27,6 +27,8 @@ import {
   Coffee,
 } from "lucide-react";
 import ScrollToTop from "@/components/scroll-to-top";
+import { CursorSettings } from "@/components/cursor-settings";
+
 
 export default function Home() {
   return (
@@ -235,6 +237,9 @@ export default function Home() {
         <ScrollToTop /> 
         {/* added ScrollToTop component */}
       </main>
+      
+      {/* Cursor Settings Controls */}
+      <CursorSettings />
 
       {/* Professional Footer with tooltips */}
       <footer className="relative overflow-hidden footer-professional">
