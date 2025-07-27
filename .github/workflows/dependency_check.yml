@@ -6,12 +6,10 @@ on:
   push:
     branches:
       - main
-      - test-dependency-updates
       - bot-testing
   pull_request:
     branches:
       - main
-      - test-dependency-updates
       - bot-testing
   workflow_dispatch:   
 
