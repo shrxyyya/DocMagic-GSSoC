@@ -13,7 +13,11 @@ on:
       - main
       - bot-testing
       - test-bot
-  workflow_dispatch:   
+  workflow_dispatch:  
+
+permissions:
+  pull-requests: write  # Grant write access to pull requests
+  contents: read 
 
 jobs:
   dependency-audit:
