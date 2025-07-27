@@ -205,10 +205,49 @@ We believe every contribution matters! Here's how you can help make DocMagic eve
 | **🎨 Design & UX**          | Enhance UI/UX, accessibility, responsive design    | Designers, UX enthusiasts    |
 | **🧠 AI Improvements**      | Optimize prompts, enhance AI responses, training   | AI/ML enthusiasts            |
 | **🧪 Testing**              | Write tests, manual QA, performance testing        | QA engineers, developers     |
+| **🕒 Dependency Updates & Testing** | Maintain dependencies                      | Developers                   |
 | **🌍 Internationalization** | Translate UI, localize content                     | Multilingual community       |
 | **📖 Tutorials & Content**  | Create guides, video tutorials, blog posts         | Content creators, educators  |
 
 > **🌟 First-time contributor?** Look for issues labeled `good first issue` - they're specifically designed to help you get started!
+
+---
+
+## 🕒 Automated Dependency Updates
+
+DocMagic leverages automated tools to keep its dependencies up-to-date, ensuring security, performance, and compatibility. This process is managed through **Dependabot** and **GitHub Actions**, providing a seamless workflow for maintaining the project’s ecosystem.
+
+---
+
+### 🛠️ Setup and Configuration
+
+#### ✅ Dependabot Configuration
+A `.github/dependabot.yml` file is included to enable and configure automatic dependency updates for **npm** and other package managers. This file:
+- Schedules **weekly checks**
+- Manages updates for **minor and patch versions**
+- Ignores **major updates** for critical packages (e.g., `next`, `react`) to prevent breaking changes
+
+#### ✅ GitHub Actions Workflow
+The `.github/workflows/dependency_check.yml` workflow:
+- Runs **dependency audits**, **security checks**, and **build tests**
+- Triggers on a **weekly schedule** and for `push`/`pull_request` events on the `main` branch
+- Includes a `dependabot-auto-merge` job to **automatically approve and merge** Dependabot PRs after successful validation
+
+---
+
+### 🚀 How to Use
+
+#### 1. Enable Dependabot
+The configuration is pre-set in the repository. Ensure the `.github/dependabot.yml` file is present and committed to your fork or branch.
+
+#### 2. Test the Workflow
+Run the `test-dependabot-config` workflow manually via GitHub Actions with the `create_test_pr` input set to `true` on a test branch (e.g., `test-bot`) to verify the update process. This simulates dependency updates and triggers CI checks.
+
+#### 3. Monitor PRs
+Dependabot will automatically create pull requests for outdated dependencies. Review these PRs — the CI workflow will validate them. **Approved PRs are automatically merged** if all checks pass.
+
+#### 4. Validate Updates
+The workflow includes **tests and builds** to ensure updated dependencies do not break functionality. This helps maintain a **stable and secure** application. Check the **GitHub Actions logs** for detailed output.
 
 ---
 
