@@ -8,7 +8,7 @@ updates:
     versioning-strategy: auto
     rebase-strategy: auto
     labels:
-      - "dependencies"
+      - "dependency"
     commit-message:
       prefix: "chore"
       include: "scope"
