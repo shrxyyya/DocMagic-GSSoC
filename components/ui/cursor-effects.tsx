@@ -52,28 +52,52 @@ export function CursorEffects({
     return () => window.removeEventListener('resize', checkMobile);
   }, [mounted]);
 
-  // Mouse tracking for additional effects
+  // Enhanced mouse tracking with velocity-based effects
   useEffect(() => {
     if (!mounted || disabled || isMobile) return;
 
+    let lastMousePos = { x: 0, y: 0 };
+    let velocity = { x: 0, y: 0 };
+    let lastTime = performance.now();
+
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-      setIsMoving(true);
+      const currentTime = performance.now();
+      const deltaTime = currentTime - lastTime;
+      
+      if (deltaTime > 0) {
+        // Calculate smooth velocity
+        velocity.x = (e.clientX - lastMousePos.x) / deltaTime;
+        velocity.y = (e.clientY - lastMousePos.y) / deltaTime;
+        
+        const velocityMagnitude = Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+        
+        setMousePos({ x: e.clientX, y: e.clientY });
+        setIsMoving(velocityMagnitude > 0.1);
 
-      // Clear existing timeout
-      if (movementTimeoutRef.current) {
-        clearTimeout(movementTimeoutRef.current);
+        // Clear existing timeout
+        if (movementTimeoutRef.current) {
+          clearTimeout(movementTimeoutRef.current);
+        }
+
+        // Set movement to false after velocity-based timeout
+        const timeoutDuration = Math.max(50, 200 - velocityMagnitude * 100);
+        movementTimeoutRef.current = setTimeout(() => {
+          setIsMoving(false);
+        }, timeoutDuration);
+
+        // Create enhanced sparkles based on velocity
+        if (effects.glow && velocityMagnitude > 0.5 && Math.random() > 0.92) {
+          createSparkle(e.clientX, e.clientY, velocityMagnitude);
+        }
+        
+        // Create velocity streaks for very fast movement
+        if (effects.velocityScale && velocityMagnitude > 1.5 && Math.random() > 0.85) {
+          createVelocityStreak(e.clientX, e.clientY, velocity);
+        }
       }
 
-      // Set movement to false after 100ms of no movement
-      movementTimeoutRef.current = setTimeout(() => {
-        setIsMoving(false);
-      }, 100);
-
-      // Create sparkles on fast movement
-      if (effects.glow && Math.random() > 0.95) {
-        createSparkle(e.clientX, e.clientY);
-      }
+      lastMousePos = { x: e.clientX, y: e.clientY };
+      lastTime = currentTime;
     };
 
     document.addEventListener('mousemove', handleMouseMove, { passive: true });
@@ -83,21 +107,29 @@ export function CursorEffects({
         clearTimeout(movementTimeoutRef.current);
       }
     };
-  }, [mounted, disabled, isMobile, effects.glow]);
+  }, [mounted, disabled, isMobile, effects.glow, effects.velocityScale]);
 
-  const createSparkle = (x: number, y: number) => {
+  const createSparkle = (x: number, y: number, velocityMagnitude: number = 1) => {
     if (!containerRef.current) return;
 
     const sparkle = document.createElement('div');
-    sparkle.className = 'fixed pointer-events-none z-[9996] animate-ping';
+    const size = Math.min(3 + velocityMagnitude * 2, 8);
+    const hue = effects.rainbow ? (Date.now() + Math.random() * 100) % 360 : 220;
+    const duration = Math.max(0.4, 0.8 - velocityMagnitude * 0.1);
+    
+    sparkle.className = 'fixed pointer-events-none z-[9996]';
     sparkle.style.cssText = `
-      left: ${x - 2}px;
-      top: ${y - 2}px;
-      width: 4px;
-      height: 4px;
-      background-color: ${effects.rainbow ? `hsl(${Date.now() % 360}, 80%, 70%)` : dotColor};
+      left: ${x + (Math.random() - 0.5) * 10}px;
+      top: ${y + (Math.random() - 0.5) * 10}px;
+      width: ${size}px;
+      height: ${size}px;
+      background: ${effects.rainbow ? `hsl(${hue}, 85%, 70%)` : dotColor};
       border-radius: 50%;
-      animation-duration: 0.6s;
+      opacity: 0.9;
+      transform: translate(-50%, -50%) scale(0);
+      animation: sparkleAnimation ${duration}s ease-out forwards;
+      box-shadow: 0 0 ${size * 2}px ${effects.rainbow ? `hsl(${hue}, 85%, 70%)` : dotColor};
+      filter: blur(0.5px);
     `;
 
     containerRef.current.appendChild(sparkle);
@@ -109,7 +141,39 @@ export function CursorEffects({
         sparkle.parentNode.removeChild(sparkle);
       }
       sparklesRef.current = sparklesRef.current.filter(s => s !== sparkle);
-    }, 600);
+    }, duration * 1000);
+  };
+
+  const createVelocityStreak = (x: number, y: number, velocity: { x: number; y: number }) => {
+    if (!containerRef.current) return;
+
+    const streak = document.createElement('div');
+    const length = Math.min(Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y) * 20, 40);
+    const angle = Math.atan2(velocity.y, velocity.x) * (180 / Math.PI);
+    const hue = effects.rainbow ? (Date.now() + Math.random() * 50) % 360 : 220;
+    
+    streak.className = 'fixed pointer-events-none z-[9995]';
+    streak.style.cssText = `
+      left: ${x}px;
+      top: ${y}px;
+      width: ${length}px;
+      height: 2px;
+      background: linear-gradient(90deg, ${effects.rainbow ? `hsl(${hue}, 80%, 60%)` : dotColor}, transparent);
+      transform: translate(-50%, -50%) rotate(${angle}deg);
+      opacity: 0.6;
+      animation: streakFade 0.4s ease-out forwards;
+      border-radius: 1px;
+      filter: blur(0.5px);
+    `;
+
+    containerRef.current.appendChild(streak);
+
+    // Remove streak after animation
+    setTimeout(() => {
+      if (streak.parentNode) {
+        streak.parentNode.removeChild(streak);
+      }
+    }, 400);
   };
 
   // Cleanup sparkles on unmount

@@ -1,19 +1,27 @@
 import { NextResponse } from 'next/server';
 import { createServer } from '@/lib/supabase/server';
 import { sendWelcomeEmail } from "@/lib/email";
+import { validateAndSanitize, registrationSchema, detectSqlInjection, sanitizeInput } from '@/lib/validation';
 
 // This route handles user registration
 export async function POST(request: Request) {
   try {
-    const { name, email, password } = await request.json();
+    const rawBody = await request.json();
 
-    // Validate input
-    if (!name || !email || !password) {
+    // Validate and sanitize input
+    const { name, email, password } = validateAndSanitize(registrationSchema, rawBody);
+
+    // Additional security checks
+    if (detectSqlInjection(name) || detectSqlInjection(email)) {
       return new Response(
-        JSON.stringify({ error: 'Missing required fields' }),
+        JSON.stringify({ error: 'Invalid input detected' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+    // Sanitize inputs
+    const sanitizedName = sanitizeInput(name);
+    const sanitizedEmail = sanitizeInput(email);
 
     const supabase = createServer();
 
@@ -37,12 +45,12 @@ export async function POST(request: Request) {
 
     // Sign up with Supabase Auth
     const { data, error } = await supabase.auth.signUp({
-      email,
+      email: sanitizedEmail,
       password,
       options: {
         data: {
-          name,
-          email
+          name: sanitizedName,
+          email: sanitizedEmail
         }
       }
     });
