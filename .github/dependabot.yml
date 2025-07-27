@@ -5,7 +5,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    default_branch: test-bot
     open-pull-requests-limit: 10
     versioning-strategy: auto
     rebase-strategy: auto
