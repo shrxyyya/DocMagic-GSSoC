@@ -978,6 +978,10 @@ Contact us at support@docmagic.com
 - **[Stripe](https://stripe.com/)** - For payment processing
 - **Open Source Community** - For the amazing tools and libraries
 
+## ❓ Frequently Asked Questions
+
+Got questions? Check out our comprehensive [FAQ](./FAQ.md) for answers to common questions about using and contributing to DocMagic.
+
 ## 📞 **Support & Contact**
 
 ### 🆘 **Get Help**
