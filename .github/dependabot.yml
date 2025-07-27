@@ -5,7 +5,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    default_branch: "bot-testing"     # temprary for testing
     open-pull-requests-limit: 10
     versioning-strategy: auto
     rebase-strategy: auto
