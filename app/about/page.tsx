@@ -719,7 +719,7 @@ const communityLinks = [
   {
     name: "Discord",
     description: "Community chat",
-    href: "https://discord.com/invite/docmagic",
+    href: "https://discord.gg/3hMNhxGa",
     icon: <Users className="h-6 w-6 text-white" />,
     gradientClass: "ocean-gradient"
   },
