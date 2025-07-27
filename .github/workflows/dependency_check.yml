@@ -7,10 +7,12 @@ on:
     branches:
       - main
       - bot-testing
+      - test-bot
   pull_request:
     branches:
       - main
       - bot-testing
+      - test-bot
   workflow_dispatch:   
 
 jobs:
