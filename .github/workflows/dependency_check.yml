@@ -7,10 +7,12 @@ on:
     branches:
       - main
       - test-dependency-updates
+      - bot-testing
   pull_request:
     branches:
       - main
       - test-dependency-updates
+      - bot-testing
   workflow_dispatch:   
 
 jobs:
@@ -66,7 +68,7 @@ jobs:
         run: |
           if npm run test --silent 2>/dev/null; then
             echo "Running Jest tests..."
-            npm test
+            npx jest
           else
             echo "No test script found in package.json, skipping tests"
           fi
