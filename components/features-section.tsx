@@ -1,4 +1,4 @@
-import { CheckCircle, FileText, PresentationIcon as LayoutPresentationIcon, BookOpen, Users, PenTool, Download, Sparkles, Zap, Star, Wand2 } from "lucide-react";
+import { CheckCircle, FileText, PresentationIcon as LayoutPresentationIcon, BookOpen, Users, PenTool, Download, Sparkles, Zap, Star, Wand2, Workflow } from "lucide-react";
 
 export function FeaturesSection() {
   return (
