@@ -445,14 +445,14 @@ export default function AboutPage() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild className="bolt-gradient text-white font-semibold px-6 py-3 rounded-full hover:scale-105 transition-all duration-300">
-                  <Link href="https://github.com/docmagic-ai/docmagic" className="flex items-center gap-2">
+                  <Link href="https://github.com/Muneerali199/DocMagic/" className="flex items-center gap-2">
                     <Github className="h-4 w-4" />
                     View on GitHub
                     <ExternalLink className="h-4 w-4" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" className="gradient-border px-6 py-3 rounded-full hover:scale-105 transition-all duration-300">
-                  <Link href="/contribute" className="flex items-center gap-2">
+                  <Link href="https://github.com/Muneerali199/DocMagic/issues" className="flex items-center gap-2">
                     <Heart className="h-4 w-4" />
                     Start Contributing
                     <ArrowRight className="h-4 w-4" />
@@ -719,7 +719,7 @@ const communityLinks = [
   {
     name: "Discord",
     description: "Community chat",
-    href: "https://discord/docmagic",
+    href: "https://discord.com/invite/docmagic",
     icon: <Users className="h-6 w-6 text-white" />,
     gradientClass: "ocean-gradient"
   },
