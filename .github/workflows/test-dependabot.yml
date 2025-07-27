@@ -1,4 +1,3 @@
-# .github/workflows/test-dependabot.yml
 # This workflow helps test if Dependabot is working properly
 name: Test Dependabot Configuration
 
