@@ -30,11 +30,14 @@
       "url": "https://github.com/xenonesis"
     }
   ],
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@google/generative-ai": "^0.3.1",
@@ -84,7 +87,6 @@
     "embla-carousel-react": "^8.3.0",
     "esbuild": "^0.25.8",
     "eslint": "^8.56.0",
-    "eslint-config-next": "14.1.0",
     "framer-motion": "^10.18.0",
     "html-to-image": "^1.11.13",
     "html2canvas": "^1.4.1",
@@ -93,7 +95,7 @@
     "lucide-react": "^0.446.0",
     "mammoth": "^1.9.1",
     "mermaid": "^11.9.0",
-    "next": "^14.1.0",
+    "next": "^14.2.30",
     "next-themes": "^0.4.6",
     "nodemailer": "^6.10.1",
     "officeparser": "^5.2.0",
@@ -119,6 +121,14 @@
     "zustand": "^4.5.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/eslint-parser": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/jest": "^29.5.12",
     "@types/next": "^8.0.7",
@@ -127,7 +137,13 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "autoprefixer": "^10.4.19",
+    "babel-jest": "^30.0.5",
+    "eslint-config-next": "^15.4.4",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
+    "jsdom": "^26.1.0",
     "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "ts-jest": "^29.4.0"
   }
 }
