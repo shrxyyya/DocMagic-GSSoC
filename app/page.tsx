@@ -25,6 +25,7 @@ import {
   Shield,
   Globe,
   Coffee,
+  Workflow,
 } from "lucide-react";
 import ScrollToTop from "@/components/scroll-to-top";
 
