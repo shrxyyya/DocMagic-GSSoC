@@ -1,6 +1,6 @@
 {
   "name": "docmagic",
-  "version": "0.8.0",
+  "version": "1.0.0",
   "description": "🪄 Open source AI-powered document creation platform - Create professional resumes, presentations, CVs, and letters in seconds",
   "keywords": [
     "ai",
@@ -34,7 +34,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "security-audit": "node scripts/security-audit.js",
+    "security-check": "npm audit && npm run security-audit"
   },
   "dependencies": {
     "@google/generative-ai": "^0.3.1",

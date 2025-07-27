@@ -153,17 +153,28 @@ export function CursorSettings() {
         </Interactive>
       </div>
 
-      {/* Advanced Settings Panel */}
+      {/* Ultra-smooth Advanced Settings Panel */}
       {isOpen && (
-        <div className="fixed bottom-20 left-6 z-50 glass-effect rounded-xl shadow-2xl p-6 min-w-[400px] max-w-[500px] animate-scale-in max-h-[80vh] overflow-y-auto">
-          {/* Header */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 rounded-lg bolt-gradient">
-              <MousePointer2 className="h-5 w-5 text-white" />
+        <div 
+          className="fixed bottom-20 left-6 z-50 cursor-settings-enhanced rounded-2xl shadow-2xl p-6 min-w-[420px] max-w-[520px] cursor-settings-scroll-enhanced max-h-[85vh] overflow-y-auto backdrop-blur-3xl border border-white/10"
+          data-cursor-settings
+        >
+          {/* Enhanced Header with gradient background */}
+          <div className="flex items-center gap-4 mb-6 p-4 rounded-xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-cyan-500/10 border border-white/5">
+            <div className="p-3 rounded-xl bolt-gradient shadow-lg">
+              <MousePointer2 className="h-6 w-6 text-white" />
             </div>
-            <div>
-              <h3 className="font-semibold text-lg">Cursor Studio</h3>
-              <p className="text-sm text-muted-foreground">Advanced cursor customization</p>
+            <div className="flex-1">
+              <h3 className="font-bold text-xl bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Cursor Studio Pro
+              </h3>
+              <p className="text-sm text-muted-foreground/80">
+                Ultra-smooth cursor customization
+              </p>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+              <span className="text-xs text-green-400 font-medium">Live</span>
             </div>
           </div>
 
@@ -193,26 +204,35 @@ export function CursorSettings() {
 
           {isEnabled && (
             <>
-              {/* Tab Navigation */}
-              <div className="flex gap-2 mb-6 p-1 bg-muted/30 rounded-lg">
+              {/* Enhanced Tab Navigation with smooth transitions */}
+              <div className="flex gap-1 mb-6 p-1 bg-gradient-to-r from-muted/20 via-muted/30 to-muted/20 rounded-xl backdrop-blur-sm border border-white/5">
                 {[
-                  { id: 'colors', label: 'Colors', icon: Palette },
-                  { id: 'effects', label: 'Effects', icon: Sparkles },
-                  { id: 'settings', label: 'Settings', icon: Sliders }
-                ].map(({ id, label, icon: Icon }) => (
+                  { id: 'colors', label: 'Colors', icon: Palette, color: 'from-pink-400 to-rose-400' },
+                  { id: 'effects', label: 'Effects', icon: Sparkles, color: 'from-purple-400 to-violet-400' },
+                  { id: 'settings', label: 'Settings', icon: Sliders, color: 'from-blue-400 to-cyan-400' }
+                ].map(({ id, label, icon: Icon, color }) => (
                   <Interactive
                     key={id}
                     as="button"
                     onClick={() => setActiveTab(id as any)}
-                    className={`flex-1 flex items-center justify-center gap-2 p-2 rounded-md transition-all duration-200 ${
+                    className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg transition-all duration-300 relative overflow-hidden ${
                       activeTab === id 
-                        ? 'bg-background shadow-sm bolt-gradient-text' 
-                        : 'text-muted-foreground hover:text-foreground'
+                        ? 'bg-white/10 shadow-lg backdrop-blur-sm border border-white/10' 
+                        : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
                     }`}
-                    cursorScale={1.1}
+                    cursorScale={1.15}
                   >
-                    <Icon className="h-4 w-4" />
-                    <span className="text-sm font-medium">{label}</span>
+                    {activeTab === id && (
+                      <div className={`absolute inset-0 bg-gradient-to-r ${color} opacity-10 animate-pulse`} />
+                    )}
+                    <Icon className={`h-4 w-4 transition-all duration-300 ${
+                      activeTab === id ? `bg-gradient-to-r ${color} bg-clip-text text-transparent` : ''
+                    }`} />
+                    <span className={`text-sm font-medium transition-all duration-300 ${
+                      activeTab === id ? `bg-gradient-to-r ${color} bg-clip-text text-transparent` : ''
+                    }`}>
+                      {label}
+                    </span>
                   </Interactive>
                 ))}
               </div>
@@ -226,7 +246,7 @@ export function CursorSettings() {
                   </div>
                   
                   <div className="grid grid-cols-2 gap-3">
-                    {colorPresets.map((preset) => (
+                    {colorPresets.map((preset, index) => (
                       <Interactive
                         key={preset.name}
                         as="button"
@@ -234,26 +254,56 @@ export function CursorSettings() {
                           setDotColor(preset.dot);
                           setTrailColor(preset.trail);
                         }}
-                        className={`p-3 rounded-lg border-2 transition-all duration-300 text-left ${
+                        className={`group p-4 rounded-xl border-2 transition-all duration-500 text-left relative overflow-hidden ${
                           dotColor === preset.dot 
-                            ? "border-current scale-105 shadow-lg" 
-                            : "border-transparent hover:border-current/30 hover:scale-102"
+                            ? "border-current scale-105 shadow-2xl backdrop-blur-sm" 
+                            : "border-transparent hover:border-current/40 hover:scale-[1.02] hover:shadow-lg"
                         }`}
                         style={{ 
                           borderColor: dotColor === preset.dot ? preset.dot : undefined,
-                          backgroundColor: `${preset.trail}40`
+                          backgroundColor: `${preset.trail}20`,
+                          animationDelay: `${index * 50}ms`
                         }}
-                        cursorScale={1.1}
+                        cursorScale={1.12}
                         title={preset.description}
                       >
-                        <div className="flex items-center gap-2 mb-1">
-                          <div 
-                            className="w-4 h-4 rounded-full border-2 border-white/50"
-                            style={{ backgroundColor: preset.dot }}
-                          />
-                          <span className="text-sm font-medium">{preset.name}</span>
+                        {/* Animated background gradient */}
+                        <div 
+                          className={`absolute inset-0 bg-gradient-to-br opacity-10 transition-opacity duration-300 ${
+                            dotColor === preset.dot ? 'opacity-20' : 'group-hover:opacity-15'
+                          }`}
+                          style={{ 
+                            background: `linear-gradient(135deg, ${preset.dot}, ${preset.trail})`
+                          }}
+                        />
+                        
+                        {/* Shimmer effect */}
+                        {dotColor === preset.dot && (
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+                        )}
+                        
+                        <div className="relative z-10">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="relative">
+                              <div 
+                                className="w-5 h-5 rounded-full border-2 border-white/60 shadow-lg transition-all duration-300 group-hover:scale-110"
+                                style={{ backgroundColor: preset.dot }}
+                              />
+                              {dotColor === preset.dot && (
+                                <div 
+                                  className="absolute inset-0 rounded-full animate-ping"
+                                  style={{ backgroundColor: preset.dot, opacity: 0.3 }}
+                                />
+                              )}
+                            </div>
+                            <span className="text-sm font-semibold transition-colors duration-300 group-hover:text-foreground">
+                              {preset.name}
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground/80 leading-relaxed">
+                            {preset.description}
+                          </p>
                         </div>
-                        <p className="text-xs text-muted-foreground">{preset.description}</p>
                       </Interactive>
                     ))}
                   </div>
@@ -270,36 +320,76 @@ export function CursorSettings() {
 
                   <div className="grid grid-cols-1 gap-3">
                     {[
-                      { key: 'particles', label: 'Particle Trail', icon: Sparkles, description: 'Floating particles follow cursor' },
-                      { key: 'glow', label: 'Glow Effect', icon: Zap, description: 'Dynamic glow based on movement' },
-                      { key: 'velocityScale', label: 'Velocity Scaling', icon: Gauge, description: 'Size changes with speed' },
-                      { key: 'clickRipple', label: 'Click Ripples', icon: Waves, description: 'Ripple animation on clicks' },
-                      { key: 'magneticHover', label: 'Magnetic Hover', icon: Target, description: 'Attraction to interactive elements' },
-                      { key: 'rotation', label: 'Rotation Effect', icon: RotateCw, description: 'Cursor rotates with movement' },
-                      { key: 'blur', label: 'Blur Effect', icon: Focus, description: 'Subtle blur for depth' },
-                      { key: 'rainbow', label: 'Rainbow Mode', icon: Rainbow, description: 'Animated rainbow colors' }
-                    ].map(({ key, label, icon: Icon, description }) => (
-                      <div key={key} className="flex items-center justify-between p-3 rounded-lg professional-card">
-                        <div className="flex items-center gap-3">
-                          <Icon className={`h-4 w-4 ${effects[key as keyof typeof effects] ? 'text-blue-500' : 'text-muted-foreground'}`} />
-                          <div>
-                            <span className="text-sm font-medium">{label}</span>
-                            <p className="text-xs text-muted-foreground">{description}</p>
+                      { key: 'particles', label: 'Particle Trail', icon: Sparkles, description: 'Floating particles follow cursor', color: 'from-yellow-400 to-orange-400' },
+                      { key: 'glow', label: 'Glow Effect', icon: Zap, description: 'Dynamic glow based on movement', color: 'from-blue-400 to-cyan-400' },
+                      { key: 'velocityScale', label: 'Velocity Scaling', icon: Gauge, description: 'Size changes with speed', color: 'from-green-400 to-emerald-400' },
+                      { key: 'clickRipple', label: 'Click Ripples', icon: Waves, description: 'Ripple animation on clicks', color: 'from-purple-400 to-violet-400' },
+                      { key: 'magneticHover', label: 'Magnetic Hover', icon: Target, description: 'Attraction to interactive elements', color: 'from-pink-400 to-rose-400' },
+                      { key: 'rotation', label: 'Rotation Effect', icon: RotateCw, description: 'Cursor rotates with movement', color: 'from-indigo-400 to-blue-400' },
+                      { key: 'blur', label: 'Blur Effect', icon: Focus, description: 'Subtle blur for depth', color: 'from-gray-400 to-slate-400' },
+                      { key: 'rainbow', label: 'Rainbow Mode', icon: Rainbow, description: 'Animated rainbow colors', color: 'from-red-400 via-yellow-400 to-blue-400' }
+                    ].map(({ key, label, icon: Icon, description, color }, index) => (
+                      <div 
+                        key={key} 
+                        className="group flex items-center justify-between p-4 rounded-xl professional-card hover:shadow-lg transition-all duration-300 relative overflow-hidden"
+                        style={{ animationDelay: `${index * 50}ms` }}
+                      >
+                        {/* Background glow effect when enabled */}
+                        {effects[key as keyof typeof effects] && (
+                          <div className={`absolute inset-0 bg-gradient-to-r ${color} opacity-5 animate-pulse`} />
+                        )}
+                        
+                        <div className="flex items-center gap-4 relative z-10">
+                          <div className="relative">
+                            <Icon className={`h-5 w-5 transition-all duration-300 ${
+                              effects[key as keyof typeof effects] 
+                                ? `bg-gradient-to-r ${color} bg-clip-text text-transparent` 
+                                : 'text-muted-foreground group-hover:text-foreground'
+                            }`} />
+                            {effects[key as keyof typeof effects] && (
+                              <div className={`absolute inset-0 bg-gradient-to-r ${color} opacity-20 rounded-full animate-ping`} />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <span className={`text-sm font-semibold transition-all duration-300 ${
+                              effects[key as keyof typeof effects] 
+                                ? `bg-gradient-to-r ${color} bg-clip-text text-transparent` 
+                                : 'group-hover:text-foreground'
+                            }`}>
+                              {label}
+                            </span>
+                            <p className="text-xs text-muted-foreground/80 leading-relaxed mt-0.5">
+                              {description}
+                            </p>
                           </div>
                         </div>
+                        
                         <Interactive
                           as="button"
                           onClick={() => toggleEffect(key as keyof typeof effects)}
-                          className={`w-12 h-6 rounded-full transition-all duration-300 relative ${
+                          className={`relative w-14 h-7 rounded-full transition-all duration-500 shadow-inner ${
                             effects[key as keyof typeof effects] 
-                              ? 'bg-blue-500' 
-                              : 'bg-muted-foreground/30'
+                              ? `bg-gradient-to-r ${color} shadow-lg` 
+                              : 'bg-muted-foreground/20 hover:bg-muted-foreground/30'
                           }`}
-                          cursorScale={1.2}
+                          cursorScale={1.25}
                         >
-                          <div className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-all duration-300 ${
-                            effects[key as keyof typeof effects] ? 'left-7' : 'left-1'
-                          }`} />
+                          {/* Toggle track glow */}
+                          {effects[key as keyof typeof effects] && (
+                            <div className={`absolute inset-0 bg-gradient-to-r ${color} opacity-30 rounded-full animate-pulse`} />
+                          )}
+                          
+                          {/* Toggle thumb */}
+                          <div className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-500 transform ${
+                            effects[key as keyof typeof effects] 
+                              ? 'translate-x-7 shadow-xl' 
+                              : 'translate-x-1'
+                          }`}>
+                            {/* Thumb inner glow */}
+                            {effects[key as keyof typeof effects] && (
+                              <div className={`absolute inset-0.5 bg-gradient-to-r ${color} opacity-20 rounded-full`} />
+                            )}
+                          </div>
                         </Interactive>
                       </div>
                     ))}
@@ -316,100 +406,191 @@ export function CursorSettings() {
                   </div>
 
                   <div className="space-y-4">
-                    {/* Size Controls */}
-                    <div className="space-y-3">
+                    {/* Enhanced Size Controls with visual feedback */}
+                    <div className="space-y-4 p-4 rounded-xl bg-gradient-to-r from-blue-500/5 to-purple-500/5 border border-white/5">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Minimize2 className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Dot Size</span>
-                        </div>
-                        <span className="text-xs text-muted-foreground">{dotSize}px</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="4"
-                        max="16"
-                        value={dotSize}
-                        onChange={(e) => setDotSize(Number(e.target.value))}
-                        className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
-                      />
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Maximize2 className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Trail Size</span>
-                        </div>
-                        <span className="text-xs text-muted-foreground">{trailSize}px</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="16"
-                        max="64"
-                        value={trailSize}
-                        onChange={(e) => setTrailSize(Number(e.target.value))}
-                        className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
-                      />
-                    </div>
-
-                    {/* Speed Controls */}
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Gauge className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Trail Speed</span>
-                        </div>
-                        <span className="text-xs text-muted-foreground">{Math.round(trailSpeed * 100)}%</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="0.1"
-                        max="1"
-                        step="0.1"
-                        value={trailSpeed}
-                        onChange={(e) => setTrailSpeed(Number(e.target.value))}
-                        className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
-                      />
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <MousePointer className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Hover Scale</span>
-                        </div>
-                        <span className="text-xs text-muted-foreground">{hoverScale}x</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="1"
-                        max="3"
-                        step="0.1"
-                        value={hoverScale}
-                        onChange={(e) => setHoverScale(Number(e.target.value))}
-                        className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
-                      />
-                    </div>
-
-                    {/* Particle Count */}
-                    {effects.particles && (
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Layers className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-sm font-medium">Particle Count</span>
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg bg-blue-500/10">
+                            <Minimize2 className="h-4 w-4 text-blue-400" />
                           </div>
-                          <span className="text-xs text-muted-foreground">{particleCount}</span>
+                          <span className="text-sm font-semibold">Dot Size</span>
                         </div>
+                        <div className="flex items-center gap-2">
+                          <div 
+                            className="rounded-full bg-blue-500 transition-all duration-300"
+                            style={{ 
+                              width: `${Math.max(dotSize * 0.8, 8)}px`, 
+                              height: `${Math.max(dotSize * 0.8, 8)}px` 
+                            }}
+                          />
+                          <span className="text-xs font-mono bg-blue-500/10 px-2 py-1 rounded text-blue-400">
+                            {dotSize}px
+                          </span>
+                        </div>
+                      </div>
+                      <div className="relative">
                         <input
                           type="range"
-                          min="0"
-                          max="20"
-                          value={particleCount}
-                          onChange={(e) => setParticleCount(Number(e.target.value))}
-                          className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
+                          min="4"
+                          max="16"
+                          value={dotSize}
+                          onChange={(e) => setDotSize(Number(e.target.value))}
+                          className="w-full h-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg appearance-none cursor-pointer slider-enhanced"
+                          style={{ '--value': `${((dotSize - 4) / (16 - 4)) * 100}%` } as any}
                         />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4 p-4 rounded-xl bg-gradient-to-r from-purple-500/5 to-pink-500/5 border border-white/5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg bg-purple-500/10">
+                            <Maximize2 className="h-4 w-4 text-purple-400" />
+                          </div>
+                          <span className="text-sm font-semibold">Trail Size</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div 
+                            className="rounded-full border-2 border-purple-500/60 transition-all duration-300"
+                            style={{ 
+                              width: `${Math.max(trailSize * 0.4, 12)}px`, 
+                              height: `${Math.max(trailSize * 0.4, 12)}px` 
+                            }}
+                          />
+                          <span className="text-xs font-mono bg-purple-500/10 px-2 py-1 rounded text-purple-400">
+                            {trailSize}px
+                          </span>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <input
+                          type="range"
+                          min="16"
+                          max="64"
+                          value={trailSize}
+                          onChange={(e) => setTrailSize(Number(e.target.value))}
+                          className="w-full h-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg appearance-none cursor-pointer slider-enhanced"
+                          style={{ '--value': `${((trailSize - 16) / (64 - 16)) * 100}%` } as any}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Enhanced Speed Controls */}
+                    <div className="space-y-4 p-4 rounded-xl bg-gradient-to-r from-green-500/5 to-emerald-500/5 border border-white/5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg bg-green-500/10">
+                            <Gauge className="h-4 w-4 text-green-400" />
+                          </div>
+                          <span className="text-sm font-semibold">Trail Speed</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="flex space-x-1">
+                            {[...Array(5)].map((_, i) => (
+                              <div
+                                key={i}
+                                className={`w-1 h-4 rounded-full transition-all duration-300 ${
+                                  i < Math.ceil(trailSpeed * 5) 
+                                    ? 'bg-green-400' 
+                                    : 'bg-green-400/20'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-xs font-mono bg-green-500/10 px-2 py-1 rounded text-green-400">
+                            {Math.round(trailSpeed * 100)}%
+                          </span>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <input
+                          type="range"
+                          min="0.1"
+                          max="1"
+                          step="0.1"
+                          value={trailSpeed}
+                          onChange={(e) => setTrailSpeed(Number(e.target.value))}
+                          className="w-full h-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg appearance-none cursor-pointer slider-enhanced"
+                          style={{ '--value': `${((trailSpeed - 0.1) / (1 - 0.1)) * 100}%` } as any}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4 p-4 rounded-xl bg-gradient-to-r from-orange-500/5 to-red-500/5 border border-white/5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg bg-orange-500/10">
+                            <MousePointer className="h-4 w-4 text-orange-400" />
+                          </div>
+                          <span className="text-sm font-semibold">Hover Scale</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center space-x-1">
+                            <div 
+                              className="w-3 h-3 rounded-full bg-orange-400 transition-all duration-300"
+                              style={{ transform: `scale(${Math.min(hoverScale * 0.8, 2)})` }}
+                            />
+                            <span className="text-xs text-orange-400">→</span>
+                            <div 
+                              className="w-3 h-3 rounded-full bg-orange-400 transition-all duration-300"
+                              style={{ transform: `scale(${Math.min(hoverScale, 2.5)})` }}
+                            />
+                          </div>
+                          <span className="text-xs font-mono bg-orange-500/10 px-2 py-1 rounded text-orange-400">
+                            {hoverScale}x
+                          </span>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <input
+                          type="range"
+                          min="1"
+                          max="3"
+                          step="0.1"
+                          value={hoverScale}
+                          onChange={(e) => setHoverScale(Number(e.target.value))}
+                          className="w-full h-3 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-lg appearance-none cursor-pointer slider-enhanced"
+                          style={{ '--value': `${((hoverScale - 1) / (3 - 1)) * 100}%` } as any}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Enhanced Particle Count */}
+                    {effects.particles && (
+                      <div className="space-y-4 p-4 rounded-xl bg-gradient-to-r from-cyan-500/5 to-blue-500/5 border border-white/5">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 rounded-lg bg-cyan-500/10">
+                              <Layers className="h-4 w-4 text-cyan-400" />
+                            </div>
+                            <span className="text-sm font-semibold">Particle Count</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="flex space-x-0.5">
+                              {[...Array(Math.min(particleCount, 8))].map((_, i) => (
+                                <div
+                                  key={i}
+                                  className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"
+                                  style={{ animationDelay: `${i * 100}ms` }}
+                                />
+                              ))}
+                            </div>
+                            <span className="text-xs font-mono bg-cyan-500/10 px-2 py-1 rounded text-cyan-400">
+                              {particleCount}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="relative">
+                          <input
+                            type="range"
+                            min="0"
+                            max="20"
+                            value={particleCount}
+                            onChange={(e) => setParticleCount(Number(e.target.value))}
+                            className="w-full h-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg appearance-none cursor-pointer slider-enhanced"
+                            style={{ '--value': `${(particleCount / 20) * 100}%` } as any}
+                          />
+                        </div>
                       </div>
                     )}
                   </div>

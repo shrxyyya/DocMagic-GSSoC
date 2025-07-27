@@ -83,54 +83,125 @@ export function CursorParticles({
     particlesRef.current.push(particle);
   };
 
-  // Animation loop
+  // Ultra-smooth animation loop with enhanced particle physics
   useEffect(() => {
     if (!mounted || disabled || isMobile) return;
 
     let animationId: number;
+    let lastFrameTime = performance.now();
+    const particleElements = new Map<Particle, HTMLElement>();
 
-    const animate = () => {
+    const animate = (currentTime: number) => {
       if (!containerRef.current) return;
 
-      // Update particles
+      const deltaTime = currentTime - lastFrameTime;
+      const normalizedDelta = Math.min(deltaTime / 16.67, 2);
+      lastFrameTime = currentTime;
+
+      // Update particles with enhanced physics
       particlesRef.current = particlesRef.current.filter(particle => {
-        particle.life++;
-        particle.opacity = 1 - (particle.life / particle.maxLife);
-        particle.y -= 0.5; // Float upward
-        particle.x += (Math.random() - 0.5) * 0.5; // Slight horizontal drift
+        particle.life += normalizedDelta;
+        
+        // Enhanced easing functions
+        const progress = particle.life / particle.maxLife;
+        const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+        const easeInOutSine = -(Math.cos(Math.PI * progress) - 1) / 2;
+        
+        // Smooth opacity transition
+        particle.opacity = Math.max(0, 1 - easeOutCubic);
+        
+        // Enhanced movement with physics
+        const floatSpeed = 0.8 * normalizedDelta;
+        const driftSpeed = 0.3 * normalizedDelta;
+        
+        particle.y -= floatSpeed + Math.sin(particle.life * 0.1) * 0.2;
+        particle.x += (Math.random() - 0.5) * driftSpeed + Math.cos(particle.life * 0.08) * 0.1;
+        
+        // Dynamic size with pulsing effect
+        const baseSizeMultiplier = 1 - progress * 0.3;
+        const pulseEffect = 1 + Math.sin(particle.life * 0.2) * 0.1;
+        const currentSize = particle.size * baseSizeMultiplier * pulseEffect;
         
         return particle.life < particle.maxLife;
       });
 
-      // Render particles
-      containerRef.current.innerHTML = '';
+      // Enhanced rendering with better performance
+      const existingElements = new Set(particleElements.values());
+      
+      // Remove expired particle elements
+      particleElements.forEach((element, particle) => {
+        if (!particlesRef.current.includes(particle)) {
+          if (element.parentNode) {
+            element.parentNode.removeChild(element);
+          }
+          particleElements.delete(particle);
+        }
+      });
+
+      // Update existing and create new particle elements
       particlesRef.current.forEach(particle => {
-        const element = document.createElement('div');
+        let element = particleElements.get(particle);
+        
+        if (!element) {
+          // Create new particle element
+          element = document.createElement('div');
+          element.className = 'cursor-particle-enhanced';
+          containerRef.current?.appendChild(element);
+          particleElements.set(particle, element);
+        }
+
+        // Enhanced visual properties
+        const progress = particle.life / particle.maxLife;
+        const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+        const baseSizeMultiplier = 1 - progress * 0.3;
+        const pulseEffect = 1 + Math.sin(particle.life * 0.2) * 0.1;
+        const currentSize = particle.size * baseSizeMultiplier * pulseEffect;
+        const rotation = particle.life * 2;
+        
+        // Color enhancement with shimmer effect
+        const hue = (Date.now() * 0.1 + particle.x * 0.01) % 360;
+        const saturation = 70 + Math.sin(particle.life * 0.1) * 20;
+        const lightness = 60 + Math.cos(particle.life * 0.08) * 15;
+        const enhancedColor = color.includes('hsl') ? color : `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        
+        // Glow intensity based on opacity
+        const glowIntensity = particle.opacity * 8;
+        
         element.style.cssText = `
           position: fixed;
-          left: ${particle.x}px;
-          top: ${particle.y}px;
-          width: ${particle.size}px;
-          height: ${particle.size}px;
-          background-color: ${color};
+          left: ${particle.x.toFixed(2)}px;
+          top: ${particle.y.toFixed(2)}px;
+          width: ${currentSize.toFixed(2)}px;
+          height: ${currentSize.toFixed(2)}px;
+          background: ${enhancedColor};
           border-radius: 50%;
-          opacity: ${particle.opacity};
+          opacity: ${particle.opacity.toFixed(3)};
+          transform: translate(-50%, -50%) rotate(${rotation.toFixed(1)}deg) scale(${(1 + Math.sin(particle.life * 0.15) * 0.1).toFixed(3)});
           pointer-events: none;
-          z-index: 9997;
-          transform: translate(-50%, -50%);
+          z-index: 9996;
+          box-shadow: 0 0 ${glowIntensity.toFixed(1)}px ${enhancedColor}, inset 0 0 ${(glowIntensity * 0.3).toFixed(1)}px rgba(255,255,255,0.3);
+          filter: blur(${(0.3 * (1 - particle.opacity)).toFixed(2)}px) brightness(${(1 + particle.opacity * 0.2).toFixed(2)});
+          transition: none;
+          will-change: transform, opacity;
         `;
-        containerRef.current?.appendChild(element);
       });
 
       animationId = requestAnimationFrame(animate);
     };
 
-    animate();
+    animationId = requestAnimationFrame(animate);
 
     return () => {
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
+      // Clean up particle elements
+      particleElements.forEach(element => {
+        if (element.parentNode) {
+          element.parentNode.removeChild(element);
+        }
+      });
+      particleElements.clear();
     };
   }, [mounted, disabled, isMobile, color]);
 

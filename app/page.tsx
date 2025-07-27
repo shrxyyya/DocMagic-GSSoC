@@ -59,17 +59,17 @@ export default function Home() {
             }}
           />
 
-          <div className="container relative z-10 px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-2 xs:px-3 sm:px-6 lg:px-8 relative z-10">
             {/* Section transition indicator with tooltip */}
-            <div className="flex justify-center mb-8 sm:mb-12">
+            <div className="flex justify-center mb-6 sm:mb-8 lg:mb-12">
               <TooltipWithShortcut content="Scroll down to explore document types">
-                <div className="glass-effect p-3 rounded-full animate-bounce cursor-pointer hover:scale-110 transition-transform duration-300">
-                  <ArrowDown className="h-5 w-5 sm:h-6 sm:w-6 bolt-gradient-text" />
+                <div className="glass-effect p-2 sm:p-3 rounded-full animate-bounce cursor-pointer hover:scale-110 transition-transform duration-300">
+                  <ArrowDown className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 bolt-gradient-text" />
                 </div>
               </TooltipWithShortcut>
             </div>
 
-            <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <div className="mx-auto max-w-4xl text-center mb-8 sm:mb-12 lg:mb-16">
               {/* Badge matching hero style */}
               <div className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-full glass-effect mb-6 sm:mb-8 shimmer">
                 <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 animate-pulse" />
@@ -110,11 +110,11 @@ export default function Home() {
               </p>
 
               {/* Stats bar with tooltips */}
-              <div className="mt-8 sm:mt-12 flex flex-wrap justify-center gap-4 sm:gap-8">
-                <TooltipWithShortcut content="We support 4 different types of professional documents">
+              <div className="mt-6 sm:mt-8 lg:mt-12 flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-8">
+                <TooltipWithShortcut content="We support 5 different types of professional documents">
                   <div className="glass-effect px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:scale-105 transition-transform duration-300 cursor-pointer">
                     <span className="bolt-gradient-text font-bold text-sm sm:text-base">
-                      4
+                      5
                     </span>
                     <span className="text-muted-foreground text-xs sm:text-sm ml-1">
                       Document Types
@@ -145,7 +145,7 @@ export default function Home() {
             </div>
 
             {/* Enhanced document cards grid with tooltips */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
               <div className="animate-bounce-in delay-100 will-change-transform">
                 <TooltipWithShortcut content="Create professional resumes optimized for ATS systems">
                   <DocumentCard
@@ -188,10 +188,20 @@ export default function Home() {
                   />
                 </TooltipWithShortcut>
               </div>
+              <div className="animate-bounce-in delay-500 will-change-transform">
+                <TooltipWithShortcut content="Create professional diagrams and flowcharts with Mermaid syntax">
+                  <DocumentCard
+                    title="Diagram"
+                    description="Design professional flowcharts, system architectures, and process diagrams with live preview and export"
+                    icon={<BookOpen className="h-5 w-5 sm:h-6 sm:w-6" />}
+                    href="/diagram"
+                  />
+                </TooltipWithShortcut>
+              </div>
             </div>
 
             {/* Professional call to action with tooltips */}
-            <div className="text-center mt-12 sm:mt-16 lg:mt-20">
+            <div className="text-center mt-8 sm:mt-12 lg:mt-16">
               <div className="professional-card p-6 sm:p-8 rounded-2xl max-w-2xl mx-auto hover:scale-105 transition-transform duration-300 relative overflow-hidden">
                 {/* Background shimmer effect */}
                 <div className="absolute inset-0 shimmer opacity-30"></div>
