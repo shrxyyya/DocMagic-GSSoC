@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { PWAInstallButton } from "@/components/pwa-install-button";
 import { useAuth } from "@/components/auth-provider";
 import { TooltipWithShortcut } from "@/components/ui/tooltip";
 import {
@@ -245,6 +246,11 @@ export function SiteHeader() {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-3">
+          {/* PWA Install Button */}
+          <TooltipWithShortcut content="Install DocMagic as an app on your device">
+            <PWAInstallButton variant="ghost" size="sm" showText={false} />
+          </TooltipWithShortcut>
+
           {/* Theme Toggle with Tooltip */}
           <TooltipWithShortcut content="Switch between light and dark theme">
             <ThemeToggle />
