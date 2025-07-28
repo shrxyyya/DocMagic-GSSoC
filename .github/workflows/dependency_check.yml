@@ -18,6 +18,10 @@ permissions:
 jobs:
   dependency-audit:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
     name: Dependency Audit and Security Check
 
     steps:
@@ -27,10 +31,20 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ matrix.node-version }}
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      
+      - name: Cache node_modules
+        id: cache-npm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-npm-
 
       - name: Install dependencies
+        if: steps.cache-npm.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Check for outdated dependencies (informational)
@@ -60,8 +74,18 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      
+      - name: Cache node_modules
+        id: cache-npm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-npm-
 
       - name: Install dependencies
+        if: steps.cache-npm.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Run tests with Jest
@@ -83,8 +107,7 @@ jobs:
           fi
 
       - name: Run type checking (if TypeScript)
-        run: |
-          echo "TypeScript compilation is handled during build time by Next.js"
+        run: echo "TypeScript compilation is handled during build time by Next.js"
 
   dependabot-auto-merge:
     runs-on: ubuntu-latest
@@ -99,6 +122,10 @@ jobs:
           else
             echo "is_dependabot=false" >> $GITHUB_OUTPUT
           fi
+
+      - name: Verify Dependabot updates
+        if: steps.check-dependabot.outputs.is_dependabot == 'true'
+        run: npm audit --audit-level=moderate
 
       - name: Auto-approve Dependabot PR
         if: steps.check-dependabot.outputs.is_dependabot == 'true'
