@@ -14,11 +14,13 @@ import {
   Zap,
   DollarSign,
   Workflow,
+  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { PWAInstallButton } from "@/components/pwa-install-button";
+import { SimpleThemeToggle } from "@/components/simple-theme-toggle";
 import { useAuth } from "@/components/auth-provider";
 import { TooltipWithShortcut } from "@/components/ui/tooltip";
 import {
@@ -41,7 +43,7 @@ import { useRouter } from "next/navigation";
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading } = useAuth();
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -170,6 +172,15 @@ export function SiteHeader() {
                     <div className="space-y-1 mt-3">
                       <SheetClose asChild>
                         <Link
+                          href="/profile"
+                          className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-accent/50 hover:text-accent-foreground transition-colors w-full"
+                        >
+                          <User className="h-4 w-4 text-muted-foreground" />
+                          Profile
+                        </Link>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <Link
                           href="/settings"
                           className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-accent/50 hover:text-accent-foreground transition-colors w-full"
                         >
@@ -251,16 +262,16 @@ export function SiteHeader() {
             <PWAInstallButton variant="ghost" size="sm" showText={false} />
           </TooltipWithShortcut>
 
-          {/* Theme Toggle with Tooltip */}
-          <TooltipWithShortcut content="Switch between light and dark theme">
-            <ThemeToggle />
-          </TooltipWithShortcut>
+          {/* Theme Toggle - Simple version for testing */}
+          <SimpleThemeToggle />
 
           {/* Desktop User Menu */}
-          {user ? (
+          {loading ? (
+            <div className="h-8 w-8 rounded-full bg-gray-200 animate-pulse hidden md:flex"></div>
+          ) : user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <TooltipWithShortcut content="View account settings and profile">
+              <TooltipWithShortcut content="View account settings and profile">
+                <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
                     className="relative h-8 w-8 rounded-full hidden md:flex"
@@ -279,8 +290,8 @@ export function SiteHeader() {
                       </AvatarFallback>
                     </Avatar>
                   </Button>
-                </TooltipWithShortcut>
-              </DropdownMenuTrigger>
+                </DropdownMenuTrigger>
+              </TooltipWithShortcut>
               <DropdownMenuContent
                 align="end"
                 className="w-56 bg-background/95 backdrop-blur-xl border-border/50"
@@ -306,6 +317,12 @@ export function SiteHeader() {
                   </div>
                 </div>
                 <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link href="/profile" className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
                   <Link href="/settings" className="flex items-center gap-2">
                     <Sparkles className="h-4 w-4" />
                     Settings
@@ -323,15 +340,12 @@ export function SiteHeader() {
           ) : (
             /* Desktop Sign In Button */
             <TooltipWithShortcut content="Sign in to save and manage your documents">
-              <Button
-                asChild
-                className="bolt-gradient text-white font-semibold hover:scale-105 transition-all duration-300 text-sm px-4 h-9 hidden md:flex"
-              >
-                <Link href="/auth/signin" className="flex items-center gap-2">
+              <Link href="/auth/signin">
+                <Button className="bolt-gradient text-white font-semibold hover:scale-105 transition-all duration-300 text-sm px-4 h-9 hidden md:flex">
                   <Zap className="h-4 w-4" />
                   <span>Sign In</span>
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </TooltipWithShortcut>
           )}
           </div>
