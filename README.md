@@ -848,6 +848,12 @@ We celebrate our contributors! Every contribution gets:
 
 For detailed guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
+### 👥 Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=Swara595/DocMagic)](https://github.com/Swara595/DocMagic/graphs/contributors)
+
+Made with [contrib.rocks](https://contrib.rocks).
+
 ## 📜 **Open Source License**
 
 **DocMagic is free and open source software** licensed under the MIT License. This means you can:
