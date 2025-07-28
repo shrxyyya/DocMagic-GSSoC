@@ -45,7 +45,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci || (echo "Retrying npm install..." && rm -rf node_modules package-lock.json && npm install)
 
       - name: Check for outdated dependencies (informational)
         run: |
@@ -86,7 +86,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci || (echo "Retrying npm install..." && rm -rf node_modules package-lock.json && npm install)
 
       - name: Run tests with Jest
         run: |

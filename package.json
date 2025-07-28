@@ -127,7 +127,6 @@
     "@babel/preset-env": "^7.28.0",
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.27.1",
-    "@netlify/esbuild": "^0.14.39-1",
     "@netlify/plugin-nextjs": "^5.11.6",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
