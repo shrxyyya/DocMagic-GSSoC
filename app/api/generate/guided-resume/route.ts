@@ -49,3 +49,107 @@ export async function POST(request: Request) {
     );
   }
 }
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
+import { NextResponse } from 'next/server';
+import { generateGuidedResume } from '@/lib/gemini';
+import { createRoute } from '@/lib/supabase/server';
+
+export async function POST(request: Request) {
+  try {
+    console.log('Guided resume generation request received');
+    
+    // Check authentication
+    const supabase = createRoute();
+    const { data: { session }, error: authError } = await supabase.auth.getSession();
+    
+    if (authError) {
+      console.error('Authentication error:', authError);
+      return NextResponse.json(
+        { error: 'Authentication failed' },
+        { status: 401 }
+      );
+    }
+    
+    if (!session) {
+      console.log('No active session found');
+      return NextResponse.json(
+        { error: 'Unauthorized - Please sign in to generate resumes' },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    console.log('Request body parsed successfully');
+
+    const {
+      personalInfo,
+      professionalSummary,
+      workExperience,
+      education,
+      skills,
+      projects,
+      certifications,
+      links,
+      targetRole,
+      jobDescription
+    } = body;
+
+    // Validate required fields
+    if (!personalInfo?.name || !personalInfo?.email) {
+      return NextResponse.json(
+        { error: 'Personal information (name and email) is required' },
+        { status: 400 }
+      );
+    }
+
+    if (!targetRole) {
+      return NextResponse.json(
+        { error: 'Target role is required' },
+        { status: 400 }
+      );
+    }
+
+    console.log('Calling generateGuidedResume function...');
+    const resume = await generateGuidedResume({
+      personalInfo,
+      professionalSummary,
+      workExperience: workExperience || [],
+      education: education || [],
+      skills: skills || [],
+      projects: projects || [],
+      certifications: certifications || [],
+      links: links || {},
+      targetRole,
+      jobDescription
+    });
+    
+    console.log('Guided resume generated successfully');
+    return NextResponse.json(resume);
+  } catch (error: any) {
+    console.error('Error generating guided resume:', error);
+    
+    // Return more specific error messages
+    let errorMessage = 'Failed to generate resume';
+    let statusCode = 500;
+    
+    if (error.message?.includes('API key')) {
+      errorMessage = 'AI service configuration error. Please contact support.';
+      statusCode = 503;
+    } else if (error.message?.includes('quota')) {
+      errorMessage = 'AI service temporarily unavailable due to high demand. Please try again later.';
+      statusCode = 503;
+    } else if (error.message?.includes('timeout')) {
+      errorMessage = 'Request timed out. Please try again with a shorter prompt.';
+      statusCode = 408;
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+    
+    return NextResponse.json(
+      { error: errorMessage },
+      { status: statusCode }
+    );
+  }
+}
