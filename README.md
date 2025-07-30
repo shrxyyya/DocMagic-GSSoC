@@ -827,6 +827,11 @@ The application is deployed on Netlify. To deploy your own instance:
 - Design new templates and themes
 - Improve accessibility features
 
+#### 🕒 Dependency Updates & Testing
+- Help maintain dependencies by testing pull requests created by [Dependabot](https://docs.github.com/en/code-security/dependabot)
+- Validate automated updates using the [GitHub Actions](https://github.com/docmagic-ai/docmagic/actions/workflows/dependency_check.yml) workflow to ensure build stability.
+- Report any issues with updates or suggest improvements to the automation process.
+
 ### 🚀 **Getting Started as a Contributor**
 
 1. **Fork the repository** on GitHub
