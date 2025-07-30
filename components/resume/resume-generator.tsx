@@ -62,10 +62,10 @@ export function ResumeGenerator() {
     setIsGenerating(true);
 
     try {
-      const response = await fetch("/api/generate/resume", {
-        method: "POST",
+      const response = await fetch('/api/generate/resume', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           prompt,
@@ -75,7 +75,9 @@ export function ResumeGenerator() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to generate resume");
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error || `HTTP ${response.status}: ${response.statusText}`;
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
