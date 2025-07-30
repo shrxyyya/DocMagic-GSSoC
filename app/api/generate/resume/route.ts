@@ -9,8 +9,7 @@ import { createRoute } from '@/lib/supabase/server';
 export async function POST(request: Request) {
   try {
     console.log('Resume generation request received');
-    
-    // Optional authentication check - allow anonymous usage
+    //auth
     let session = null;
     try {
       const supabase = createRoute();
