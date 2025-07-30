@@ -14,6 +14,17 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+        
+  animation: {
+    'wiggle-spin': 'wiggleSpin 1s ease-in-out infinite',
+  },
+  keyframes: {
+    wiggleSpin: {
+      '0%, 100%': { transform: 'rotate(0deg)' },
+      '50%': { transform: 'rotate(20deg)' },
+    },
+  },
+
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
@@ -88,6 +99,7 @@ const config: Config = {
       },
     },
   },
+
   plugins: [require('tailwindcss-animate')],
 };
 export default config;
