@@ -10,24 +10,14 @@ export async function POST(request: Request) {
   try {
     console.log('Resume generation request received');
     
-    // Check authentication
-    const supabase = createRoute();
-    const { data: { session }, error: authError } = await supabase.auth.getSession();
-    
-    if (authError) {
-      console.error('Authentication error:', authError);
-      return NextResponse.json(
-        { error: 'Authentication failed' },
-        { status: 401 }
-      );
-    }
-    
-    if (!session) {
-      console.log('No active session found');
-      return NextResponse.json(
-        { error: 'Unauthorized - Please sign in to generate resumes' },
-        { status: 401 }
-      );
+    // Optional authentication check - allow anonymous usage
+    let session = null;
+    try {
+      const supabase = createRoute();
+      const { data } = await supabase.auth.getSession();
+      session = data.session;
+    } catch (authError) {
+      console.warn('Authentication check failed, allowing anonymous usage:', authError);
     }
 
     const rawBody = await request.json();
