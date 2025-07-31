@@ -9,21 +9,13 @@ let genAI: GoogleGenerativeAI | null = null;
 function getGenAI(): GoogleGenerativeAI {
   if (!genAI) {
     if (!GOOGLE_API_KEY) {
-      console.error("GEMINI_API_KEY environment variable is not set");
-      throw new Error("GEMINI_API_KEY environment variable is not set. Please add your Gemini API key to the environment variables.");
+      throw new Error("GEMINI_API_KEY environment variable is not set.");
     }
-    
-    if (GOOGLE_API_KEY.length < 10) {
-      console.error("GEMINI_API_KEY appears to be invalid (too short)");
-      throw new Error("GEMINI_API_KEY appears to be invalid. Please check your API key.");
-    }
-    
     try {
-      genAI = new GoogleGenerativeAI(GOOGLE_API_KEY.trim());
-      console.log("Google Generative AI initialized successfully");
+      genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
     } catch (error) {
       console.error("Failed to initialize Google Generative AI:", error);
-      throw new Error(`Failed to initialize Google Generative AI: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error("Failed to initialize Google Generative AI.");
     }
   }
   return genAI;
@@ -38,39 +30,19 @@ async function validateApiConnection() {
   try {
     // Skip API validation during build time
     if (process.env.NODE_ENV === 'production' && !process.env.RUNTIME_ENV) {
-      console.log("Skipping API validation during build time");
       return true;
     }
     
-    console.log("Validating Gemini API connection...");
     const model = getGenAI().getGenerativeModel({ model: "gemini-2.0-flash" });
-    const result = await model.generateContent("test connection");
-    const response = await result.response;
-    console.log("API connection validated successfully");
+    await model.generateContent("test");
     return true;
   } catch (error) {
     console.error("API Connection Test Failed:", error);
-    
     // Don't throw during build time
     if (process.env.NODE_ENV === 'production' && !process.env.RUNTIME_ENV) {
-      console.log("Allowing API validation failure during build time");
       return true;
     }
-    
-    // Provide more specific error messages
-    if (error instanceof Error) {
-      if (error.message.includes('API_KEY')) {
-        throw new Error("Invalid API key. Please check your GEMINI_API_KEY environment variable.");
-      }
-      if (error.message.includes('quota')) {
-        throw new Error("API quota exceeded. Please check your Gemini API usage limits.");
-      }
-      if (error.message.includes('permission')) {
-        throw new Error("API permission denied. Please verify your API key permissions.");
-      }
-    }
-    
-    throw new Error(`Unable to connect to Google Generative AI API: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error("Unable to connect to Google Generative AI API.");
   }
 }
 
