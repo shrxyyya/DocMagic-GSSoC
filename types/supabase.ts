@@ -84,8 +84,14 @@ export interface Database {
           id: string
           user_id: string
           title: string
-          type: 'resume' | 'presentation' | 'letter' | 'cv'
-          content: Json
+          type: 'resume' | 'presentation' | 'letter' | 'cv' | 'diagram'
+          content: Json & {
+            slides?: any[];
+            template?: string;
+            isPublic?: boolean;
+            diagramCode?: string;
+            diagramType?: string;
+          }
           prompt: string
           created_at: string
           updated_at: string
@@ -94,7 +100,7 @@ export interface Database {
           id?: string
           user_id: string
           title: string
-          type: 'resume' | 'presentation' | 'letter' | 'cv'
+          type: 'resume' | 'presentation' | 'letter' | 'cv' | 'diagram'
           content: Json
           prompt: string
           created_at?: string
@@ -104,7 +110,7 @@ export interface Database {
           id?: string
           user_id?: string
           title?: string
-          type?: 'resume' | 'presentation' | 'letter' | 'cv'
+          type?: 'resume' | 'presentation' | 'letter' | 'cv' | 'diagram'
           content?: Json
           prompt?: string
           created_at?: string

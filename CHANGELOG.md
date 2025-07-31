@@ -1,11 +1,155 @@
 # Changelog
 
+## [2.0.0] - 2025-07-28
+### Changed
+- Updated version to 2.0.0 in package.json
+
 All notable changes to DocMagic will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2025-07-27
+
+### 🎉 **Major Release - DocMagic 1.0.0** 🎉
+We're thrilled to announce the official 1.0.0 release of DocMagic! This marks a significant milestone in our open-source AI-powered document creation platform.
+
+### Summary
+This major release completes our transition from beta to a fully-featured, production-ready document creation platform. DocMagic 1.0.0 represents months of development, community feedback, and continuous improvement.
+
+### Key Achievements
+- **Feature Complete**: All planned document types and features are now implemented
+- **Production Ready**: Comprehensive testing, security, and performance optimizations
+- **Community Driven**: Built by and for the open-source community
+- **Enterprise Ready**: Scalable architecture with enterprise-grade reliability
+
+### Complete Feature Set
+- **Resume Builder** - AI-powered resume creation with ATS optimization
+- **CV Generator** - Professional curriculum vitae creation
+- **Letter Writer** - Business and personal letter generation
+- **Presentation Maker** - PowerPoint presentation creation with templates
+- **Diagram Creator** - Visual diagram and flowchart generation
+- **Template System** - Rich template library across all document types
+- **Sharing Capabilities** - Public URL sharing for presentations and documents
+- **Mobile Responsive** - Full mobile support across all features
+
+### Technical Excellence
+- **Modern Architecture** - Next.js 14+ with TypeScript and modern tooling
+- **Security First** - OWASP compliance, authentication, and data protection
+- **Performance Optimized** - Fast loading, responsive design, and smooth animations
+- **Developer Friendly** - Clean code, comprehensive documentation, and extensible architecture
+
+### Migration from 0.9.0 to 1.0.0
+- No breaking changes
+- Seamless upgrade path
+- All existing documents and templates remain compatible
+- Enhanced stability and performance
+
+## [0.9.0] - 2025-07-27
+
+### Added
+- **Visual Diagram Creator** - Create professional flowcharts, system architectures, and process diagrams
+- **Mermaid Syntax Support** - Full support for Mermaid diagram syntax with live preview
+- **Diagram Export Capabilities** - Export diagrams as high-quality SVG and PNG files
+- **Professional Diagram Templates** - Pre-built templates for common diagram types
+- **Live Diagram Preview** - Real-time rendering of Mermaid code with error handling
+- **Diagram Sharing** - Share diagrams with copy-to-clipboard and social sharing
+- **Multi-Category Templates** - Organized templates by Process, Architecture, Development, Database, UX, and Planning
+- **AI Diagram Generation** - Generate diagrams from natural language descriptions
+
+### Enhanced
+- **Navigation System** - Added diagram creation to main navigation and document types
+- **Document Type Support** - Extended database schema to support diagram documents
+- **Feature Showcase** - Updated landing page and about page to highlight diagram capabilities
+- **Export System** - Unified export system supporting multiple formats across all document types
+- **Template System** - Enhanced template categorization and filtering
+
+### Technical Improvements
+- **Mermaid Integration** - Added Mermaid.js library with optimized configuration
+- **Image Export** - Integrated html-to-image for high-quality diagram exports
+- **Database Schema** - Extended documents table to support diagram type
+- **API Endpoints** - New diagram generation endpoint with AI integration
+- **Type Safety** - Updated TypeScript definitions for diagram support
+- **Performance** - Optimized diagram rendering with debounced updates
+
+### Developer Experience
+- **Component Architecture** - Modular diagram components with clear separation of concerns
+- **Error Handling** - Comprehensive error handling for diagram syntax validation
+- **Loading States** - Professional loading and skeleton states for better UX
+- **Code Organization** - Well-structured diagram-related components and utilities
+
+### User Experience
+- **Intuitive Interface** - Tab-based interface for code editing, templates, and preview
+- **Template Gallery** - Comprehensive collection of professional diagram templates
+- **Live Feedback** - Real-time diagram rendering with syntax error reporting
+- **Export Options** - Multiple export formats with one-click download
+- **Responsive Design** - Mobile-optimized diagram creation and viewing
+
+### Files Added
+- `app/diagram/page.tsx` - Main diagram creation page
+- `components/diagram/diagram-generator.tsx` - Core diagram creation component
+- `components/diagram/diagram-preview.tsx` - Live Mermaid diagram renderer
+- `components/diagram/diagram-templates.tsx` - Professional template gallery
+- `app/api/generate/diagram/route.ts` - AI diagram generation endpoint
+- `supabase/migrations/20250115000000_add_diagram_support.sql` - Database schema update
+
+### Files Modified
+- `components/site-header.tsx` - Added diagram navigation link
+- `app/page.tsx` - Added diagram card to document types section
+- `components/features-section.tsx` - Added visual diagrams feature
+- `app/about/page.tsx` - Updated feature showcase with diagram creator
+- `lib/gemini.ts` - Added AI diagram generation function
+- `types/supabase.ts` - Extended document types to include diagrams
+- `README.md` - Updated documentation with diagram features
+- `components/ui/skeleton.tsx` - Added diagram generator skeleton component
+
+## [0.8.0] - 2025-01-15
+
+### Added
+- **Shareable Public URLs for Presentations** - Enable sharing of created PowerPoint presentations via public URLs
+- **Share Button Integration** - Added prominent "Share Presentation" button on completion page with loading states
+- **Public Presentation Viewer** - Dedicated viewer page at `/presentation/view/[id]` for shared presentations
+- **Privacy Controls** - Toggle between public and private presentation visibility with visual indicators
+- **Automatic URL Generation** - Generate unique shareable URLs with automatic clipboard integration
+- **Anonymous Viewing Support** - Allow public presentations to be viewed without authentication
+- **Share Success UI** - Green success section with copy link and external view buttons
+
+### Enhanced
+- **Presentation Generator UI** - Complete share workflow integration with success feedback and URL display
+- **Database Schema** - Extended documents table content structure to support public presentation sharing
+- **Security Implementation** - Row Level Security (RLS) policies for public/private presentation access
+- **User Experience** - Seamless sharing workflow with automatic clipboard copying and visual feedback
+- **Component Architecture** - Modular presentation viewer component with privacy controls
+
+### Technical Improvements
+- **API Endpoints** - New presentation save/share (`/api/presentations`) and privacy toggle (`/api/presentations/[id]`) endpoints
+- **Database Migration** - Added public access policy for shared presentations (`20250628163825_add_public_presentation_access.sql`)
+- **Type Safety** - Updated TypeScript definitions for presentation content structure with slides, template, and isPublic fields
+- **Supabase Integration** - Fixed server-side Supabase client imports using correct `createRoute()` and `createServer()` functions
+- **Dependency Management** - Updated `@radix-ui/react-slot` to v1.1.2 to resolve build conflicts
+
+### Developer Experience
+- **Comprehensive Documentation** - Complete implementation guide (`Enable_shareable_public_URL_for_created_PowerPoint_presentations_73.md`)
+- **Migration Scripts** - Database migration with multiple execution options (CLI, manual, reset)
+- **Testing Guidelines** - Complete testing instructions for share functionality and privacy controls
+- **Build Fixes** - Resolved Radix UI dependency conflicts and Supabase import errors
+
+### Bug Fixes
+- **Build Issues** - Fixed `createSlot` import error from `@radix-ui/react-collection`
+- **Import Errors** - Corrected Supabase server client imports in API routes and server components
+- **Type Definitions** - Updated Supabase types to include presentation-specific content structure
+
+### Files Added
+- `app/api/presentations/route.ts` - Presentation save and share API endpoint
+- `app/api/presentations/[id]/route.ts` - Presentation retrieval and privacy update API
+- `app/presentation/view/[id]/page.tsx` - Public presentation viewing page with metadata
+- `components/presentation/presentation-viewer.tsx` - Dedicated presentation viewer component
+- `supabase/migrations/20250628163825_add_public_presentation_access.sql` - Public access RLS policy
+
+### Files Modified
+- `components/presentation/presentation-generator.tsx` - Added complete share functionality and UI
+- `types/supabase.ts` - Extended document content type for presentation data
+- `package.json` - Updated version to 0.8.0, author to Xenonesis, and fixed Radix UI dependency
 
 ## [0.7.0] - 2025-07-28
 

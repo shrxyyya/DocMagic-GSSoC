@@ -15,13 +15,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Open Source](https://img.shields.io/badge/Open%20Source-❤️-red?style=for-the-badge)](https://github.com/docmagic-ai/docmagic)
 [![Netlify Status](https://img.shields.io/badge/Netlify-Deployed-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://docmagic1.netlify.app)
-[![Version](https://img.shields.io/badge/Version-0.7.0-brightgreen?style=for-the-badge)](https://github.com/docmagic-ai/docmagic/releases)
+[![Version](https://img.shields.io/badge/Version-0.8.0-brightgreen?style=for-the-badge)](https://github.com/docmagic-ai/docmagic/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](http://makeapullrequest.com)
 [![Contributors](https://img.shields.io/badge/Contributors-Welcome-orange?style=for-the-badge)](./CONTRIBUTING.md)
 
 <br />
 
-![DocMagic Hero](https://via.placeholder.com/800x400/667eea/ffffff?text=DocMagic+✨+AI+Document+Creation)
+![DocMagic Hero](screenshots/DocMagicHero.png)
 
 ### 🚀 **Transform Ideas into Professional Documents with AI Magic**
 
@@ -31,7 +31,7 @@
 
 ### 🎯 **50,000+ Documents Created** • 🏆 **99% Success Rate** • ⭐ **4.9/5 User Rating** • 🌍 **50+ Countries**
 
-> *"Create professional documents in seconds with AI magic ✨"*
+> _"Create professional documents in seconds with AI magic ✨"_
 
 <br />
 
@@ -48,15 +48,29 @@
 ## ✨ Core Features & Capabilities
 
 ### 🤖 **AI-Powered Document Generation**
+
 - **🎯 Smart Resume Builder**: Create professional resumes with Gemini AI 2.0 Flash and 9-step guided workflow
-- **📊 Presentation Generator**: Generate complete slide decks with outlines and themes
+  ![Smart Resume Builder](screenshots/Resume.png)
+- **📊 Presentation Generator**: Generate complete slide decks with outlines, themes, and shareable public URLs
+  ![Presentation Generator](screenshots/Presentation.png)
 - **📄 CV Creator**: Build comprehensive curriculum vitae with intelligent formatting
+  ![CV Creator](screenshots/CVgenerator.png)
 - **✉️ Letter Composer**: Draft professional letters for any purpose
+  ![Letter Composer](screenshots/Letter.png)
 - **🔍 ATS Resume Analyzer**: Advanced ATS compatibility scoring with detailed optimization feedback
+<p float="left">
+  <img src="screenshots/ATS.png" width="49%" />
+  <img src="screenshots/AtsAnalysis.png" width="49%" />
+</p>
+
 - **🎨 Professional Templates**: ATS-optimized templates with modern glass morphism design
+  ![Professional Templates](screenshots/ResumeTemp.png)
 - **📈 Progress Tracking**: Visual progress indicators and step-by-step completion tracking
+  ![Progress Tracking](screenshots/Progress.png)
+- **🔗 Presentation Sharing**: Share presentations via public URLs with privacy controls and anonymous viewing
 
 ### 🎨 **Modern UI/UX Design**
+
 - **✨ Glass Morphism Interface**: Modern glass-effect components with subtle transparency and blur effects
 - **🌈 Gradient Magic**: Dynamic bolt gradients and shimmer effects throughout the interface
 - **🎭 Floating Animations**: Smooth floating orbs and animated background elements powered by Framer Motion
@@ -67,20 +81,26 @@
 - **Micro-Interactions**: Hover effects, scale transitions, and pulse animations for enhanced user engagement
 
 ### 🤖 **AI-Powered Document Generation**
+
 - **Smart Text Processing**: Advanced Gemini AI integration for intelligent content generation
 - **Context-Aware Creation**: AI understands industry standards and target audience requirements
-- **Multiple Document Types**: 
+- **Multiple Document Types**:
   - 📄 **Professional Resumes** with ATS optimization
-  - 🎯 **Stunning Presentations** with smart layouts and charts
+  - 🎯 **Stunning Presentations** with smart layouts, charts, and shareable public URLs
+  - 🔗 **Shareable Presentations** with privacy controls and anonymous viewing support
   - 📋 **Comprehensive CVs** for academic and research positions
   - ✉️ **Business Letters** with perfect tone and formatting
 
 ### 🛠️ **Professional Tools & Features**
+
+- **Progressive Web App (PWA)**: Install DocMagic as a native app on any device with offline support and enhanced performance
 - **Advanced ATS Analyzer**: Comprehensive resume scanning with detailed scoring and optimization suggestions
 - **Professional Template Library**: Curated collection of ATS-optimized, modern templates with glass morphism design
 - **Guided Resume Builder**: 9-step workflow with progress tracking and intelligent navigation
 - **Smart Editing**: Intuitive WYSIWYG editor with real-time preview and mobile-first design
 - **Enhanced Export Options**: Download as PDF, DOCX, or PPTX with improved formatting and ATS compatibility
+- **Presentation Sharing**: Generate shareable public URLs with one-click sharing and privacy controls
+- **Anonymous Viewing**: Public presentations viewable without authentication for seamless sharing
 - **Chart Integration**: Automatic data visualization for presentations using Recharts
 - **Mobile-Responsive Navigation**: Touch-optimized interface that works perfectly on all devices
 - **📄 Comprehensive About Page**: Detailed information about features, technology, security, and roadmap accessible at `/about`
@@ -90,6 +110,7 @@
 ## 🛠️ Tech Stack & Architecture
 
 ### 🎨 **Frontend Excellence**
+
 - **Next.js 15** - Latest React framework with App Router and Server Components
 - **TypeScript 5.2** - Full type safety and enhanced developer experience
 - **Tailwind CSS 3.3** - Utility-first styling with custom animations and gradients
@@ -100,6 +121,7 @@
 - **Zustand** - Lightweight state management
 
 ### 🔧 **Advanced Component System**
+
 - **🎨 Radix UI Foundation**: 25+ accessible components including dialogs, dropdowns, and forms
 - **📝 Form Management**: React Hook Form with Zod validation for type-safe forms
 - **📊 Data Visualization**: Recharts integration for analytics and progress tracking
@@ -108,6 +130,7 @@
 - **🔔 Toast Notifications**: Sonner-powered notifications for user feedback
 
 ### 🔐 **Authentication & Security**
+
 - **🛡️ Supabase Auth**: Secure user authentication with JWT tokens
 - **👤 User Management**: Registration, login, password reset, and profile management
 - **🔒 Protected Routes**: Client-side route protection and redirects
@@ -115,6 +138,7 @@
 - **🔐 Environment Security**: Secure API key management and environment variables
 
 ### 💳 **Payment & Subscription System**
+
 - **💰 Stripe Integration**: Secure payment processing with Stripe
 - **📋 Subscription Management**: Pro/Free tier management with usage limits
 - **🏪 Customer Portal**: Self-service billing and subscription management
@@ -127,23 +151,27 @@
 - **Theme System**: Dark/light mode with system preference detection
 
 ### 🗄️ **Backend & Database**
+
 - **Supabase** - PostgreSQL with real-time subscriptions and Row Level Security
 - **Supabase Auth** - OAuth providers, magic links, and secure session management
 - **Database Migrations** - Version-controlled schema changes
 - **Real-time Updates** - Live collaboration features
 
 ### 🤖 **AI & External Services**
+
 - **Google Gemini AI** - Advanced language model for intelligent content generation
 - **Pexels API** - Professional stock photography integration
 - **Document Parsers** - PDF, DOCX parsing with Mammoth.js and pdf-parse
 - **Export Libraries** - jsPDF, docx, and pptxgenjs for multi-format downloads
 
 ### 💳 **Payments & Subscriptions**
+
 - **Stripe Integration** - Secure payment processing with webhooks
 - **Subscription Management** - Tiered pricing with usage tracking
 - **Customer Portal** - Self-service billing and subscription management
 
 ### 🚀 **Deployment & Performance**
+
 - **Netlify** - Edge deployment with automatic builds and previews
 - **Vercel Ready** - Alternative deployment configuration included
 - **Performance Optimized** - Image optimization, code splitting, and caching strategies
@@ -151,6 +179,7 @@
 ## 🎨 UI/UX Design Philosophy
 
 ### ✨ **Modern Glass Morphism Interface**
+
 DocMagic features a cutting-edge design system built around glass morphism principles, creating a sophisticated and intuitive user experience:
 
 - **Glass Effects**: Subtle transparency and backdrop-blur effects throughout the interface
@@ -162,18 +191,21 @@ DocMagic features a cutting-edge design system built around glass morphism princ
 ### 🎯 **User Experience Highlights**
 
 #### 📱 **Mobile-First Responsive Design**
+
 - Optimized touch targets for mobile devices
 - Swipe gestures and touch-friendly interactions
 - Progressive enhancement for larger screens
 - Consistent experience across all devices
 
 #### 🌓 **Intelligent Theme System**
+
 - Automatic dark/light mode detection based on system preferences
 - Smooth theme transitions with preserved user state
 - High contrast ratios for accessibility compliance
 - Custom color schemes for different document types
 
 #### ⚡ **Performance-Optimized Interactions**
+
 - 60fps animations using hardware acceleration
 - Lazy loading for optimal page speed
 - Debounced search and form inputs
@@ -184,20 +216,24 @@ DocMagic features a cutting-edge design system built around glass morphism princ
 <div align="center">
 
 ### 🏠 **Landing Page with Glass Morphism Design**
+
 <img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600" alt="DocMagic Landing Page" width="90%"/>
 <p><em>Hero section with floating animations and gradient effects</em></p>
 
 ### 📄 **AI Resume Generator Interface**
+
 <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600" alt="Resume Generator" width="90%"/>
 <p><em>Intelligent resume builder with real-time ATS optimization</em></p>
 
 ### 🎯 **Presentation Studio with Smart Layouts**
+
 <img src="https://images.pexels.com/photos/3184293/pexels-photo-3184293.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600" alt="Presentation Creator" width="90%"/>
 <p><em>Professional slide creator with automatic chart generation</em></p>
 
 ## 🏗️ **Technical Architecture**
 
 ### 🚀 **Frontend Stack**
+
 ```typescript
 // Core Framework
 Next.js 15.4.0          // React framework with App Router
@@ -216,6 +252,7 @@ Zod 3.25.76            // Schema validation
 ```
 
 ### 🔧 **Backend & Services**
+
 ```typescript
 // Database & Auth
 Supabase                // PostgreSQL database + Auth
@@ -239,6 +276,7 @@ pptxgenjs 3.12.0        // PowerPoint generation
 ```
 
 ### 📊 **Document Processing Pipeline**
+
 ```mermaid
 graph LR
     A[User Input] --> B[AI Processing]
@@ -250,6 +288,7 @@ graph LR
 ```
 
 ### 🔍 **ATS Analyzer System**
+
 <img src="https://images.pexels.com/photos/3184294/pexels-photo-3184294.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600" alt="ATS Analyzer" width="90%"/>
 <p><em>Real-time resume analysis with actionable insights</em></p>
 
@@ -320,12 +359,12 @@ docmagic/
 └── tsconfig.json             # TypeScript configuration
 ```
 
-
 ## 🚀 **Quick Start Guide**
 
 ### 🌐 **Learn More**
 
 Visit our comprehensive **About Page** at [https://docmagic1.netlify.app/about](https://docmagic1.netlify.app/about) to explore:
+
 - 🎯 **Mission & Vision** - Our commitment to democratizing document creation
 - ⚡ **Core Features** - AI-powered tools and capabilities
 - 🛠️ **Technology Stack** - Modern tech powering DocMagic
@@ -334,35 +373,61 @@ Visit our comprehensive **About Page** at [https://docmagic1.netlify.app/about](
 - 🗺️ **Product Roadmap** - Exciting features coming in 2025-2026
 - 👥 **Community** - Join our open source community
 
-### 📋 **Prerequisites**
+## 🪟 DocMagic: Windows Local Development Setup
 
-Before you begin, ensure you have the following installed:
+Make sure to install these before setting up the project:
 
-```bash
-Node.js >= 18.0.0       # JavaScript runtime
-npm >= 9.0.0            # Package manager
-Git                     # Version control
-```
+### Step 1: Install the prerequisite
 
-### ⚡ **One-Click Setup**
+- [Git](https://git-scm.com/download/win) – for cloning the repository
+- [Node.js (LTS version)](https://nodejs.org/en/download/) – includes npm for package management
+- (Optional) [Docker Desktop](https://www.docker.com/products/docker-desktop) – for local database/testing (if needed)
+- (Recommended) [Visual Studio Code](https://code.visualstudio.com/) – code editor
 
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/docmagic.git
-cd docmagic
+### Step 2: Clone the Repository
 
-# Install dependencies
-npm install
+After installing the prerequisites, open your Command Prompt, PowerShell, or Windows Terminal and run the following commands to clone the DocMagic repository and navigate into the project folder:
 
-# Set up environment variables
-cp .env.example .env.local
-# Edit .env.local with your API keys
+    git clone https://github.com/Muneerali199/DocMagic.git
+    cd DocMagic
 
-# Run development server
-npm run dev
-```
+This will download the project's source code to your local machine and prepare you to install dependencies in the next step.
 
-🎉 **That's it!** Open [http://localhost:3000](http://localhost:3000) to see DocMagic in action.
+### Step 3: Install Project Dependencies
+
+Once you have cloned the repository and navigated into the project folder, install the necessary packages by running one of the following commands in your terminal:
+
+Using npm:
+
+    npm install
+
+This command will download and install all the required dependencies for the DocMagic project.
+
+### Step 4: Configure Environment Variables
+
+After installing the project dependencies, you need to set up your environment variables for local development.
+
+1.  Copy the example environment file to a new file named `.env.local` using this command in Command Prompt:
+
+        copy .env.example .env.local
+
+    _(If you're using PowerShell or WSL, you can use `cp .env.example .env.local` instead.)_
+
+2.  Open the `.env.local` file in your code editor and add the required API keys, database URLs, or other credentials as needed for your setup.
+
+Make sure to save `.env.local`—this file allows your app to connect to external services and databases during development.
+
+### Step 5: Run the Development Server
+
+Now that your environment variables are configured, you can launch the project locally.
+
+Using npm:
+
+    npm run dev
+
+🎉 **That's it !** Open [http://localhost:3000](http://localhost:3000) to see DocMagic in action.
+
+---
 
 ### 🔧 **Environment Configuration**
 
@@ -389,6 +454,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ### 🗄️ **Database Setup**
 
 1. **Create Supabase Project**:
+
    ```bash
    # Visit https://supabase.com/dashboard
    # Create new project
@@ -396,6 +462,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
    ```
 
 2. **Run Migrations**:
+
    ```sql
    -- The migrations are in /supabase/migrations/
    -- They will be automatically applied when you set up Supabase
@@ -411,6 +478,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ### 🤖 **AI Service Setup**
 
 1. **Get Gemini API Key**:
+
    ```bash
    # Visit https://ai.google.dev/
    # Create API key
@@ -428,6 +496,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ### 💳 **Payment Setup (Optional)**
 
 1. **Stripe Configuration**:
+
    ```bash
    # Visit https://dashboard.stripe.com/
    # Get your API keys
@@ -437,11 +506,11 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 2. **Webhook Events**:
    ```typescript
    // Configure these events in Stripe dashboard:
-   customer.subscription.created
-   customer.subscription.updated
-   customer.subscription.deleted
-   invoice.payment_succeeded
-   invoice.payment_failed
+   customer.subscription.created;
+   customer.subscription.updated;
+   customer.subscription.deleted;
+   invoice.payment_succeeded;
+   invoice.payment_failed;
    ```
 
 ## 🛠️ **Development Commands**
@@ -498,6 +567,7 @@ docmagic/
 ### 🤖 **AI Generation Endpoints**
 
 #### Generate Resume
+
 ```typescript
 POST /api/generate/resume
 Content-Type: application/json
@@ -512,6 +582,7 @@ Content-Type: application/json
 ```
 
 #### Generate Presentation
+
 ```typescript
 POST /api/generate/presentation
 Content-Type: application/json
@@ -523,7 +594,20 @@ Content-Type: application/json
 }
 ```
 
+#### Generate Diagram
+
+```typescript
+POST /api/generate/diagram
+Content-Type: application/json
+
+{
+  "prompt": "User authentication flow with OAuth",
+  "diagramType": "flowchart"
+}
+```
+
 #### ATS Resume Analysis
+
 ```typescript
 POST /api/analyze/resume
 Content-Type: multipart/form-data
@@ -537,6 +621,7 @@ Content-Type: multipart/form-data
 ### 💳 **Payment Endpoints**
 
 #### Create Checkout Session
+
 ```typescript
 POST /api/stripe/create-checkout
 Content-Type: application/json
@@ -566,6 +651,7 @@ netlify deploy --prod --dir=.next
 ```
 
 **Configuration**: The `netlify.toml` file is pre-configured with:
+
 - Next.js plugin
 - API route handling
 - CORS headers
@@ -615,6 +701,7 @@ For detailed testing guidelines, see [TESTING.md](./TESTING.md).
 ### Prerequisites
 
 Ensure you have the following installed:
+
 - **Node.js**: Version 18 or higher (includes npm). Download from [nodejs.org](https://nodejs.org/).
 - **Git**: For cloning the repository. Install from [git-scm.com](https://git-scm.com/).
 - A **Supabase** account for database and authentication. Sign up at [supabase.com](https://supabase.com/).
@@ -625,6 +712,7 @@ Ensure you have the following installed:
 
 1. **Clone the Repository**:
    Clone the project to your local machine and navigate to the project directory:
+
    ```bash
    git clone https://github.com/yourusername/docmagic.git
    cd docmagic
@@ -635,17 +723,20 @@ Ensure you have the following installed:
    npm install
    ```
 3. Set Up Supabase:
+
 - Log in to your Supabase dashboard and create a new project.
 - In the Supabase project, go to Settings > API to find your NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.
 - Go to SQL Editor and run the SQL migrations found in the supabase/migrations/ directory to set up the database schema (Users, Subscriptions, Documents tables).
 - Enable Supabase Auth in the Supabase dashboard under Authentication > Settings and configure email authentication.
 
 4. Obtain Google Gemini API Key:
+
 - Visit Google AI Studio and create an API key for Gemini 2.0 Flash.
--  Save the key as GEMINI_API_KEY for use in the environment variables.
+- Save the key as GEMINI_API_KEY for use in the environment variables.
 
 5. Set up environment variables:
    Create a `.env.local` file with:
+
    ```
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
@@ -665,7 +756,9 @@ Ensure you have the following installed:
    supabase login
    supabase db push
    ```
+
 7. Run the development server:
+
    ```bash
    npm run dev
    ```
@@ -687,21 +780,21 @@ The application is deployed on Netlify. To deploy your own instance:
 
 ### Document Generation
 
-| Endpoint | Method | Description | Request Body | Response |
-|----------|--------|-------------|--------------|----------|
-| `/api/generate/resume` | POST | Generate a resume | `{ prompt, name, email }` | Resume JSON |
-| `/api/generate/guided-resume` | POST | Generate guided resume | `{ personalInfo, workExperience, ... }` | Resume JSON |
-| `/api/generate/presentation` | POST | Generate presentation | `{ prompt, pageCount }` | Slides array |
-| `/api/generate/presentation-outline` | POST | Generate outline | `{ prompt, pageCount }` | Outline array |
-| `/api/generate/presentation-full` | POST | Generate full presentation | `{ outlines, template, prompt }` | Slides array |
-| `/api/generate/letter` | POST | Generate letter | `{ prompt, fromName, toName, letterType, ... }` | Letter JSON |
-| `/api/generate/resume-guidance` | POST | Get resume guidance | `{ step, targetRole, existingData }` | Guidance JSON |
+| Endpoint                             | Method | Description                | Request Body                                    | Response      |
+| ------------------------------------ | ------ | -------------------------- | ----------------------------------------------- | ------------- |
+| `/api/generate/resume`               | POST   | Generate a resume          | `{ prompt, name, email }`                       | Resume JSON   |
+| `/api/generate/guided-resume`        | POST   | Generate guided resume     | `{ personalInfo, workExperience, ... }`         | Resume JSON   |
+| `/api/generate/presentation`         | POST   | Generate presentation      | `{ prompt, pageCount }`                         | Slides array  |
+| `/api/generate/presentation-outline` | POST   | Generate outline           | `{ prompt, pageCount }`                         | Outline array |
+| `/api/generate/presentation-full`    | POST   | Generate full presentation | `{ outlines, template, prompt }`                | Slides array  |
+| `/api/generate/letter`               | POST   | Generate letter            | `{ prompt, fromName, toName, letterType, ... }` | Letter JSON   |
+| `/api/generate/resume-guidance`      | POST   | Get resume guidance        | `{ step, targetRole, existingData }`            | Guidance JSON |
 
 ### Analysis
 
-| Endpoint | Method | Description | Request Body | Response |
-|----------|--------|-------------|--------------|----------|
-| `/api/analyze/resume` | POST | Analyze resume for ATS | FormData with `file` and `jobDescription` | Analysis JSON |
+| Endpoint              | Method | Description            | Request Body                              | Response      |
+| --------------------- | ------ | ---------------------- | ----------------------------------------- | ------------- |
+| `/api/analyze/resume` | POST   | Analyze resume for ATS | FormData with `file` and `jobDescription` | Analysis JSON |
 
 ## 🤝 **Contributing to Open Source**
 
@@ -710,25 +803,34 @@ The application is deployed on Netlify. To deploy your own instance:
 ### 🌟 **Ways to Contribute**
 
 #### 🐛 **Bug Reports & Fixes**
+
 - Report bugs using our [issue template](https://github.com/docmagic-ai/docmagic/issues/new?template=bug_report.md)
 - Fix existing bugs and earn contributor recognition
 - Help improve stability and user experience
 
 #### ✨ **Feature Development**
+
 - Check our [roadmap](./ROADMAP.md) for planned features
 - Propose new features via [GitHub Discussions](https://github.com/docmagic-ai/docmagic/discussions)
 - Implement features that benefit the entire community
 
 #### 📚 **Documentation & Community**
+
 - Improve documentation and tutorials
 - Help other users in discussions and issues
 - Create blog posts, videos, or tutorials about DocMagic
 - Translate the interface to new languages
 
 #### 🎨 **Design & UX**
+
 - Contribute to UI/UX improvements
 - Design new templates and themes
 - Improve accessibility features
+
+#### 🕒 Dependency Updates & Testing
+- Help maintain dependencies by testing pull requests created by [Dependabot](https://docs.github.com/en/code-security/dependabot)
+- Validate automated updates using the [GitHub Actions](https://github.com/docmagic-ai/docmagic/actions/workflows/dependency_check.yml) workflow to ensure build stability.
+- Report any issues with updates or suggest improvements to the automation process.
 
 ### 🚀 **Getting Started as a Contributor**
 
@@ -743,6 +845,7 @@ The application is deployed on Netlify. To deploy your own instance:
 ### 🏆 **Contributor Recognition**
 
 We celebrate our contributors! Every contribution gets:
+
 - 🎉 **Public recognition** in our README and releases
 - 🏅 **Contributor badge** on your GitHub profile
 - 📈 **Priority support** for your own issues
@@ -750,6 +853,12 @@ We celebrate our contributors! Every contribution gets:
 - 💼 **Portfolio showcase** opportunities
 
 For detailed guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+### 👥 Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=Swara595/DocMagic)](https://github.com/Swara595/DocMagic/graphs/contributors)
+
+Made with [contrib.rocks](https://contrib.rocks).
 
 ## 📜 **Open Source License**
 
@@ -779,6 +888,109 @@ copies or substantial portions of the Software.
 
 See the [LICENSE](LICENSE) file for the complete license text.
 
+## **🔧 Troubleshooting**
+
+Encountering setup or runtime issues? Here are some common problems and how to fix them quickly:
+
+**🚫 1. Environment Variables Not Loaded**
+Symptoms: Blank pages, failed API calls, authentication not working.
+Fix:
+
+- Make sure .env.local exists in the root directory.
+
+- Confirm you’ve filled in all required variables (e.g. NEXT_PUBLIC_SUPABASE_URL, GEMINI_API_KEY, STRIPE_SECRET_KEY, etc.).
+
+- Restart your dev server after updating .env.local.
+
+**🔐 2. Supabase Auth Not Working**
+Symptoms: Login/Signup not working, "invalid credentials" error.
+Fix:
+
+- Ensure Supabase email/password auth is enabled in your project dashboard.
+
+- Double-check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.
+
+- Check browser console for CORS or network errors.
+
+**🧠 3. Gemini AI API Errors**
+Symptoms: Resume/Letter/Presentation generation fails or gives 500 error.
+Fix:
+
+- Ensure your GEMINI_API_KEY is correct and has usage quota.
+
+- Check the Gemini model being used (gemini-2.0-flash).
+
+- Review logs in lib/gemini.ts for response or validation errors.
+
+**💳 4. Stripe Integration Issues**
+Symptoms: Subscription not created, payment failed, webhook not triggering.
+Fix:
+
+- Verify all Stripe keys are added correctly in .env.local.
+
+- Ensure your webhook endpoint /api/stripe/webhook is configured in the Stripe dashboard.
+
+- Use Stripe CLI (stripe listen) for local testing.
+
+**📄 5. Document Generation Fails or Times Out**
+Symptoms: Resume/Presentation not rendering or returning empty content.
+Fix:
+
+- Check if Gemini AI prompt structure is valid (non-empty fields).
+
+- Ensure your system has internet access (required to call external APIs).
+
+- Inspect console and network tab for failed API calls.
+
+**🧪 6. Tests Not Running or Failing Unexpectedly**
+Symptoms: npm run test crashes or gives missing module errors.
+Fix:
+
+- Ensure all dependencies are installed via npm install.
+
+- Try running npm run type-check to validate your types.
+
+- If using Supabase locally, ensure it's running: npx supabase start.
+
+**🌐 7. "Failed to fetch" or 500 Errors in API Routes**
+Symptoms: API routes return 404 or 500 errors.
+Fix:
+
+- Make sure you're using npm run dev to run the Next.js server (not just npm start).
+
+- Ensure folder structure inside app/api/ is correct and follows Next.js App Router format.
+
+- Check logs in the terminal for specific stack traces.
+
+**📦 8. Netlify/Vercel Deployment Errors**
+Symptoms: Build fails, blank screen after deployment.
+Fix:
+
+- Confirm NEXT_PUBLIC_APP_URL and other env vars are set in Netlify/Vercel dashboard.
+
+- Set build command as npm run build and publish directory to .next.
+
+- Make sure next.config.js has output: "standalone" if using serverless deploys.
+
+**🐳 9. Docker Build Fails**
+Symptoms: Errors during npm ci or npm run build inside Docker container.
+Fix:
+
+- Use the production image by copying only essential files before install.
+
+- Ensure you are using Node 18+ in your Dockerfile.
+
+- Clear Docker cache and rebuild:
+  docker system prune -a  
+   docker build --no-cache -t docmagic .
+
+**Still Need Help?**
+Check GitHub Issues
+
+Ask in our Discord Community
+
+Contact us at support@docmagic.com
+
 ## 🌟 **Acknowledgments**
 
 - **[Next.js Team](https://nextjs.org/)** - For the amazing React framework
@@ -790,21 +1002,28 @@ See the [LICENSE](LICENSE) file for the complete license text.
 - **[Stripe](https://stripe.com/)** - For payment processing
 - **Open Source Community** - For the amazing tools and libraries
 
+## ❓ Frequently Asked Questions
+
+Got questions? Check out our comprehensive [FAQ](./FAQ.md) for answers to common questions about using and contributing to DocMagic.
+
 ## 📞 **Support & Contact**
 
 ### 🆘 **Get Help**
+
 - 📚 **Documentation**: [docs.docmagic.com](https://docs.docmagic.com)
 - 💬 **Discord Community**: [Join our Discord](https://discord.gg/docmagic)
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/yourusername/docmagic/issues)
 - 💡 **Feature Requests**: [GitHub Discussions](https://github.com/yourusername/docmagic/discussions)
 
 ### 📧 **Contact Information**
+
 - **General**: hello@docmagic.com
 - **Support**: support@docmagic.com
 - **Business**: business@docmagic.com
 - **Security**: security@docmagic.com
 
 ### 🌐 **Social Media**
+
 - **Twitter**: [@DocMagicAI](https://twitter.com/DocMagicAI)
 - **LinkedIn**: [DocMagic Company](https://linkedin.com/company/docmagic)
 - **GitHub**: [DocMagic Organization](https://github.com/docmagic-ai)
@@ -823,7 +1042,7 @@ See the [LICENSE](LICENSE) file for the complete license text.
 
 **Made with ❤️ by the DocMagic Team**
 
-*Transforming ideas into professional documents, one AI generation at a time.*
+_Transforming ideas into professional documents, one AI generation at a time._
 
 <br />
 
@@ -831,30 +1050,181 @@ See the [LICENSE](LICENSE) file for the complete license text.
 
 </div>
 
-| Endpoint | Method | Description | Request Body | Response |
-|----------|--------|-------------|--------------|----------|
-| `/api/send-email` | POST | Send email | `{ to, subject, content, letterContent, ... }` | Success status |
+| Endpoint          | Method | Description | Request Body                                   | Response       |
+| ----------------- | ------ | ----------- | ---------------------------------------------- | -------------- |
+| `/api/send-email` | POST   | Send email  | `{ to, subject, content, letterContent, ... }` | Success status |
 
 ### Authentication
 
-| Endpoint | Method | Description | Request Body | Response |
-|----------|--------|-------------|--------------|----------|
-| `/api/auth/register` | POST | Register user | `{ name, email, password }` | User data |
+| Endpoint             | Method | Description   | Request Body                | Response  |
+| -------------------- | ------ | ------------- | --------------------------- | --------- |
+| `/api/auth/register` | POST   | Register user | `{ name, email, password }` | User data |
 
 ### Payments
 
-| Endpoint | Method | Description | Request Body | Response |
-|----------|--------|-------------|--------------|----------|
-| `/api/stripe/check-subscription` | GET | Check subscription status | - | Subscription status |
-| `/api/stripe/create-checkout` | POST | Create checkout session | - | Checkout URL |
-| `/api/stripe/create-portal` | POST | Create customer portal | - | Portal URL |
-| `/api/stripe/webhook` | POST | Handle Stripe webhooks | Stripe event | Success status |
+| Endpoint                         | Method | Description               | Request Body | Response            |
+| -------------------------------- | ------ | ------------------------- | ------------ | ------------------- |
+| `/api/stripe/check-subscription` | GET    | Check subscription status | -            | Subscription status |
+| `/api/stripe/create-checkout`    | POST   | Create checkout session   | -            | Checkout URL        |
+| `/api/stripe/create-portal`      | POST   | Create customer portal    | -            | Portal URL          |
+| `/api/stripe/webhook`            | POST   | Handle Stripe webhooks    | Stripe event | Success status      |
+
+## 💳 Stripe Integration
+
+DocMagic uses Stripe for handling subscription payments. This section provides a comprehensive guide to setting up and managing the Stripe integration.
+
+### 🔑 Environment Variables
+
+Add the following environment variables to your `.env.local` file:
+
+```bash
+# Stripe
+STRIPE_SECRET_KEY=your_stripe_secret_key
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+STRIPE_PRICE_ID=your_stripe_price_id  # The ID of the price for your subscription plan
+NEXT_PUBLIC_APP_URL=http://localhost:3000  # Your application URL
+```
+
+### 🛠️ Setup Instructions
+
+1. **Create a Stripe Account**
+
+   - Sign up at [Stripe](https://dashboard.stripe.com/register)
+   - Retrieve your API keys from the Stripe Dashboard under Developers > API keys
+
+2. **Configure Products and Prices**
+
+   - Go to Products in the Stripe Dashboard
+   - Create a new product (e.g., "Pro Subscription")
+   - Add a price for the product (e.g., $9.99/month)
+   - Note down the Price ID (e.g., `price_abc123`)
+
+3. **Set Up Webhooks**
+
+   - Go to Developers > Webhooks in the Stripe Dashboard
+   - Add an endpoint URL: `https://your-domain.com/api/stripe/webhook`
+   - Add these events to listen for:
+     - `checkout.session.completed`
+     - `invoice.payment_succeeded`
+     - `customer.subscription.updated`
+     - `customer.subscription.deleted`
+   - Retrieve the webhook signing secret
+
+4. **Update Environment Variables**
+   - Update `.env.local` with your Stripe keys and webhook secret
+   - Set `STRIPE_PRICE_ID` to your subscription price ID
+
+### 🧪 Testing the Integration
+
+#### 1. Test the Payment Demo
+
+1. Navigate to `/payment-demo` in your browser
+2. Use one of the test card numbers below
+3. Enter any future expiry date, any 3-digit CVC, and any postal code
+4. Submit the form to test the payment flow
+
+#### 2. Test Cards
+
+| Card Number           | Description                       |
+| --------------------- | --------------------------------- |
+| `4242 4242 4242 4242` | Successful payment                |
+| `4000 0025 0000 3155` | 3D Secure authentication required |
+| `4000 0000 0000 0002` | Payment failed                    |
+| `4000 0082 6000 3178` | Insufficient funds                |
+
+#### 3. Testing Webhooks Locally
+
+To test webhooks during development:
+
+1. Install the Stripe CLI: https://stripe.com/docs/stripe-cli
+2. Log in to your Stripe account:
+   ```bash
+   stripe login
+   ```
+3. Forward webhooks to your local server:
+   ```bash
+   stripe listen --forward-to localhost:3000/api/stripe/webhook
+   ```
+4. The CLI will provide a webhook signing secret. Add it to your `.env.local`:
+   ```bash
+   STRIPE_WEBHOOK_SECRET=whsec_...
+   ```
+
+#### 4. Testing Different Scenarios
+
+- **Successful Payment**: Use card `4242 4242 4242 4242`
+- **3D Secure Flow**: Use card `4000 0025 0000 3155`
+- **Payment Failure**: Use card `4000 0000 0000 0002`
+- **Insufficient Funds**: Use card `4000 0082 6000 3178`
+
+2. **Test Webhooks Locally**
+   - Use the Stripe CLI to forward webhooks to your local server:
+     ```bash
+     stripe listen --forward-to localhost:3000/api/stripe/webhook
+     ```
+   - This will give you a webhook signing secret to use in your `.env.local`
+
+### 🔄 Webhook Events Handled
+
+- `checkout.session.completed`: Creates a new subscription in the database
+- `invoice.payment_succeeded`: Updates subscription details after successful payment
+- `customer.subscription.updated`: Updates subscription status if changed in Stripe
+- `customer.subscription.deleted`: Handles subscription cancellation
+
+### 🚀 Frontend Components
+
+The main subscription flow is handled by the `SubscriptionButton` component:
+
+```tsx
+<SubscriptionButton isPro={isPro} />
+```
+
+### 🔒 Security Considerations
+
+- Never expose Stripe secret keys in client-side code
+- Always verify webhook signatures
+- Use environment variables for sensitive data
+- Implement proper error handling and user feedback
+
+### 🛠️ Troubleshooting
+
+1. **Webhook Failures**
+
+   - Verify the webhook signing secret matches your Stripe dashboard
+   - Check server logs for detailed error messages
+   - Ensure your server's clock is synchronized (NTP)
+
+2. **Checkout Issues**
+
+   - Verify the Price ID exists in your Stripe account
+   - Check the browser console for JavaScript errors
+   - Ensure your Stripe API keys are in the correct mode (test/live)
+
+3. **Subscription Status**
+   - Check the `subscriptions` table in your database
+   - Verify the webhook events are being received and processed
+
+### 📚 Additional Resources
+
+- [Stripe Documentation](https://stripe.com/docs)
+- [Stripe Checkout](https://stripe.com/docs/payments/checkout)
+- [Stripe Webhooks](https://stripe.com/docs/webhooks)
+- [Stripe Testing](https://stripe.com/docs/testing)
+
+### 🎯 Best Practices
+
+1. Always use the latest version of the Stripe API
+2. Implement idempotency keys for critical operations
+3. Log all webhook events for debugging
+4. Set up monitoring for failed webhook deliveries
+5. Regularly test your integration with test cards
 
 ### User
 
-| Endpoint | Method | Description | Request Body | Response |
-|----------|--------|-------------|--------------|----------|
-| `/api/user` | GET | Get user data | - | User data with subscription |
+| Endpoint    | Method | Description   | Request Body | Response                    |
+| ----------- | ------ | ------------- | ------------ | --------------------------- |
+| `/api/user` | GET    | Get user data | -            | User data with subscription |
 
 ## 🔒 Authentication
 
@@ -871,6 +1241,7 @@ Authentication is handled by Supabase Auth. The system includes:
 The Supabase database includes the following tables:
 
 ### Users Table
+
 - `id` (UUID, primary key)
 - `email` (text, unique)
 - `name` (text)
@@ -880,6 +1251,7 @@ The Supabase database includes the following tables:
 - `updated_at` (timestamp)
 
 ### Subscriptions Table
+
 - `id` (UUID, primary key)
 - `user_id` (UUID, foreign key to users)
 - `stripe_subscription_id` (text, unique)
@@ -890,6 +1262,7 @@ The Supabase database includes the following tables:
 - `updated_at` (timestamp)
 
 ### Documents Table
+
 - `id` (UUID, primary key)
 - `user_id` (UUID, foreign key to users)
 - `title` (text)
@@ -902,6 +1275,7 @@ The Supabase database includes the following tables:
 ## 💰 Subscription Model
 
 DocMagic offers a freemium model:
+
 - **Free tier**: Basic document generation with limited features
 - **Pro tier**: Unlimited documents, premium templates, and advanced features
 
@@ -941,9 +1315,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 We sincerely thank the amazing individuals who have contributed to DocMagic. Your time, effort, and ideas make this project better every day.
 
 <!-- You can use GitHub's built-in contributors image -->
+
 [![Contributors](https://contrib.rocks/image?repo=Muneerali199/DocMagic)](https://github.com/Muneerali199/DocMagic/graphs/contributors)
 
 > Want to contribute? Check out our [CONTRIBUTING.md](CONTRIBUTING.md) guide and submit your first PR!
+
   <p>Built with ❤️ by the DocMagic Team</p>
   <p><strong>Designed by <a href="https://github.com/Xenonesis">Xenonesis</a></strong></p>
   <p>© 2025 DocMagic. All rights reserved.</p>
