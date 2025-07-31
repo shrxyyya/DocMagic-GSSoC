@@ -210,9 +210,7 @@ export function GuidedResumeGenerator({ onResumeGenerated }: GuidedResumeGenerat
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const errorMessage = errorData.error || `HTTP ${response.status}: ${response.statusText}`;
-        throw new Error(errorMessage);
+        throw new Error('Failed to generate resume');
       }
 
       const resume = await response.json();
