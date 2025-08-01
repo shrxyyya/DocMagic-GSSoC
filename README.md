@@ -1320,7 +1320,25 @@ We sincerely thank the amazing individuals who have contributed to DocMagic. You
 
 > Want to contribute? Check out our [CONTRIBUTING.md](CONTRIBUTING.md) guide and submit your first PR!
 
-  <p>Built with ❤️ by the DocMagic Team</p>
-  <p><strong>Designed by <a href="https://github.com/Xenonesis">Xenonesis</a></strong></p>
-  <p>© 2025 DocMagic. All rights reserved.</p>
+ 
 </div>
+
+
+<div align="center">
+
+📄 [Docs](https://github.com/Muneerali199/DocMagic/tree/main/docs) • 
+🐛 [Issues](https://github.com/Muneerali199/DocMagic/issues) • 
+🤝 [Contributions](https://github.com/Muneerali199/DocMagic/graphs/contributors) • 
+💬 [Community](https://github.com/Muneerali199/DocMagic/discussions)
+
+ <p>Built with ❤️ by the DocMagic Team</p>
+  <p><strong>Designed by <a href="https://github.com/Xenonesis">Xenonesis</a></strong></p>
+<p>© 2025 DocMagic. All rights reserved.</p>
+
+ Licensed under the [MIT License](https://github.com/Muneerali199/DocMagic/blob/main/LICENSE)
+ 
+</div>
+
+
+
+
