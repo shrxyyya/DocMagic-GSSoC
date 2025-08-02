@@ -1323,4 +1323,11 @@ We sincerely thank the amazing individuals who have contributed to DocMagic. You
   <p>Built with ❤️ by the DocMagic Team</p>
   <p><strong>Designed by <a href="https://github.com/Xenonesis">Xenonesis</a></strong></p>
   <p>© 2025 DocMagic. All rights reserved.</p>
-</div>
+ </div>
+
+
+
+
+
+
+
