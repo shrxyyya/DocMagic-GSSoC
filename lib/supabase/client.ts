@@ -1,4 +1,4 @@
-import { createClient as createClientOriginal } from '@supabase/supabase-js';
+import { createClient as createClientOriginal, SupabaseClient } from '@supabase/supabase-js';
 import { type Database } from '@/types/supabase';
 
 // Environment variable validation
@@ -10,7 +10,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing required Supabase environment variables. Please check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your environment configuration.');
 }
 
-let supabaseInstance: ReturnType<typeof createClientOriginal<Database>> | null = null;
+let supabaseInstance: SupabaseClient<Database> | null = null;
 
 // Export the Supabase client
 export const createClient = () => {
